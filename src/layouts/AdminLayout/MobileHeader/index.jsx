@@ -9,7 +9,7 @@ import { ConfigContext } from 'contexts/ConfigContext';
 import * as actionType from 'store/actions';
 
 // assets
-import logo from 'assets/images/m-logo.svg';
+import logo from 'assets/images/logo.png';
 
 // -----------------------|| MOBILE HEADER ||-----------------------//
 
