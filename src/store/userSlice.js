@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
-    login, getUsers, getDashboard, getCoupons
+    login, getUsers, getDashboard, getCoupons, getCities, createCoupon, getPromoCode
 } from "../services/main";
 
 export const fetchLogin = createAsyncThunk(
@@ -59,6 +59,49 @@ export const fetchCoupons = createAsyncThunk(
     }
 );
 
+export const fetchCities = createAsyncThunk(
+    "user/fetchCities",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await getCities(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const addCoupon = createAsyncThunk(
+    "user/addCoupon",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await createCoupon(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const fetchPromoCode = createAsyncThunk(
+    "user/fetchPromoCode",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await getPromoCode(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+
 const userSlice = createSlice({
     name: "user",
     initialState: {
@@ -66,6 +109,8 @@ const userSlice = createSlice({
         isLoggedIn: false,
         usersList: [],
         couponsList: [],
+        allowCitiesList: [],
+        promoCodeList: [],
         status: "start",
         error: null,
         currentPage: 1,
@@ -80,7 +125,8 @@ const userSlice = createSlice({
             "totalSubscriptions": 0,
             "totalAmount": 0,
             "totalPromoCodes": 0,
-            "totalCities": 0
+            "totalCities": 0,
+            "totalFeedbacks": 0
         }
     },
     reducers: {
@@ -139,6 +185,39 @@ const userSlice = createSlice({
             })
             .addCase(fetchCoupons.rejected, (state) => {
                 state.couponsList = [];
+                state.status = 'failed';
+            })
+            .addCase(fetchCities.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchCities.fulfilled, (state, action) => {
+                state.allowCitiesList = action.payload?.data || [];
+                state.status = "succeeded";
+            })
+            .addCase(fetchCities.rejected, (state) => {
+                state.allowCitiesList = [];
+                state.status = 'failed';
+            })
+            .addCase(addCoupon.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(addCoupon.fulfilled, (state, action) => {
+                // state.couponsList.push(action.payload?.data);
+                state.status = "succeeded";
+            })
+            .addCase(addCoupon.rejected, (state) => {
+                // state.couponsList = [];
+                state.status = 'failed';
+            })
+            .addCase(fetchPromoCode.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchPromoCode.fulfilled, (state, action) => {
+                state.promoCodeList = action.payload?.data || [];
+                state.status = "succeeded";
+            })
+            .addCase(fetchPromoCode.rejected, (state) => {
+                state.promoCodeList = [];
                 state.status = 'failed';
             });
     },

@@ -13,7 +13,7 @@ import { ConfigContext } from 'contexts/ConfigContext';
 import SimpleBar from 'simplebar-react';
 
 // assets
-import logo from 'assets/images/logo.svg';
+import logo from 'assets/images/logo.png';
 
 // -----------------------|| NAV CONTENT ||-----------------------//
 
@@ -28,12 +28,12 @@ export default function NavContent({ navigation, activeNav }) {
       case 'group':
         if (activeNav) {
           navItem = (
-            <div key={`nav-group-${item.id}`}>
-              <NavGroup group={item} />
+            <div key={ `nav-group-${ item.id }` }>
+              <NavGroup group={ item } />
             </div>
           );
         } else {
-          navItem = <NavGroup group={item} key={`nav-group-${item.id}`} />;
+          navItem = <NavGroup group={ item } key={ `nav-group-${ item.id }` } />;
         }
         return navItem;
       default:
@@ -42,26 +42,26 @@ export default function NavContent({ navigation, activeNav }) {
   });
 
   let navContentNode = (
-    <SimpleBar style={{ height: 'calc(100vh - 70px)' }}>
+    <SimpleBar style={ { height: 'calc(100vh - 70px)' } }>
       <ListGroup variant="flush" as="ul" bsPrefix=" " className="pc-navbar">
-        {navItems}
+        { navItems }
       </ListGroup>
-  
+
     </SimpleBar>
   );
 
   if (collapseLayout) {
     navContentNode = (
       <ListGroup variant="flush" as="ul" bsPrefix=" " className="pc-navbar">
-        {navItems}
+        { navItems }
       </ListGroup>
     );
   }
 
   const mHeader = (
     <div className="m-header">
-      <Link to="/dashboard/sales" className="b-brand">
-        <img src={logo} alt="" className="logo logo-lg" />
+      <Link to="/dashboard" className="b-brand">
+        <img src={ logo } alt="" className="logo logo-lg" width="105" />
       </Link>
     </div>
   );
@@ -70,13 +70,13 @@ export default function NavContent({ navigation, activeNav }) {
 
   mainContent = (
     <>
-      {mHeader}
+      { mHeader }
 
-      <div className="navbar-content next-scroll">{navContentNode}</div>
+      <div className="navbar-content next-scroll">{ navContentNode }</div>
     </>
   );
 
-  return <>{mainContent}</>;
+  return <>{ mainContent }</>;
 }
 
 NavContent.propTypes = { navigation: PropTypes.any, activeNav: PropTypes.any };

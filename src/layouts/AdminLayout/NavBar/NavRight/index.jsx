@@ -6,7 +6,7 @@ import { ListGroup, Dropdown, Form } from 'react-bootstrap';
 // third party
 import FeatherIcon from 'feather-icons-react';
 // assets
-import avatar2 from 'assets/images/user/avatar-2.jpg';
+import avatar2 from 'assets/images/user/computer.png';
 import { clearUser } from '../../../../store/userSlice';
 // -----------------------|| NAV RIGHT ||-----------------------//
 
@@ -44,7 +44,7 @@ export default function NavRight() {
       <ListGroup.Item as="li" bsPrefix=" " className="pc-h-item">
         <Dropdown className="drp-user">
           <Dropdown.Toggle as="a" variant="link" className="pc-head-link arrow-none me-0 user-name">
-            <img src={ userInfo?.profileImage } alt="userimage" className="user-avatar" />
+            <img src={ avatar2 } alt="userimage" className="user-avatar" />
             <span>
               <span className="user-name">{ userInfo?.firstName }</span>
               <span className="user-desc">{ userInfo?.role }</span>

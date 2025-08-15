@@ -7,7 +7,10 @@ export const apiPath = {
     getCountryCodes: "/get-countries",
     users: "/get-users",
     dashboard: "/get-dashboard",
-    coupons: "/get-coupons"
+    coupons: "/get-coupons",
+    cities: "/get-update-cities",
+    createCoupon: "/add-coupon",
+    promoCodes: "/get-promo-code"
 };
 
 // export const APP_URL = "http://13.235.91.193:3009/v1/admin";

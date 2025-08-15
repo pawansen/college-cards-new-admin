@@ -1,22 +1,22 @@
 // Menu configuration for default layout
 const menuItems = {
   items: [
-    {
-      id: 'navigation',
-      title: 'Dashboard',
-      type: 'group',
-      icon: 'icon-navigation',
-      children: [
-        {
-          id: 'dashboard',
-          title: 'Dashboard',
-          type: 'collapse',
-          icon: 'material-icons-two-tone',
-          iconname: 'home',
-          url: '/dashboard',
-        }
-      ]
-    },
+    // {
+    //   id: 'navigation',
+    //   title: 'Dashboard',
+    //   type: 'group',
+    //   icon: 'icon-navigation',
+    //   children: [
+    //     {
+    //       id: 'dashboard',
+    //       title: 'Dashboard',
+    //       type: 'collapse',
+    //       icon: 'material-icons-two-tone',
+    //       iconname: 'home',
+    //       url: '/dashboard',
+    //     }
+    //   ]
+    // },
     {
       id: 'ui-element',
       title: 'main',
@@ -25,20 +25,84 @@ const menuItems = {
       icon: 'icon-ui',
       children: [
         {
+          id: 'dashboard',
+          title: 'Dashboard',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'home',
+          url: '/dashboard'
+        },
+        {
           id: 'users',
           title: 'Users',
           type: 'item',
           icon: 'material-icons-two-tone',
-          iconname: 'people-alt',
+          iconname: 'people_alt',
           url: '/users'
         },
         {
           id: 'coupons',
-          title: 'Coupons',
+          title: 'Coupon',
           type: 'item',
           icon: 'material-icons-two-tone',
           iconname: 'local_offer',
           url: '/coupons'
+        },
+        {
+          id: 'cities',
+          title: 'Cities',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'location_city',
+          url: '/cities'
+        },
+        {
+          id: 'user-subscriptions',
+          title: 'User Subscriptions',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'subscriptions',
+          url: '/user-subscriptions'
+        },
+        {
+          id: 'feedback',
+          title: 'Feedback',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'feedback',
+          url: '/feedback'
+        },
+        {
+          id: 'referrals',
+          title: 'Referrals',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'group_add',
+          url: '/referrals'
+        },
+        {
+          id: 'promocode',
+          title: 'Promo Code',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'confirmation_number',
+          url: '/promocode'
+        },
+        {
+          id: 'notification',
+          title: 'Notification',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'notifications',
+          url: '/notification'
+        },
+        {
+          id: 'settings',
+          title: 'Settings',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'settings',
+          url: '/settings'
         },
         // {
         //   id: 'typography',
@@ -56,33 +120,33 @@ const menuItems = {
         //   iconname: 'color_lens',
         //   url: '/color'
         // },
-        {
-          id: 'icons',
-          title: 'Icons',
-          type: 'collapse',
-          icon: 'material-icons-two-tone',
-          iconname: 'history_edu',
-          children: [
-            {
-              id: 'feather',
-              title: 'Feather',
-              type: 'item',
-              url: '/icons/Feather'
-            },
-            {
-              id: 'font-awesome-5',
-              title: 'Font Awesome',
-              type: 'item',
-              url: '/icons/font-awesome-5'
-            },
-            {
-              id: 'material',
-              title: 'Material',
-              type: 'item',
-              url: '/icons/material'
-            }
-          ]
-        }
+        // {
+        //   id: 'icons',
+        //   title: 'Icons',
+        //   type: 'collapse',
+        //   icon: 'material-icons-two-tone',
+        //   iconname: 'history_edu',
+        //   children: [
+        //     {
+        //       id: 'feather',
+        //       title: 'Feather',
+        //       type: 'item',
+        //       url: '/icons/Feather'
+        //     },
+        //     {
+        //       id: 'font-awesome-5',
+        //       title: 'Font Awesome',
+        //       type: 'item',
+        //       url: '/icons/font-awesome-5'
+        //     },
+        //     {
+        //       id: 'material',
+        //       title: 'Material',
+        //       type: 'item',
+        //       url: '/icons/material'
+        //     }
+        //   ]
+        // }
       ]
     },
     // {

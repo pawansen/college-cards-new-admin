@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { Card, Row, Col, Button, Form, InputGroup } from 'react-bootstrap';
 import FeatherIcon from 'feather-icons-react';
-import logoDark from 'assets/images/m-logo.svg';
+import logoDark from 'assets/images/logo.png';
 import "react-toastify/dist/ReactToastify.css";
 import { fetchLogin } from "../../store/userSlice";
 const schema = Yup.object().shape({
@@ -80,7 +80,7 @@ export default function SignIn1() {
             <form onSubmit={ handleSubmit(onSubmit) } className="auth-form">
               <Col>
                 <Card.Body className="card-body">
-                  <img src={ logoDark } alt="" className="img-fluid mb-4" />
+                  <img src={ logoDark } alt="" className="img-fluid mb-4" width="200" />
                   <h4 className="mb-3 f-w-400">Signin</h4>
                   <InputGroup className="mb-3">
                     <InputGroup.Text>
