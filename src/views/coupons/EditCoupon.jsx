@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { fetchCities, addCoupon } from "../../store/userSlice";
+import { fetchCities, addCoupon, fetchCouponInfo } from "../../store/userSlice";
 
 const schema = Yup.object().shape({
     city: Yup.string().required("City is required"),
@@ -17,12 +17,21 @@ const schema = Yup.object().shape({
     // logo: Yup.string().required("Logo is required"),
 });
 
-export default function AddCoupon() {
+const defaultValues = {
+    city: "",
+    title: "",
+    discount: "",
+    address: "",
+    logo: "",
+};
+
+export default function EditCoupon() {
     const dispatch = useDispatch();
-    const { allowCitiesList } = useSelector((state) => state.user);
+    const { allowCitiesList, couponInfo } = useSelector((state) => state.user);
     const [addresses, setAddresses] = useState([]);
-    const [date] = useState(new Date().toLocaleDateString("en-GB"));
+    const [date, setDate] = useState(new Date().toLocaleDateString("en-GB"));
     const [initState, setInitState] = useState(false);
+    const [initStateSetForm, setInitStateSetForm] = useState(false);
 
     const {
         register,
@@ -32,13 +41,7 @@ export default function AddCoupon() {
         formState: { errors }
     } = useForm({
         resolver: yupResolver(schema),
-        defaultValues: {
-            city: "",
-            title: "",
-            discount: "",
-            address: "",
-            logo: "",
-        },
+        defaultValues: defaultValues,
     });
 
     const logo = watch("logo");
@@ -47,12 +50,40 @@ export default function AddCoupon() {
     const discount = watch("discount");
     const address = watch("address");
 
+    // Get coupon_id from URL
+    const coupon_id = window.location.pathname.split('/').pop();
+
     useEffect(() => {
         if (!initState) {
-            dispatch(fetchCities());
+            dispatch(fetchCouponInfo({ coupon_id }));
             setInitState(true);
         }
-    }, [dispatch, initState]);
+    }, [dispatch, initState, coupon_id]);
+
+    useEffect(() => {
+        if (!initStateSetForm && couponInfo) {
+            setValue("title", couponInfo.title);
+            setValue("discount", couponInfo.amount);
+            setValue("logo", couponInfo.logo);
+            setDate(couponInfo.create_at ? new Date(couponInfo.create_at).toLocaleDateString("en-GB") : "");
+            let selectedCity = null;
+            dispatch(fetchCities())
+                .then((result) => {
+                    if (result?.payload?.data) {
+                        if (Array.isArray(result.payload.data) && couponInfo && couponInfo.city_id) {
+                            selectedCity = result.payload.data.find(c => String(c.id) === String(couponInfo.city_id));
+                            console.log('allowCitiesList', result.payload.data)
+                            setValue("city", selectedCity ? selectedCity.name : '');
+                        }
+                    }
+
+                })
+            if (couponInfo.address) {
+                setAddresses(couponInfo.address.map(addr => addr.address));
+            }
+            setInitStateSetForm(true);
+        }
+    }, [dispatch, couponInfo, allowCitiesList]);
 
     const handleLogoUpload = (e) => {
         const file = e.target.files[0];
@@ -80,8 +111,9 @@ export default function AddCoupon() {
             const selectedCity = allowCitiesList.find(c => c.name === data.city);
             formData.append('city_id', selectedCity ? selectedCity.id : '');
             formData.append('address', JSON.stringify(address));
+            formData.append('coupon_id', coupon_id);
             // Convert base64 logo to Blob if exists
-            if (data.logo) {
+            if (data.logo && /^data:image\/[a-zA-Z]+;base64,/.test(data.logo)) {
                 const arr = data.logo.split(',');
                 const mime = arr[0].match(/:(.*?);/)[1];
                 const bstr = atob(arr[1]);
@@ -93,8 +125,10 @@ export default function AddCoupon() {
                 const file = new File([u8arr], "logo.png", { type: mime });
                 formData.append('couponLogo', file);
             }
+            console.log('FormData prepared:', data);
             dispatch(addCoupon(formData))
                 .then((result) => {
+                    console.log('result?.payload', result?.payload)
                     if (result?.payload?.statusCode === 1) {
                         toast.success("Coupon created successfully!");
                         window.location.href = "/coupons";

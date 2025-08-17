@@ -2,7 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Card, Table, Form, Button } from 'react-bootstrap';
 import { GeoAlt } from "react-bootstrap-icons";
-import { fetchCoupons } from "../../store/userSlice";
+import { fetchCoupons, deleteCoupon } from "../../store/userSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function CouponTable() {
     const dispatch = useDispatch();
     const { couponsList, status } = useSelector((state) => state.user);
@@ -12,6 +14,8 @@ export default function CouponTable() {
     const [dropdownIndex, setDropdownIndex] = useState(null);
     const [confirmDeleteId, setConfirmDeleteId] = useState(null);
     const [allUsers, setAllUsers] = useState([]);
+    // State to store checked coupon IDs
+    const [checkedIds, setCheckedIds] = useState([]);
     const dropdownRefs = useRef([]);
     const statusOptions = [
         { value: true, label: "Active" },
@@ -59,12 +63,51 @@ export default function CouponTable() {
         }
     };
 
-    const handleStatusChange = (userId, isActive) => {
-        // dispatch(updateUserStatus({ userId, isActive }));
+    const handleDelete = () => {
+        if (!checkedIds || checkedIds.length === 0) {
+            toast.error("Please select at least one coupon to delete.");
+            return;
+        }
+        dispatch(deleteCoupon({ coupon_id: checkedIds.join(",") }))
+            .then((result) => {
+                if (result?.payload?.statusCode === 1) {
+                    toast.success("Coupons deleted successfully!");
+                    setCheckedIds([]);
+                    dispatch(fetchCoupons({ limit: 10, pageNo: 1 }));
+                    setPage(1);
+                    setAllUsers([]);
+                }
+            });
     };
 
-    const handleEdit = (user) => {
-        // handle edit logic
+    const handleEdit = (data) => {
+        window.location.href = `/edit-coupon/${ data.coupon_id }`;
+    };
+
+    // Debounced search handler
+    const searchTimeout = useRef(null);
+
+    const handleSearch = (e) => {
+        const query = e.target.value.toLowerCase();
+        if (searchTimeout.current) {
+            clearTimeout(searchTimeout.current);
+        }
+        searchTimeout.current = setTimeout(() => {
+            dispatch(fetchCoupons({ limit: 10, pageNo: 1, keyword: query }));
+            setPage(1);
+            setAllUsers([]); // Reset users for new search
+        }, 1000);
+    };
+
+
+
+    // Handler for checkbox change
+    const handleCheckboxChange = (couponId) => {
+        setCheckedIds(prev =>
+            prev.includes(couponId)
+                ? prev.filter(id => id !== couponId)
+                : [...prev, couponId]
+        );
     };
 
     return (
@@ -75,14 +118,26 @@ export default function CouponTable() {
                         <Card.Title as="h5">Coupons</Card.Title>
                     </Card.Header>
                     <Card.Body>
-                        <div className="d-flex justify-content-between align-items-center mb-3">
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Search coupons..."
-                                style={ { maxWidth: 250 } }
-                            // onChange={handleSearch} // implement search logic if needed
-                            />
+                        <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+
+                            <div className="d-flex align-items-center" style={ { gap: 12 } }>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Search coupons..."
+                                    style={ { maxWidth: 250 } }
+                                    onChange={ handleSearch }
+                                />
+                                <div>
+                                    <button
+                                        className="btn text-danger"
+                                        onClick={ handleDelete }
+                                    >
+                                        <i className="fas fa-trash me-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+
                             <button
                                 className="btn"
                                 style={ { backgroundColor: "#31434F", color: "#fff" } }
@@ -92,10 +147,7 @@ export default function CouponTable() {
                                 Create Coupon
                             </button>
                         </div>
-                    </Card.Body>
-                    <Card.Body>
                         <div style={ { maxHeight: 600, overflowY: "auto" } } onScroll={ handleScroll }>
-
                             <div className="p-4">
                                 <Row xs={ 1 } sm={ 2 } md={ 3 } lg={ 4 } className="g-4">
                                     { allUsers.map((cand, idx) => (
@@ -105,6 +157,8 @@ export default function CouponTable() {
                                                     type="checkbox"
                                                     className="position-absolute"
                                                     style={ { top: "10px", left: "10px" } }
+                                                    checked={ checkedIds.includes(cand.coupon_id) }
+                                                    onChange={ () => handleCheckboxChange(cand.coupon_id) }
                                                 />
                                                 {/* Edit Icon */ }
                                                 <span
@@ -130,12 +184,14 @@ export default function CouponTable() {
                                                         { cand.amount }% Off
                                                     </Card.Subtitle>
                                                     { Array.isArray(cand.address) && cand.address.length > 0 ? (
-                                                        cand.address.map(addr => (
-                                                            <p key={ addr._id } className="text-muted mb-1" style={ { fontSize: "0.85rem", fontWeight: "bold" } }>
-                                                                <GeoAlt size={ 16 } className="me-1" />
-                                                                { addr.address }
-                                                            </p>
-                                                        ))
+                                                        <p className="text-muted mb-1" style={ { fontSize: "0.85rem", fontWeight: "bold" } }>
+                                                            { cand.address.map((addr, i) => (
+                                                                <div key={ i }>
+                                                                    <GeoAlt size={ 16 } className="me-1" />
+                                                                    { addr.address }
+                                                                </div>
+                                                            )) }
+                                                        </p>
                                                     ) : (
                                                         "-"
                                                     ) }

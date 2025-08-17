@@ -9,3 +9,11 @@ export const getCoupons = (reqPayload) => commonClient.get(apiPath.coupons, { pa
 export const getCities = (reqPayload) => commonClient.get(apiPath.cities, { params: reqPayload });
 export const createCoupon = (reqPayload) => commonClientUploadFile.post(apiPath.createCoupon, reqPayload);
 export const getPromoCode = (reqPayload) => commonClient.get(apiPath.promoCodes, { params: reqPayload });
+export const getCouponInfo = (reqPayload) => commonClient.get(apiPath.couponInfo, { params: reqPayload });
+export const deleteCoupons = (reqPayload) => commonClient.post(apiPath.deleteCoupons, reqPayload);
+export const updateUserStatusinfo = (reqPayload) => commonClient.post(apiPath.updateUserStatus, reqPayload);
+export const getUserInfo = (reqPayload) => commonClient.get(apiPath.userInfo, { params: reqPayload });
+export const getUpdatedCities = (reqPayload) => commonClient.get(apiPath.getUpdatedCities, { params: reqPayload });
+export const getCountries = (reqPayload) => commonClient.get(apiPath.getCountries, { params: reqPayload });
+export const getStates = (reqPayload) => commonClient.get(apiPath.getStates, { params: reqPayload });
+export const getCitiesCustom = (reqPayload) => commonClient.get(apiPath.getCitiesCustom, { params: reqPayload });

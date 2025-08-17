@@ -72,41 +72,25 @@ export default function DashSales() {
         {/* Feed Table */ }
         {/* <FeedTable {...feedData} /> */ }
       </Col>
-      <Col md={ 12 } xl={ 6 }>
+      {/* <Col md={ 12 } xl={ 6 }>
         <Card>
           <Card.Header>
             <h5>Earning</h5>
           </Card.Header>
           <Card.Body>
             <Row className="pb-2">
-              {/* <div className="col-auto m-b-10">
-                <h3 className="mb-1">$21,356.46</h3>
-                <span>Total Sales</span>
-              </div>
-              <div className="col-auto m-b-10">
-                <h3 className="mb-1">$1935.6</h3>
-                <span>Average</span>
-              </div> */}
             </Row>
             <Chart { ...SalesAccountChartData() } />
           </Card.Body>
         </Card>
-      </Col>
-      <Col md={ 12 } xl={ 6 }>
+      </Col> */}
+      {/* <Col md={ 12 } xl={ 6 }>
         <Card>
           <Card.Header>
             <h5>Users</h5>
           </Card.Header>
           <Card.Body>
             <Row className="pb-2">
-              {/* <div className="col-auto m-b-10">
-                <h3 className="mb-1">$21,356.46</h3>
-                <span>Total Sales</span>
-              </div>
-              <div className="col-auto m-b-10">
-                <h3 className="mb-1">$1935.6</h3>
-                <span>Average</span>
-              </div> */}
             </Row>
             <Chart { ...SalesAccountChartData() } />
           </Card.Body>
@@ -119,14 +103,6 @@ export default function DashSales() {
           </Card.Header>
           <Card.Body>
             <Row className="pb-2">
-              {/* <div className="col-auto m-b-10">
-                <h3 className="mb-1">$21,356.46</h3>
-                <span>Total Sales</span>
-              </div>
-              <div className="col-auto m-b-10">
-                <h3 className="mb-1">$1935.6</h3>
-                <span>Average</span>
-              </div> */}
             </Row>
             <Chart { ...SalesAccountChartData() } />
           </Card.Body>
@@ -139,19 +115,11 @@ export default function DashSales() {
           </Card.Header>
           <Card.Body>
             <Row className="pb-2">
-              {/* <div className="col-auto m-b-10">
-                <h3 className="mb-1">$21,356.46</h3>
-                <span>Total Sales</span>
-              </div>
-              <div className="col-auto m-b-10">
-                <h3 className="mb-1">$1935.6</h3>
-                <span>Average</span>
-              </div> */}
             </Row>
             <Chart { ...SalesAccountChartData() } />
           </Card.Body>
         </Card>
-      </Col>
+      </Col> */}
     </Row>
   );
 }

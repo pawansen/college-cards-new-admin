@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
-    login, getUsers, getDashboard, getCoupons, getCities, createCoupon, getPromoCode
+    login, getUsers, getDashboard, getCoupons, getCities, createCoupon, getPromoCode, getCouponInfo, deleteCoupons, updateUserStatusinfo, getUserInfo,
+    getUpdatedCities, getCountries, getStates, getCitiesCustom
 } from "../services/main";
 
 export const fetchLogin = createAsyncThunk(
@@ -87,6 +88,21 @@ export const addCoupon = createAsyncThunk(
     }
 );
 
+export const fetchCouponInfo = createAsyncThunk(
+    "user/fetchCouponInfo",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await getCouponInfo(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+
 export const fetchPromoCode = createAsyncThunk(
     "user/fetchPromoCode",
     async (reqPayload, { rejectWithValue }) => {
@@ -101,6 +117,103 @@ export const fetchPromoCode = createAsyncThunk(
     }
 );
 
+export const deleteCoupon = createAsyncThunk(
+    "user/deleteCoupon",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await deleteCoupons(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const updateUserStatus = createAsyncThunk(
+    "user/updateUserStatus",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await updateUserStatusinfo(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const fetchUserInfo = createAsyncThunk(
+    "user/fetchUserInfo",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await getUserInfo(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const fetchUpdatedCities = createAsyncThunk(
+    "user/fetchUpdatedCities",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await getUpdatedCities(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const fetchCountries = createAsyncThunk(
+    "user/fetchCountries",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await getCountries(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const fetchStates = createAsyncThunk(
+    "user/fetchStates",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await getStates(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const fetchCitiesCustom = createAsyncThunk(
+    "user/fetchCitiesCustom",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await getCitiesCustom(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
 
 const userSlice = createSlice({
     name: "user",
@@ -118,6 +231,12 @@ const userSlice = createSlice({
         totalPages: 0,
         lastUpdated: "",
         message: null,
+        couponInfo: null,
+        userDetailInfo: null,
+        updatedCitiesList: [],
+        countriesList: [],
+        statesList: [],
+        citiesList: [],
         dashboardInfo: {
             "totalUsers": 0,
             "totalCoupons": 0,
@@ -219,7 +338,84 @@ const userSlice = createSlice({
             .addCase(fetchPromoCode.rejected, (state) => {
                 state.promoCodeList = [];
                 state.status = 'failed';
-            });
+            })
+            .addCase(fetchCouponInfo.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchCouponInfo.fulfilled, (state, action) => {
+                state.couponInfo = action.payload?.data || {};
+                state.status = "succeeded";
+            })
+            .addCase(fetchCouponInfo.rejected, (state) => {
+                state.couponInfo = {};
+                state.status = 'failed';
+            })
+            .addCase(deleteCoupon.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(deleteCoupon.fulfilled, (state, action) => {
+                state.couponsList = state.couponsList.filter(coupon => !action.payload?.data?.includes(coupon._id));
+                state.status = "succeeded";
+            })
+            .addCase(deleteCoupon.rejected, (state) => {
+                state.status = 'failed';
+            })
+            .addCase(fetchUserInfo.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchUserInfo.fulfilled, (state, action) => {
+                state.userDetailInfo = action.payload?.data || {};
+                state.status = "succeeded";
+            })
+            .addCase(fetchUserInfo.rejected, (state) => {
+                state.userDetailInfo = {};
+                state.status = 'failed';
+            })
+            .addCase(fetchUpdatedCities.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchUpdatedCities.fulfilled, (state, action) => {
+                state.updatedCitiesList = action.payload?.data || [];
+                state.status = "succeeded";
+            })
+            .addCase(fetchUpdatedCities.rejected, (state) => {
+                state.updatedCitiesList = [];
+                state.status = 'failed';
+            })
+            .addCase(fetchCountries.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchCountries.fulfilled, (state, action) => {
+                state.countriesList = action.payload?.data || [];
+                state.status = "succeeded";
+            })
+            .addCase(fetchCountries.rejected, (state) => {
+                state.countriesList = [];
+                state.status = 'failed';
+            })
+            .addCase(fetchStates.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchStates.fulfilled, (state, action) => {
+                state.statesList = action.payload?.data || [];
+                state.status = "succeeded";
+            })
+            .addCase(fetchStates.rejected, (state) => {
+                state.statesList = [];
+                state.status = 'failed';
+            })
+            .addCase(fetchCitiesCustom.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchCitiesCustom.fulfilled, (state, action) => {
+                state.citiesList = action.payload?.data || [];
+                state.status = "succeeded";
+            })
+            .addCase(fetchCitiesCustom.rejected, (state) => {
+                state.citiesList = [];
+                state.status = 'failed';
+            })
+
     },
 });
 

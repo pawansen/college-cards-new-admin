@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Card, Table } from 'react-bootstrap';
-import { fetchUsers } from "../../store/userSlice";
+import { fetchUsers, updateUserStatus } from "../../store/userSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function UserTable() {
     const dispatch = useDispatch();
-    const { usersList, status } = useSelector((state) => state.user);
+    const { usersList } = useSelector((state) => state.user);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
@@ -58,12 +60,66 @@ export default function UserTable() {
         }
     };
 
-    const handleStatusChange = (userId, isActive) => {
-        // dispatch(updateUserStatus({ userId, isActive }));
+    const handleStatusChange = (user_id, status) => {
+        toast.info(
+            <div style={ { textAlign: "left" } }>
+                <div>Are you sure you want to change the user status?</div>
+                <div style={ { marginTop: 12 } }>
+                    <button
+                        onClick={ () => {
+                            toast.dismiss();
+                            dispatch(updateUserStatus({ user_id, status: status ? 'yes' : 'no' }))
+                                .then((result) => {
+                                    if (result?.payload?.statusCode === 1) {
+                                        toast.success("User status updated successfully!");
+                                        setPage(1);
+                                        setAllUsers([]);
+                                        dispatch(fetchUsers({ limit: 10, pageNo: 1 }));
+                                    }
+                                });
+                        } }
+                        style={ { marginRight: 8 } }
+                    >
+                        Yes
+                    </button>
+                    <button onClick={ () => toast.dismiss() }>No</button>
+                </div>
+            </div>,
+            { autoClose: false }
+        );
     };
 
-    const handleEdit = (user) => {
-        // handle edit logic
+    const handleStatusDeleteChange = (user_id) => {
+        toast.info(
+            <div style={ { textAlign: "left" } }>
+                <div>Are you sure you want to delete the user?</div>
+                <div style={ { marginTop: 12 } }>
+                    <button
+                        onClick={ () => {
+                            toast.dismiss();
+                            dispatch(updateUserStatus({ user_id, delete: 'yes' }))
+                                .then((result) => {
+                                    if (result?.payload?.statusCode === 1) {
+                                        toast.success("User status updated successfully!");
+                                        setPage(1);
+                                        setAllUsers([]);
+                                        dispatch(fetchUsers({ limit: 10, pageNo: 1 }));
+                                    }
+                                });
+                        } }
+                        style={ { marginRight: 8 } }
+                    >
+                        Yes
+                    </button>
+                    <button onClick={ () => toast.dismiss() }>No</button>
+                </div>
+            </div>,
+            { autoClose: false }
+        );
+    };
+
+    const handleView = (user_id) => {
+        window.location.href = `/user-info/${ user_id }`;
     };
 
     return (
@@ -121,21 +177,21 @@ export default function UserTable() {
                                             <td>
                                                 <button
                                                     className="btn btn-info btn-sm me-1"
-                                                    onClick={ () => {/* handle view logic */ } }
+                                                    onClick={ () => handleView(cand._id) }
                                                     title="View"
                                                 >
                                                     <i className="fas fa-eye"></i>
                                                 </button>
-                                                <button
+                                                {/* <button
                                                     className="btn btn-warning btn-sm me-1"
                                                     onClick={ () => handleEdit(cand) }
                                                     title="Edit"
                                                 >
                                                     <i className="fas fa-edit"></i>
-                                                </button>
+                                                </button> */}
                                                 <button
                                                     className="btn btn-danger btn-sm"
-                                                    onClick={ () => setConfirmDeleteId(cand._id) }
+                                                    onClick={ () => handleStatusDeleteChange(cand._id) }
                                                     title="Delete"
                                                 >
                                                     <i className="fas fa-trash"></i>

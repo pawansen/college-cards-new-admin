@@ -56,54 +56,54 @@ const menuItems = {
           iconname: 'location_city',
           url: '/cities'
         },
-        {
-          id: 'user-subscriptions',
-          title: 'User Subscriptions',
-          type: 'item',
-          icon: 'material-icons-two-tone',
-          iconname: 'subscriptions',
-          url: '/user-subscriptions'
-        },
-        {
-          id: 'feedback',
-          title: 'Feedback',
-          type: 'item',
-          icon: 'material-icons-two-tone',
-          iconname: 'feedback',
-          url: '/feedback'
-        },
-        {
-          id: 'referrals',
-          title: 'Referrals',
-          type: 'item',
-          icon: 'material-icons-two-tone',
-          iconname: 'group_add',
-          url: '/referrals'
-        },
-        {
-          id: 'promocode',
-          title: 'Promo Code',
-          type: 'item',
-          icon: 'material-icons-two-tone',
-          iconname: 'confirmation_number',
-          url: '/promocode'
-        },
-        {
-          id: 'notification',
-          title: 'Notification',
-          type: 'item',
-          icon: 'material-icons-two-tone',
-          iconname: 'notifications',
-          url: '/notification'
-        },
-        {
-          id: 'settings',
-          title: 'Settings',
-          type: 'item',
-          icon: 'material-icons-two-tone',
-          iconname: 'settings',
-          url: '/settings'
-        },
+        // {
+        //   id: 'user-subscriptions',
+        //   title: 'User Subscriptions',
+        //   type: 'item',
+        //   icon: 'material-icons-two-tone',
+        //   iconname: 'subscriptions',
+        //   url: '/user-subscriptions'
+        // },
+        // {
+        //   id: 'feedback',
+        //   title: 'Feedback',
+        //   type: 'item',
+        //   icon: 'material-icons-two-tone',
+        //   iconname: 'feedback',
+        //   url: '/feedback'
+        // },
+        // {
+        //   id: 'referrals',
+        //   title: 'Referrals',
+        //   type: 'item',
+        //   icon: 'material-icons-two-tone',
+        //   iconname: 'group_add',
+        //   url: '/referrals'
+        // },
+        // {
+        //   id: 'promocode',
+        //   title: 'Promo Code',
+        //   type: 'item',
+        //   icon: 'material-icons-two-tone',
+        //   iconname: 'confirmation_number',
+        //   url: '/promocode'
+        // },
+        // {
+        //   id: 'notification',
+        //   title: 'Notification',
+        //   type: 'item',
+        //   icon: 'material-icons-two-tone',
+        //   iconname: 'notifications',
+        //   url: '/notification'
+        // },
+        // {
+        //   id: 'settings',
+        //   title: 'Settings',
+        //   type: 'item',
+        //   icon: 'material-icons-two-tone',
+        //   iconname: 'settings',
+        //   url: '/settings'
+        // },
         // {
         //   id: 'typography',
         //   title: 'Typography',

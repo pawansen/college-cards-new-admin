@@ -20,6 +20,9 @@ const Feedback = lazy(() => import('../views/feedback/FeedbackTable'));
 const Referrals = lazy(() => import('../views/referrals/ReferralsTable'));
 const Promocode = lazy(() => import('../views/promocode/PromoTable'));
 const Notification = lazy(() => import('../views/notification/NotificationTable'));
+const EditCoupon = lazy(() => import('../views/coupons/EditCoupon'));
+const UserInfo = lazy(() => import('../views/users/UserInfo'));
+const AddCity = lazy(() => import('../views/cities/AddCity'));
 import PrivateRoute from './PrivateRoute';
 
 const MainRoutes = {
@@ -42,8 +45,18 @@ const MainRoutes = {
               element: <Users />
             },
             {
+              // Pass user_id as a URL param
+              path: '/user-info/:user_id',
+              element: <UserInfo />
+            },
+            {
               path: '/add-coupon',
               element: <AddCoupon />
+            },
+            {
+              // Pass coupon_id as a URL param
+              path: '/edit-coupon/:coupon_id',
+              element: <EditCoupon />
             },
             {
               path: '/coupons',
@@ -52,6 +65,10 @@ const MainRoutes = {
             {
               path: '/cities',
               element: <Cities />
+            },
+            {
+              path: '/add-city',
+              element: <AddCity />
             },
             {
               path: '/user-subscriptions',
