@@ -121,13 +121,13 @@ export default function CitiesTable() {
                         <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap">
 
                             <div className="d-flex align-items-center" style={ { gap: 12 } }>
-                                <input
+                                {/* <input
                                     type="text"
                                     className="form-control"
                                     placeholder="Search city..."
                                     style={ { maxWidth: 250 } }
                                     onChange={ handleSearch }
-                                />
+                                /> */}
                                 {/* <div>
                                     <button
                                         className="btn text-danger"
@@ -138,14 +138,14 @@ export default function CitiesTable() {
                                 </div> */}
                             </div>
 
-                            <button
+                            {/* <button
                                 className="btn"
                                 style={ { backgroundColor: "#31434F", color: "#fff" } }
                                 onClick={ () => window.location.href = "/add-city" }
                             >
                                 <i className="fas fa-plus me-2"></i>
                                 Add City
-                            </button>
+                            </button> */}
                         </div>
                         <div
                             style={ { maxHeight: 400, overflowY: "auto" } }
@@ -169,7 +169,7 @@ export default function CitiesTable() {
                                             <td>{ cand.country_name }</td>
                                             <td>{ new Date(cand.create_at).toLocaleDateString() }</td>
                                             <td>
-                                                <button
+                                                {/* <button
                                                     className="btn btn-warning btn-sm me-1"
                                                     onClick={ () => handleEdit(cand) }
                                                     title="Edit"
@@ -182,7 +182,7 @@ export default function CitiesTable() {
                                                     title="Delete"
                                                 >
                                                     <i className="fas fa-trash"></i>
-                                                </button>
+                                                </button> */}
                                             </td>
                                         </tr>
                                     )) }
