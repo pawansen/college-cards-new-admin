@@ -82,7 +82,7 @@
   .pc-link {
     display: block;
     padding: 13px 20px;
-    color: var(--pc-sidebar-color);
+    color: #000;
 
     font: {
       size: 13px;
@@ -90,8 +90,7 @@
     }
 
     &:active,
-    &:focus,
-    &:hover {
+    &:focus {
       text-decoration: none;
       color: var(--pc-sidebar-active-color);
 
@@ -99,11 +98,25 @@
 
         i,
         svg {
-          color: var(--pc-sidebar-active-color);
+          color: #fff !important;
+        }
+      }
+    }
+
+    &:hover {
+      text-decoration: none;
+      color: #fff;
+
+      .pc-micon {
+
+        i,
+        svg {
+          color: #fff;
         }
       }
     }
   }
+
 
   .pc-arrow {
     float: right;
@@ -142,6 +155,7 @@
     position: relative;
     height: calc(100vh - #{$header-height});
     padding: 10px 0;
+    border-top: 1px solid #eee;
   }
 
   .pc-item {
@@ -154,7 +168,7 @@
 
           i,
           svg {
-            color: var(--pc-sidebar-active-color);
+            color: #fff;
           }
         }
       }

@@ -10,21 +10,21 @@
   --pc-active-background: rgba(var(--bs-primary-rgb), 0.12);
 
   // Navbar
-  --pc-sidebar-background: #1c232f;
+  --pc-sidebar-background: #31434F;
   --pc-sidebar-color: #ced4dc;
   --pc-sidebar-color-rgb: #{to-rgb(#ced4dc)};
-  --pc-sidebar-icon-color: #778290;
-  --pc-sidebar-submenu-border-color: #778290;
-  --pc-sidebar-active-color: var(--bs-primary);
+  --pc-sidebar-icon-color: #1c232f;
+  --pc-sidebar-submenu-border-color: #1c232f;
+  --pc-sidebar-active-color: #1c232f;
   --pc-sidebar-main-active-color: #fff;
   --pc-sidebar-main-active-background: #dfe7f1;
   --pc-sidebar-shadow: 0px 0px 24px rgba(27, 46, 94, 0.05);
-  --pc-sidebar-caption-color: var(--bs-primary);
+  --pc-sidebar-caption-color: #31434F;
   --pc-sidebar-border: none;
-  --pc-brand-background: #161c25;
+  --pc-brand-background: #31434F;
 
   // horizontal-menu
-  --pc-topbar-background: #1c232f;
+  --pc-topbar-background: #31434F;
   --pc-topbar-color: #b5bdca;
   --pc-header-submenu-background: #fff;
   --pc-header-submenu-color: #1c232f;

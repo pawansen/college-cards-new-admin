@@ -42,7 +42,7 @@ export default function NavContent({ navigation, activeNav }) {
   });
 
   let navContentNode = (
-    <SimpleBar style={ { height: 'calc(100vh - 70px)' } }>
+    <SimpleBar style={ { height: 'calc(100vh - 70px)' } } >
       <ListGroup variant="flush" as="ul" bsPrefix=" " className="pc-navbar">
         { navItems }
       </ListGroup>
@@ -59,8 +59,12 @@ export default function NavContent({ navigation, activeNav }) {
   }
 
   const mHeader = (
-    <div className="m-header">
+    <div className="m-header" style={ {
+      backgroundColor: "#fff",
+      borderRight: "1px solid #eee",
+    } }>
       <Link to="/dashboard" className="b-brand">
+
         <img src={ logo } alt="" className="logo logo-lg" width="105" />
       </Link>
     </div>

@@ -38,18 +38,18 @@ export default function AdminLayout() {
       <MobileHeader />
       <NavBar />
       <Navigation />
-      <div className={containerClass.join(' ')}>
+      <div className={ containerClass.join(' ') }>
         <div className="pcoded-content">
           <>
             <Breadcrumb />
-            <Suspense fallback={<Loader />}>
+            <Suspense fallback={ <Loader /> }>
               <Outlet />
             </Suspense>
           </>
         </div>
-        
+
       </div>
     </>
   );
-  return <>{adminlayout}</>;
+  return <>{ adminlayout }</>;
 }

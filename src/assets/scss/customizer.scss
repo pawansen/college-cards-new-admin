@@ -17,18 +17,15 @@ File: style.css
 @import 'settings/bootstrap-variables';
 
 $menu-styler: 375px;
-$pct-colors: ();
-$pct-colors: map-merge(
-  (
-    'primary': $primary,
-    'success': $success,
-    'info': $info,
-    'warning': $warning,
-    'danger': $danger,
-    'dark': $dark
-  ),
-  $pct-colors
+$pct-colors: (
 );
+$pct-colors: map-merge(('primary': $primary,
+      'success': $success,
+      'info': $info,
+      'warning': $warning,
+      'danger': $danger,
+      'dark': $dark ),
+    $pct-colors);
 
 .pct-customizer {
   position: fixed;
@@ -60,7 +57,7 @@ $pct-colors: map-merge(
       padding: 4px 7px;
       display: block;
 
-      + .btn {
+      +.btn {
         margin-top: 8px;
       }
     }
@@ -85,6 +82,7 @@ $pct-colors: map-merge(
       padding: 20px 30px;
     }
   }
+
   @media (max-width: 1024px) {
     display: none;
   }
@@ -98,7 +96,7 @@ $pct-colors: map-merge(
   margin-top: 10px;
   margin-bottom: 10px;
 
-  > a {
+  >a {
     position: relative;
     width: 35px;
     height: 25px;
@@ -108,7 +106,7 @@ $pct-colors: map-merge(
     overflow: hidden;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
 
-    + a {
+    +a {
       margin-left: 5px;
     }
 
@@ -136,7 +134,7 @@ $pct-colors: map-merge(
       }
     }
 
-    > span:nth-child(1) {
+    >span:nth-child(1) {
       height: 40%;
       top: 0;
 
@@ -145,7 +143,7 @@ $pct-colors: map-merge(
       }
     }
 
-    > span:nth-child(2) {
+    >span:nth-child(2) {
       height: 66%;
       bottom: 0;
     }
@@ -153,9 +151,9 @@ $pct-colors: map-merge(
 
   &.header-color {
     @each $color, $value in $pct-colors {
-      > a {
+      >a {
         &[data-value='bg-#{$color}'] {
-          > span:nth-child(1) {
+          >span:nth-child(1) {
             &:after {
               background: $value;
             }
@@ -167,9 +165,9 @@ $pct-colors: map-merge(
 
   &.brand-color {
     @each $color, $value in $pct-colors {
-      > a {
+      >a {
         &[data-value='bg-#{$color}'] {
-          > span:nth-child(1) {
+          >span:nth-child(1) {
             &:before {
               background: $value;
             }
@@ -181,21 +179,24 @@ $pct-colors: map-merge(
 }
 
 .doc-img {
-  > a {
+  >a {
     width: 100px;
     height: 65px;
   }
 }
+
 // header color varient Start
 $header-c-background: #1c232f;
 $header-c-color: #fff;
 
 .pc-header {
+
   &[class*='bg-'],
   &.dark-header {
     box-shadow: none;
     background: $header-c-background;
     color: $header-c-color;
+
     @media (min-width: 1025px) {
       .pc-head-link {
         color: $header-c-color;
@@ -227,6 +228,7 @@ $header-c-color: #fff;
     }
   }
 }
+
 // header color varient end
 // sidebar color varient Start
 $sidebar-c-background: #fff;
@@ -245,8 +247,8 @@ $sidebar-c-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
     }
 
     .pc-navbar {
-      > .pc-item {
-        > .pc-link {
+      >.pc-item {
+        >.pc-link {
           border-radius: 5px;
           margin-left: 10px;
           margin-right: 10px;
@@ -260,6 +262,7 @@ $sidebar-c-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
       font-size: 14px;
 
       .pc-micon {
+
         i,
         svg {
           color: #525b69;
@@ -281,17 +284,18 @@ $sidebar-c-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
 
     .pc-item.active,
     .pc-item:hover {
-      > .pc-link {
+      >.pc-link {
         color: $sidebar-c-active-color;
       }
     }
 
     .pc-navbar {
-      > .pc-item {
+      >.pc-item {
+
         &.active,
         &:focus,
         &:hover {
-          > .pc-link {
+          >.pc-link {
             background: #dfe7f1;
             color: $sidebar-c-color;
           }
@@ -304,8 +308,8 @@ $sidebar-c-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
 .minimenu {
   .pc-sidebar.light-sidebar {
     .pc-navbar {
-      > .pc-item {
-        > .pc-link {
+      >.pc-item {
+        >.pc-link {
           padding: 20px 25px;
           margin-left: 0;
           margin-right: 0;
@@ -313,9 +317,11 @@ $sidebar-c-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
         }
       }
     }
-    .pc-item .pc-item:hover > .pc-link {
+
+    .pc-item .pc-item:hover>.pc-link {
       background: transparent;
     }
+
     .pc-submenu {
       box-shadow: $sidebar-c-shadow;
       background: $sidebar-c-background;
@@ -346,9 +352,9 @@ $sidebar-c-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
   .pc-sidebar {
     &.light-sidebar {
       .pc-navbar {
-        > .pc-item {
-          + .pc-item {
-            > .pc-link {
+        >.pc-item {
+          +.pc-item {
+            >.pc-link {
               border-top: 1px solid transparentize($sidebar-c-color, 0.9);
             }
           }
@@ -357,4 +363,5 @@ $sidebar-c-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
     }
   }
 }
+
 // sidebar color variant end

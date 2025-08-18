@@ -12,7 +12,8 @@ import { fetchCities, addCoupon, fetchCouponInfo } from "../../store/userSlice";
 const schema = Yup.object().shape({
     city: Yup.string().required("City is required"),
     title: Yup.string().required("Title is required"),
-    discount: Yup.number().typeError("Discount must be a number").min(0, "Discount cannot be negative").required("Discount is required"),
+    discount: Yup.string().required("Discount is required"),
+    // discount: Yup.number().typeError("Discount must be a number").min(0, "Discount cannot be negative").required("Discount is required"),
     // address: Yup.string().required("Address is required"),
     // logo: Yup.string().required("Logo is required"),
 });
@@ -270,7 +271,7 @@ export default function EditCoupon() {
                                                     </div>
                                                 </div> }
                                             <h5>{ title || "Store Name" }</h5>
-                                            <h3 className="fw-bold text-primary">{ discount || "00" }% Off</h3>
+                                            <h3 className="fw-bold text-primary">{ discount || "" }</h3>
                                             <div className="text-muted mt-3" style={ { fontSize: "0.9rem" } }>
                                                 { addresses.map((addr, index) => (
                                                     <p key={ index } className="mb-1">

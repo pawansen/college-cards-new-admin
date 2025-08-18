@@ -25,7 +25,7 @@ export default function Navigation() {
 
   let navClass = 'dark-sidebar';
 
-  let navContent = <NavContent navigation={collapseLayout ? navitemcollapse.items : navigation.items} />;
+  let navContent = <NavContent navigation={ collapseLayout ? navitemcollapse.items : navigation.items } />;
   navClass = [...navClass, 'pc-sidebar'];
   if (windowSize.width <= 1024 && collapseMenu) {
     navClass = [...navClass, 'mob-sidebar-active'];
@@ -37,15 +37,19 @@ export default function Navigation() {
 
   let mobileOverlay = <></>;
   if (windowSize.width <= 1024 && collapseMenu) {
-    mobileOverlay = <div className="pc-menu-overlay" onClick={navToggleHandler} aria-hidden="true" />;
+    mobileOverlay = <div className="pc-menu-overlay" onClick={ navToggleHandler } aria-hidden="true" />;
   }
 
-  let navContentDOM = <div className={navBarClass.join(' ')}>{navContent}</div>;
+  let navContentDOM = <div className={ navBarClass.join(' ') } style={ {
+    backgroundColor: "#fff",
+    borderRight: "1px solid #eee",
+    padding: "20px 10px",
+  } }>{ navContent }</div>;
 
   return (
-    <nav className={navClass.join(' ')}>
-      {navContentDOM}
-      {mobileOverlay}
+    <nav className={ navClass.join(' ') }>
+      { navContentDOM }
+      { mobileOverlay }
     </nav>
   );
 }

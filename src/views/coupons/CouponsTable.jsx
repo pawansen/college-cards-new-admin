@@ -153,7 +153,7 @@ export default function CouponTable() {
                                     { allUsers.map((cand, idx) => (
                                         <Col key={ idx }>
                                             <Card className="shadow-lg border-1 rounded-3 position-relative">
-                                                <Form.Check
+                                                <input
                                                     type="checkbox"
                                                     className="position-absolute"
                                                     style={ { top: "10px", left: "10px" } }

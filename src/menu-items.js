@@ -19,7 +19,7 @@ const menuItems = {
     // },
     {
       id: 'ui-element',
-      title: 'main',
+      title: '',
       // subtitle: 'UI Components',
       type: 'group',
       icon: 'icon-ui',

@@ -24,16 +24,16 @@ export default function NavBar() {
   let navBar = (
     <>
       <div className="header-wrapper">
-        <div className={mobDrpClass.join(' ')}>
+        <div className={ mobDrpClass.join(' ') }>
           <NavLeft />
         </div>
         <div className="ms-auto">
           <NavRight />
         </div>
       </div>
-      {(collapseTabMenu || collapseHeaderMenu) && <div className="pc-md-overlay" />}
+      { (collapseTabMenu || collapseHeaderMenu) && <div className="pc-md-overlay" /> }
     </>
   );
 
-  return <header className={headerClass.join(' ')}>{navBar}</header>;
+  return <header className={ headerClass.join(' ') }>{ navBar }</header>;
 }

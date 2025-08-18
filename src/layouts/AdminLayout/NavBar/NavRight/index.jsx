@@ -52,9 +52,9 @@ export default function NavRight() {
           </Dropdown.Toggle>
           <Dropdown.Menu className="dropdown-menu-end pc-h-dropdown">
             <Dropdown.Header className="pro-head">
-              <h5 className="text-overflow m-0">
+              {/* <h5 className="text-overflow m-0">
                 <span className="badge bg-light-success">Pro</span>
-              </h5>
+              </h5> */}
             </Dropdown.Header>
             <Link to="/users/user-profile" className="dropdown-item">
               <i className="feather icon-user" /> Profile

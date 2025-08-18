@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import profileImage from '../../assets/images/profile.png';
 import { fetchUserInfo, updateUserStatus } from "../../store/userSlice";
 
 export default function UserInfo() {
@@ -62,7 +63,7 @@ export default function UserInfo() {
                         <Row className="align-items-center border-bottom pb-3 mb-3">
                             <Col xs={ 2 } md={ 1 }>
                                 <img
-                                    src={ userDetailInfo?.profileImage }
+                                    src={ userDetailInfo?.profileImage ? userDetailInfo?.profileImage : profileImage }
                                     alt="user"
                                     className="rounded-circle img-fluid"
                                 />
@@ -100,9 +101,9 @@ export default function UserInfo() {
                                 <Nav.Item>
                                     <Nav.Link eventKey="feedback">Feedback</Nav.Link>
                                 </Nav.Item>
-                                <Nav.Item>
+                                {/* <Nav.Item>
                                     <Nav.Link eventKey="reward">Reward Earn</Nav.Link>
-                                </Nav.Item>
+                                </Nav.Item> */}
                             </Nav>
 
                             <Tab.Content className="mt-3">
