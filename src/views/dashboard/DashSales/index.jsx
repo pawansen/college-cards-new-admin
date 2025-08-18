@@ -53,73 +53,49 @@ export default function DashSales() {
     { title: 'Total Feedbacks', primaryText: dashboardInfo?.totalFeedbacks }
   ];
 
+  // Define colors for each card
+  const cardColors = [
+    "#4caf50", // Total Revenue - green
+    "#2196f3", // Total Users - blue
+    "#ff9800", // Active Subscriptions - orange
+    "#9c27b0", // Total Coupons - purple
+    "#f44336"  // Total Feedbacks - red
+  ];
+
+  // Define variants for each card
+  const cardVariants = [
+    "success",   // Total Revenue
+    "info",      // Total Users
+    "warning",   // Active Subscriptions
+    "primary",    // Total Coupons (custom, if supported)
+    "danger"     // Total Feedbacks
+  ];
+
   return (
     <Row>
       <Col md={ 12 } xl={ 12 }>
-        <Row>
-          { productCards.map((card, idx) => (
-            <Col sm={ 4 } key={ card.title }>
-              <ProductCard
-                params={ {
-                  title: card.title,
-                  primaryText: card.primaryText,
-                  icon: getIconByTitle(card.title)
-                } }
-              />
-            </Col>
-          )) }
-        </Row>
-        {/* Feed Table */ }
-        {/* <FeedTable {...feedData} /> */ }
-      </Col>
-      {/* <Col md={ 12 } xl={ 6 }>
         <Card>
-          <Card.Header>
-            <h5>Earning</h5>
-          </Card.Header>
           <Card.Body>
-            <Row className="pb-2">
+            <Row>
+              { productCards.map((card, idx) => (
+                <Col sm={ 4 } key={ card.title }>
+                  <div>
+                    <ProductCard
+                      params={ {
+                        variant: cardVariants[idx % cardVariants.length],
+                        title: card.title,
+                        primaryText: card.primaryText,
+                        icon: getIconByTitle(card.title),
+                        backgroundColor: cardColors[idx % cardColors.length]
+                      } }
+                    />
+                  </div>
+                </Col>
+              )) }
             </Row>
-            <Chart { ...SalesAccountChartData() } />
-          </Card.Body>
-        </Card>
-      </Col> */}
-      {/* <Col md={ 12 } xl={ 6 }>
-        <Card>
-          <Card.Header>
-            <h5>Users</h5>
-          </Card.Header>
-          <Card.Body>
-            <Row className="pb-2">
-            </Row>
-            <Chart { ...SalesAccountChartData() } />
           </Card.Body>
         </Card>
       </Col>
-      <Col md={ 12 } xl={ 6 }>
-        <Card>
-          <Card.Header>
-            <h5>Feedback</h5>
-          </Card.Header>
-          <Card.Body>
-            <Row className="pb-2">
-            </Row>
-            <Chart { ...SalesAccountChartData() } />
-          </Card.Body>
-        </Card>
-      </Col>
-      <Col md={ 12 } xl={ 6 }>
-        <Card>
-          <Card.Header>
-            <h5>Coupons</h5>
-          </Card.Header>
-          <Card.Body>
-            <Row className="pb-2">
-            </Row>
-            <Chart { ...SalesAccountChartData() } />
-          </Card.Body>
-        </Card>
-      </Col> */}
     </Row>
   );
 }
