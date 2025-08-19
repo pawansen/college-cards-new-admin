@@ -18,7 +18,8 @@ export const apiPath = {
     getUpdatedCities: "/get-update-cities",
     getCountries: "/countries",
     getStates: "/states",
-    getCitiesCustom: "/cities"
+    getCitiesCustom: "/cities",
+    addUpdateCustomCity: "/add-update-city"
 };
 
 export const APP_URL = "http://13.235.91.193:3009/v1/admin";

@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Card, Table } from 'react-bootstrap';
-import { fetchUpdatedCities } from "../../store/userSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { fetchUpdatedCities, addUpdateCity } from "../../store/userSlice";
 export default function CitiesTable() {
     const dispatch = useDispatch();
     const { updatedCitiesList, status } = useSelector((state) => state.user);
@@ -58,55 +60,47 @@ export default function CitiesTable() {
         }
     };
 
-    const handleStatusChange = (userId, isActive) => {
-        // dispatch(updateUserStatus({ userId, isActive }));
-    };
-
-    const handleEdit = (user) => {
-        // handle edit logic
-    };
-
     // Debounced search handler
     const searchTimeout = useRef(null);
 
     const handleSearch = (e) => {
         const query = e.target.value.toLowerCase();
-        // if (searchTimeout.current) {
-        //     clearTimeout(searchTimeout.current);
-        // }
-        // searchTimeout.current = setTimeout(() => {
-        //     dispatch(fetchCoupons({ limit: 10, pageNo: 1, keyword: query }));
-        //     setPage(1);
-        //     setAllUsers([]); // Reset users for new search
-        // }, 1000);
+        if (searchTimeout.current) {
+            clearTimeout(searchTimeout.current);
+        }
+        searchTimeout.current = setTimeout(() => {
+            dispatch(fetchUpdatedCities({ limit: 10, pageNo: 1, keyword: query }));
+            setPage(1);
+            setAllUsers([]); // Reset users for new search
+        }, 1000);
     };
-    const handleStatusDeleteChange = (user_id) => {
-        // toast.info(
-        //     <div style={ { textAlign: "left" } }>
-        //         <div>Are you sure you want to delete the user?</div>
-        //         <div style={ { marginTop: 12 } }>
-        //             <button
-        //                 onClick={ () => {
-        //                     toast.dismiss();
-        //                     dispatch(updateUserStatus({ user_id, delete: 'yes' }))
-        //                         .then((result) => {
-        //                             if (result?.payload?.statusCode === 1) {
-        //                                 toast.success("User status updated successfully!");
-        //                                 setPage(1);
-        //                                 setAllUsers([]);
-        //                                 dispatch(fetchUsers({ limit: 10, pageNo: 1 }));
-        //                             }
-        //                         });
-        //                 } }
-        //                 style={ { marginRight: 8 } }
-        //             >
-        //                 Yes
-        //             </button>
-        //             <button onClick={ () => toast.dismiss() }>No</button>
-        //         </div>
-        //     </div>,
-        //     { autoClose: false }
-        // );
+    const handleStatusDeleteChange = (city_id) => {
+        toast.info(
+            <div style={ { textAlign: "left" } }>
+                <div>Are you sure you want to delete the city?</div>
+                <div style={ { marginTop: 12 } }>
+                    <button
+                        onClick={ () => {
+                            toast.dismiss();
+                            dispatch(addUpdateCity({ action: "delete", city: city_id }))
+                                .then((result) => {
+                                    if (result?.payload?.statusCode === 1) {
+                                        toast.success("City deleted successfully!");
+                                        setPage(1);
+                                        setAllUsers([]);
+                                        dispatch(fetchUpdatedCities({ limit: 10, pageNo: page }));
+                                    }
+                                });
+                        } }
+                        style={ { marginRight: 8 } }
+                    >
+                        Yes
+                    </button>
+                    <button onClick={ () => toast.dismiss() }>No</button>
+                </div>
+            </div>,
+            { autoClose: false }
+        );
     };
 
 
@@ -121,13 +115,13 @@ export default function CitiesTable() {
                         <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap">
 
                             <div className="d-flex align-items-center" style={ { gap: 12 } }>
-                                {/* <input
+                                <input
                                     type="text"
                                     className="form-control"
                                     placeholder="Search city..."
                                     style={ { maxWidth: 250 } }
                                     onChange={ handleSearch }
-                                /> */}
+                                />
                                 {/* <div>
                                     <button
                                         className="btn text-danger"
@@ -138,14 +132,14 @@ export default function CitiesTable() {
                                 </div> */}
                             </div>
 
-                            {/* <button
+                            <button
                                 className="btn"
                                 style={ { backgroundColor: "#31434F", color: "#fff" } }
                                 onClick={ () => window.location.href = "/add-city" }
                             >
                                 <i className="fas fa-plus me-2"></i>
                                 Add City
-                            </button> */}
+                            </button>
                         </div>
                         <div
                             style={ { maxHeight: 400, overflowY: "auto" } }
@@ -175,14 +169,14 @@ export default function CitiesTable() {
                                                     title="Edit"
                                                 >
                                                     <i className="fas fa-edit"></i>
-                                                </button>
+                                                </button> */}
                                                 <button
                                                     className="btn btn-danger btn-sm"
                                                     onClick={ () => handleStatusDeleteChange(cand.id) }
                                                     title="Delete"
                                                 >
                                                     <i className="fas fa-trash"></i>
-                                                </button> */}
+                                                </button>
                                             </td>
                                         </tr>
                                     )) }

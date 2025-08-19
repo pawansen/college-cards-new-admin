@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, Card, Form, Button, InputGroup, Container } from 'react-bootstrap';
-import { GeoAlt } from "react-bootstrap-icons";
+import { Row, Col, Card, Form, Button, Container } from 'react-bootstrap';
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { fetchCities, addCoupon, fetchCountries, fetchStates, fetchCitiesCustom } from "../../store/userSlice";
+import { addUpdateCity, fetchCountries, fetchStates, fetchCitiesCustom } from "../../store/userSlice";
 
 const schema = Yup.object().shape({
     city: Yup.string().required("City is required"),
@@ -15,10 +14,9 @@ const schema = Yup.object().shape({
 
 export default function AddCity() {
     const dispatch = useDispatch();
-    const { allowCitiesList, countriesList, statesList, citiesList } = useSelector((state) => state.user);
-    const [addresses, setAddresses] = useState([]);
-    const [date] = useState(new Date().toLocaleDateString("en-GB"));
+    const { countriesList, statesList, citiesList } = useSelector((state) => state.user);
     const [initState, setInitState] = useState(false);
+    const [city, setCity] = useState("");
 
     const {
         register,
@@ -30,14 +28,8 @@ export default function AddCity() {
         resolver: yupResolver(schema),
         defaultValues: {
             city: "",
-            title: "",
-            discount: "",
-            address: "",
-            logo: "",
         },
     });
-
-    const address = watch("address");
 
     useEffect(() => {
         if (!initState) {
@@ -46,54 +38,25 @@ export default function AddCity() {
         }
     }, [dispatch, initState]);
 
-    const handleLogoUpload = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => setValue("logo", reader.result, { shouldValidate: true });
-            reader.readAsDataURL(file);
-        }
+    const getState = (countryId) => {
+        dispatch(fetchStates({ country_id: countryId }));
     };
 
-    const addAddress = () => {
-        if (address) {
-            setAddresses([...addresses, address]);
-            setValue("address", ""); // clear input
-        }
+    const getCity = (stateId) => {
+        dispatch(fetchCitiesCustom({ state_id: stateId }));
     };
 
-    const onSubmit = async (data) => {
+    const onSubmit = async () => {
         try {
-            let address = addresses.map(addr => ({ address: addr }));
-            const formData = new FormData();
-            formData.append('title', data.title);
-            formData.append('amount', data.discount);
-            // Find city_id from allowCitiesList based on selected city name
-            const selectedCity = allowCitiesList.find(c => c.name === data.city);
-            formData.append('city_id', selectedCity ? selectedCity.id : '');
-            formData.append('address', JSON.stringify(address));
-            // Convert base64 logo to Blob if exists
-            if (data.logo) {
-                const arr = data.logo.split(',');
-                const mime = arr[0].match(/:(.*?);/)[1];
-                const bstr = atob(arr[1]);
-                let n = bstr.length;
-                const u8arr = new Uint8Array(n);
-                while (n--) {
-                    u8arr[n] = bstr.charCodeAt(n);
-                }
-                const file = new File([u8arr], "logo.png", { type: mime });
-                formData.append('couponLogo', file);
-            }
-            dispatch(addCoupon(formData))
+            dispatch(addUpdateCity({ action: "add", city }))
                 .then((result) => {
                     if (result?.payload?.statusCode === 1) {
-                        toast.success("Coupon created successfully!");
-                        window.location.href = "/coupons";
+                        toast.success("City created successfully!");
+                        window.location.href = "/cities";
                     }
                 })
                 .catch((error) => {
-                    toast.error("Failed to create coupon. Please try again.");
+                    toast.error("Failed to create city. Please try again.");
                 });
         } finally {
             // setLoading(false);
@@ -115,12 +78,47 @@ export default function AddCity() {
                                     <Form onSubmit={ handleSubmit(onSubmit) }>
                                         <Form.Group className="mb-3">
                                             <Form.Select
-                                                { ...register("city_id") }
+                                                { ...register("country_id") }
+                                                onChange={ (e) => getState(e.target.value) }
                                             >
                                                 <option value="">Select Country</option>
                                                 { countriesList && countriesList.map((country) => (
                                                     <option key={ country.id } value={ country.id }>
                                                         { country.name }
+                                                    </option>
+                                                )) }
+                                            </Form.Select>
+                                            { errors.country_id && (
+                                                <div className="text-danger mb-2" style={ { textAlign: 'left', fontSize: '0.9em' } }>{ errors.country_id.message }</div>
+                                            ) }
+                                        </Form.Group>
+
+                                        <Form.Group className="mb-3">
+                                            <Form.Select
+                                                { ...register("state_id") }
+                                                onChange={ (e) => getCity(e.target.value) }
+                                            >
+                                                <option value="">Select State</option>
+                                                { statesList && statesList.map((state) => (
+                                                    <option key={ state.id } value={ state.id }>
+                                                        { state.name }
+                                                    </option>
+                                                )) }
+                                            </Form.Select>
+                                            { errors.state && (
+                                                <div className="text-danger mb-2" style={ { textAlign: 'left', fontSize: '0.9em' } }>{ errors.state.message }</div>
+                                            ) }
+                                        </Form.Group>
+
+                                        <Form.Group className="mb-3">
+                                            <Form.Select
+                                                { ...register("city") }
+                                                onChange={ (e) => setCity(e.target.value) }
+                                            >
+                                                <option value="">Select City</option>
+                                                { fetchCitiesCustom && citiesList.map((city) => (
+                                                    <option key={ city.id } value={ city.id }>
+                                                        { city.name }
                                                     </option>
                                                 )) }
                                             </Form.Select>

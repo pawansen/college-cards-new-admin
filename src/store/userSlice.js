@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
     login, getUsers, getDashboard, getCoupons, getCities, createCoupon, getPromoCode, getCouponInfo, deleteCoupons, updateUserStatusinfo, getUserInfo,
-    getUpdatedCities, getCountries, getStates, getCitiesCustom
+    getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity
 } from "../services/main";
 
 export const fetchLogin = createAsyncThunk(
@@ -215,6 +215,20 @@ export const fetchCitiesCustom = createAsyncThunk(
     }
 );
 
+export const addUpdateCity = createAsyncThunk(
+    "user/addUpdateCity",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await addUpdateCustomCity(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
 const userSlice = createSlice({
     name: "user",
     initialState: {
@@ -415,6 +429,15 @@ const userSlice = createSlice({
                 state.citiesList = [];
                 state.status = 'failed';
             })
+            .addCase(addUpdateCity.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(addUpdateCity.fulfilled, (state, action) => {
+                state.status = "succeeded";
+            })
+            .addCase(addUpdateCity.rejected, (state) => {
+                state.status = 'failed';
+            });
 
     },
 });
