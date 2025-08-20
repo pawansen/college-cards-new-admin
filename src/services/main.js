@@ -1,6 +1,7 @@
 import { apiPath, APP_URL } from './apiPath';
 import commonClient from "./appClient";
 import commonClientUploadFile from "./appClientUploadFile";
+import commonClientGuest from './appClientGuest'
 
 export const login = (reqPayload) => commonClient.post(apiPath.login, reqPayload);
 export const getUsers = (reqPayload) => commonClient.get(apiPath.users, { params: reqPayload });
@@ -18,3 +19,4 @@ export const getCountries = (reqPayload) => commonClient.get(apiPath.getCountrie
 export const getStates = (reqPayload) => commonClient.get(apiPath.getStates, { params: reqPayload });
 export const getCitiesCustom = (reqPayload) => commonClient.get(apiPath.getCitiesCustom, { params: reqPayload });
 export const addUpdateCustomCity = (reqPayload) => commonClient.post(apiPath.addUpdateCustomCity, reqPayload);
+export const getContent = (reqPayload) => commonClientGuest.get(apiPath.getContent, { params: reqPayload });

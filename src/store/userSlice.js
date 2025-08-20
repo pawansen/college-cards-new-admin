@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
     login, getUsers, getDashboard, getCoupons, getCities, createCoupon, getPromoCode, getCouponInfo, deleteCoupons, updateUserStatusinfo, getUserInfo,
-    getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity
+    getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity, getContent
 } from "../services/main";
 
 export const fetchLogin = createAsyncThunk(
@@ -229,6 +229,20 @@ export const addUpdateCity = createAsyncThunk(
     }
 );
 
+export const fetchContent = createAsyncThunk(
+    "user/fetchContent",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await getContent(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
 const userSlice = createSlice({
     name: "user",
     initialState: {
@@ -251,6 +265,7 @@ const userSlice = createSlice({
         countriesList: [],
         statesList: [],
         citiesList: [],
+        contentInfo: null,
         dashboardInfo: {
             "totalUsers": 0,
             "totalCoupons": 0,

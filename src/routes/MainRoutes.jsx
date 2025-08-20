@@ -23,6 +23,9 @@ const Notification = lazy(() => import('../views/notification/NotificationTable'
 const EditCoupon = lazy(() => import('../views/coupons/EditCoupon'));
 const UserInfo = lazy(() => import('../views/users/UserInfo'));
 const AddCity = lazy(() => import('../views/cities/AddCity'));
+const PrivacyPolicy = lazy(() => import('../views/web/PrivacyPolicy'));
+const TermsOfService = lazy(() => import('../views/web/TermsOfService'));
+
 import PrivateRoute from './PrivateRoute';
 
 const MainRoutes = {
@@ -129,6 +132,14 @@ const MainRoutes = {
         {
           path: '/login',
           element: <Login />
+        },
+        {
+          path: '/privacy-policy',
+          element: <PrivacyPolicy />
+        },
+        {
+          path: '/terms-of-service',
+          element: <TermsOfService />
         },
         {
           path: '/register',
