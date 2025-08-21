@@ -25,7 +25,7 @@ const UserInfo = lazy(() => import('../views/users/UserInfo'));
 const AddCity = lazy(() => import('../views/cities/AddCity'));
 const PrivacyPolicy = lazy(() => import('../views/web/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('../views/web/TermsOfService'));
-
+const Home = lazy(() => import('../views/web/Home'));
 import PrivateRoute from './PrivateRoute';
 
 const MainRoutes = {
@@ -144,6 +144,10 @@ const MainRoutes = {
         {
           path: '/register',
           element: <Register />
+        },
+        {
+          path: '/home',
+          element: <Home />
         }
       ]
     }

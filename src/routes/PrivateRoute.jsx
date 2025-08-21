@@ -4,7 +4,6 @@ import { getStoredUser } from '../utils/storage';
 
 const PrivateRoute = () => {
     const user = getStoredUser('local');
-    console.log('user', user);
     return user ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
