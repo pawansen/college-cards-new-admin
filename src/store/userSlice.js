@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
     login, getUsers, getDashboard, getCoupons, getCities, createCoupon, getPromoCode, getCouponInfo, deleteCoupons, updateUserStatusinfo, getUserInfo,
-    getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity, getContent
+    getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity, getContent, getUserSubscriptions, getPackages
 } from "../services/main";
 
 export const fetchLogin = createAsyncThunk(
@@ -243,6 +243,34 @@ export const fetchContent = createAsyncThunk(
     }
 );
 
+export const fetchUserSubscriptions = createAsyncThunk(
+    "user/fetchUserSubscriptions",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await getUserSubscriptions(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const fetchPackages = createAsyncThunk(
+    "user/fetchPackages",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await getPackages(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
 const userSlice = createSlice({
     name: "user",
     initialState: {
@@ -252,6 +280,8 @@ const userSlice = createSlice({
         couponsList: [],
         allowCitiesList: [],
         promoCodeList: [],
+        allSubscribeList: [],
+        packagesList: [],
         status: "start",
         error: null,
         currentPage: 1,
@@ -451,6 +481,28 @@ const userSlice = createSlice({
                 state.status = "succeeded";
             })
             .addCase(addUpdateCity.rejected, (state) => {
+                state.status = 'failed';
+            })
+            .addCase(fetchUserSubscriptions.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchUserSubscriptions.fulfilled, (state, action) => {
+                state.allSubscribeList = action.payload?.data || [];
+                state.status = "succeeded";
+            })
+            .addCase(fetchUserSubscriptions.rejected, (state) => {
+                state.allSubscribeList = [];
+                state.status = 'failed';
+            })
+            .addCase(fetchPackages.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchPackages.fulfilled, (state, action) => {
+                state.packagesList = action.payload?.data || [];
+                state.status = "succeeded";
+            })
+            .addCase(fetchPackages.rejected, (state) => {
+                state.packagesList = [];
                 state.status = 'failed';
             });
 

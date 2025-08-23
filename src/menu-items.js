@@ -65,6 +65,14 @@ const menuItems = {
         //   url: '/user-subscriptions'
         // },
         // {
+        //   id: 'packages',
+        //   title: 'Subscription Plan',
+        //   type: 'item',
+        //   icon: 'material-icons-two-tone',
+        //   iconname: 'subscriptions',
+        //   url: '/packages'
+        // },
+        // {
         //   id: 'feedback',
         //   title: 'Feedback',
         //   type: 'item',

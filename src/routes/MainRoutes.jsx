@@ -14,18 +14,23 @@ const Sample = lazy(() => import('../views/sample'));
 const Users = lazy(() => import('../views/users/UsersTable'));
 const Coupons = lazy(() => import('../views/coupons/CouponsTable'));
 const AddCoupon = lazy(() => import('../views/coupons/AddCoupon'));
+const EditCoupon = lazy(() => import('../views/coupons/EditCoupon'));
 const Cities = lazy(() => import('../views/cities/CitiesTable'));
 const UserSubscriptions = lazy(() => import('../views/user-subscriptions/UserSubscriptionsTable'));
 const Feedback = lazy(() => import('../views/feedback/FeedbackTable'));
 const Referrals = lazy(() => import('../views/referrals/ReferralsTable'));
 const Promocode = lazy(() => import('../views/promocode/PromoTable'));
 const Notification = lazy(() => import('../views/notification/NotificationTable'));
-const EditCoupon = lazy(() => import('../views/coupons/EditCoupon'));
 const UserInfo = lazy(() => import('../views/users/UserInfo'));
 const AddCity = lazy(() => import('../views/cities/AddCity'));
 const PrivacyPolicy = lazy(() => import('../views/web/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('../views/web/TermsOfService'));
-const Home = lazy(() => import('../views/web/Home'));
+
+const Packages = lazy(() => import('../views/package/PackageTable'));
+const AddPackage = lazy(() => import('../views/package/AddPackage'));
+const EditPackage = lazy(() => import('../views/package/EditPackage'));
+
+// const Home = lazy(() => import('../views/web/Home'));
 import PrivateRoute from './PrivateRoute';
 
 const MainRoutes = {
@@ -64,6 +69,20 @@ const MainRoutes = {
             {
               path: '/coupons',
               element: <Coupons />
+            },
+
+            {
+              path: '/add-package',
+              element: <AddPackage />
+            },
+            {
+              // Pass package_id as a URL param
+              path: '/edit-package/:package_id',
+              element: <EditPackage />
+            },
+            {
+              path: '/packages',
+              element: <Packages />
             },
             {
               path: '/cities',
@@ -145,10 +164,10 @@ const MainRoutes = {
           path: '/register',
           element: <Register />
         },
-        {
-          path: '/home',
-          element: <Home />
-        }
+        // {
+        //   path: '/home',
+        //   element: <Home />
+        // }
       ]
     }
   ]

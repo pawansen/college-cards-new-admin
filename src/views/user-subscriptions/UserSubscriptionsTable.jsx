@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Card, Table } from 'react-bootstrap';
-import { fetchUsers } from "../../store/userSlice";
+import { fetchUserSubscriptions } from "../../store/userSlice";
 export default function UserSubscriptionsTable() {
     const dispatch = useDispatch();
-    const { usersList, status } = useSelector((state) => state.user);
+    const { allSubscribeList, status } = useSelector((state) => state.user);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
@@ -20,29 +20,29 @@ export default function UserSubscriptionsTable() {
     const fetchTimeout = React.useRef(null);
 
     useEffect(() => {
-        dispatch(fetchUsers({ limit: 10, pageNo: page }));
+        dispatch(fetchUserSubscriptions({ limit: 10, pageNo: page }));
     }, [dispatch, page]);
 
-    // Merge new users into allUsers when usersList changes
+    // Merge new users into allUsers when allSubscribeList changes
     useEffect(() => {
-        if (usersList && usersList.length > 0) {
+        if (allSubscribeList && allSubscribeList.length > 0) {
             setAllUsers(prev => {
                 // Avoid duplicates by _id
                 const existingIds = new Set(prev.map(u => u._id));
-                const newUsers = usersList.filter(u => !existingIds.has(u._id));
+                const newUsers = allSubscribeList.filter(u => !existingIds.has(u._id));
                 return [...prev, ...newUsers];
             });
         }
-    }, [usersList]);
+    }, [allSubscribeList]);
 
     useEffect(() => {
         // If the last fetch returned less than 10, no more data
-        if (usersList.length < 10) {
+        if (allSubscribeList.length < 10) {
             setHasMore(false);
-        } else if (usersList.length === 10) {
+        } else if (allSubscribeList.length === 10) {
             setHasMore(true);
         }
-    }, [usersList]);
+    }, [allSubscribeList]);
 
     const handleScroll = (e) => {
         const { scrollTop, scrollHeight, clientHeight } = e.target;
@@ -71,7 +71,7 @@ export default function UserSubscriptionsTable() {
             <Col sm={ 12 }>
                 <Card>
                     <Card.Header>
-                        <Card.Title as="h5">Users</Card.Title>
+                        <Card.Title as="h5">User Subscriptions</Card.Title>
                     </Card.Header>
                     <Card.Body>
                         <div
@@ -81,68 +81,51 @@ export default function UserSubscriptionsTable() {
                             <Table striped bordered hover className="mb-0 ">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
+                                        <th>User Name</th>
+                                        <th>City</th>
                                         <th>Email</th>
-                                        <th>Mobile</th>
-                                        <th>Subscribe</th>
-                                        <th>Referral Code</th>
+                                        <th>Subscription</th>
                                         <th>Date</th>
                                         <th>Status</th>
-                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    { allUsers.map((cand, idx) => (
-                                        <tr key={ cand._id }>
-                                            <td>{ cand.firstName + " " + cand.lastName }</td>
-                                            <td>{ cand.email }</td>
-                                            <td>{ cand.mobile }</td>
-                                            <td>
-                                                {/* Replace "No" with icon */ }
-                                                <span title="Not Subscribed" style={ { color: "#dc3545" } }>
-                                                    <i className="bi bi-x-circle-fill"></i>
-                                                </span>
-                                            </td>
-                                            <td>{ cand.referralCode }</td>
-                                            <td>{ new Date(cand.createDate).toLocaleDateString() }</td>
-                                            <td>
-                                                <select
-                                                    value={ cand.isActive }
-                                                    onChange={ (e) => handleStatusChange(cand._id, e.target.value === "true") }
-                                                    className="status-dropdown"
-                                                >
-                                                    { statusOptions.map((status) => (
-                                                        <option key={ status.value } value={ status.value }>
-                                                            { status.label }
-                                                        </option>
-                                                    )) }
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <button
-                                                    className="btn btn-info btn-sm me-1"
-                                                    onClick={ () => {/* handle view logic */ } }
-                                                    title="View"
-                                                >
-                                                    <i className="fas fa-eye"></i>
-                                                </button>
-                                                <button
-                                                    className="btn btn-warning btn-sm me-1"
-                                                    onClick={ () => handleEdit(cand) }
-                                                    title="Edit"
-                                                >
-                                                    <i className="fas fa-edit"></i>
-                                                </button>
-                                                <button
-                                                    className="btn btn-danger btn-sm"
-                                                    onClick={ () => setConfirmDeleteId(cand._id) }
-                                                    title="Delete"
-                                                >
-                                                    <i className="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    )) }
+                                    { allUsers.map((cand, idx) => {
+                                        let statusColor = "";
+                                        switch (cand.status) {
+                                            case "active":
+                                                statusColor = "green";
+                                                break;
+                                            case "inactive":
+                                                statusColor = "gray";
+                                                break;
+                                            case "cancelled":
+                                                statusColor = "red";
+                                                break;
+                                            case "expired":
+                                                statusColor = "orange";
+                                                break;
+                                            case "cancelledUsedFullMonth":
+                                                statusColor = "purple";
+                                                break;
+                                            default:
+                                                statusColor = "black";
+                                        }
+                                        return (
+                                            <tr key={ cand._id }>
+                                                <td>{ cand.user_id?.firstName } { cand.user_id?.lastName }</td>
+                                                <td>{ cand?.cityList[0].name }</td>
+                                                <td>{ cand.user_id?.email }</td>
+                                                <td>${ cand.amount }</td>
+                                                <td>{ new Date(cand.startDate).toLocaleDateString() }</td>
+                                                <td>
+                                                    <span style={ { color: statusColor } }>
+                                                        { cand.status }
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        );
+                                    }) }
                                 </tbody>
                             </Table>
                             { loading && <div>Loading...</div> }

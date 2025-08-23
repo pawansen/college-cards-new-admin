@@ -20,9 +20,11 @@ export const apiPath = {
     getStates: "/states",
     getCitiesCustom: "/cities",
     addUpdateCustomCity: "/add-update-city",
-    getContent: "/get-content"
+    getContent: "/get-content",
+    getUserSubscriptions: "/get-all-subscriptions",
+    getPackages: "/get-packages"
 };
 
-export const APP_URL = "http://13.235.91.193:3009/v1/admin";
-//export const APP_URL = "http://localhost:3009/v1/admin";
+//export const APP_URL = "http://13.235.91.193:3009/v1/admin";
+export const APP_URL = "http://localhost:3009/v1/admin";
 //export const APP_URL = "https://api.mycollegecards.com/v1/admin";

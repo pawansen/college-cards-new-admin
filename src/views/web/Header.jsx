@@ -21,19 +21,21 @@ export default function HeaderPage() {
     };
 
     return (
-        <Navbar bg="white" expand="lg" className="shadow-sm py-3">
+        <Navbar expand="lg" bg="white" className="py-3 border-bottom sticky-top">
             <Container>
-                <Navbar.Brand href="#">
-                    <img src={ logoDark } alt="Nexa Logo" height={ 40 } />
+                <Navbar.Brand href="#home" className="fw-bold">
+                    <span className="gradient-text">SEO</span> Dream
                 </Navbar.Brand>
-                <Navbar.Toggle aria-controls="main-navbar" />
-                <Navbar.Collapse id="main-navbar">
+                <Navbar.Toggle aria-controls="nav" />
+                <Navbar.Collapse id="nav">
                     <Nav className="ms-auto">
-                        <Nav.Link href="#hero">Home</Nav.Link>
-                        <Nav.Link href="#about">About</Nav.Link>
                         <Nav.Link href="#services">Services</Nav.Link>
+                        <Nav.Link href="#about">About</Nav.Link>
+                        <Nav.Link href="#pricing">Pricing</Nav.Link>
+                        <Nav.Link href="#testimonials">Testimonials</Nav.Link>
                         <Nav.Link href="#contact">Contact</Nav.Link>
                     </Nav>
+                    <Button href="#contact" className="ms-lg-3" variant="primary">Get Started</Button>
                 </Navbar.Collapse>
             </Container>
         </Navbar>

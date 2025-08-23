@@ -1,113 +1,34 @@
-/* Nexa.css - Custom styles for Nexa landing page UI inspired by https://bootstrapmade.com/demo/Nexa/ */
-
-body,
-.nexa-bg {
-    background: #f8f9fa;
-    font-family: 'Poppins', Arial, sans-serif;
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
 }
 
-.nexa-hero {
-    min-height: 80vh;
-    background: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%);
-    color: #fff;
-    padding: 80px 0 60px 0;
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.4rem;
 }
 
-.nexa-hero h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.nexa-hero .lead {
-    font-size: 1.25rem;
-    margin-bottom: 2rem;
+.process-card h3 {
+    color: #17a2b8;
+    font-weight: bold;
 }
 
-.nexa-hero .btn-primary {
-    background: #4e54c8;
-    border: none;
-    padding: 0.75rem 2.5rem;
-    font-size: 1.1rem;
-    border-radius: 30px;
-    transition: background 0.2s;
+.service-card {
+    transition: transform 0.3s;
 }
 
-.nexa-hero .btn-primary:hover {
-    background: #343a40;
+.service-card:hover {
+    transform: translateY(-5px);
 }
 
-.nexa-icon {
-    font-size: 2.5rem;
-    color: #4e54c8;
-    margin-bottom: 0.5rem;
-}
-
-section {
-    scroll-margin-top: 80px;
-}
-
-h2 {
-    color: #4e54c8;
-}
-
-.card {
-    border-radius: 18px;
-    transition: box-shadow 0.2s;
-}
-
-.card:hover {
-    box-shadow: 0 8px 32px rgba(78, 84, 200, 0.12);
-}
-
-.nexa-footer {
-    background: #fff;
-    border-top: 1px solid #e9ecef;
-    color: #6c757d;
-}
-
-/* Navbar custom */
-.navbar {
-    border-bottom: 1px solid #e9ecef;
-}
-
-.navbar-brand img {
-    height: 40px;
-}
-
-.nav-link {
-    color: #4e54c8 !important;
-    font-weight: 500;
-    margin-left: 1rem;
-    transition: color 0.2s;
-}
-
-.nav-link:hover,
-.nav-link.active {
-    color: #343a40 !important;
-}
-
-/* Responsive tweaks */
-@media (max-width: 991.98px) {
-    .nexa-hero {
-        padding: 60px 0 40px 0;
-    }
-
-    .nexa-hero h1 {
-        font-size: 2.2rem;
-    }
-}
-
-@media (max-width: 575.98px) {
-    .nexa-hero {
-        padding: 40px 0 20px 0;
-    }
-
-    .nexa-hero h1 {
-        font-size: 1.5rem;
-    }
-
-    .nexa-icon {
-        font-size: 2rem;
-    }
+footer {
+    background: #222;
 }
