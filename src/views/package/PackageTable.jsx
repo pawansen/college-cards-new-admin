@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Card, Table } from 'react-bootstrap';
-import { fetchPackages } from "../../store/userSlice";
+import { fetchPackages, deletePackage } from "../../store/userSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function PackageTable() {
     const dispatch = useDispatch();
     const { packagesList, status } = useSelector((state) => state.user);
@@ -58,12 +60,21 @@ export default function PackageTable() {
         }
     };
 
-    const handleStatusChange = (userId, isActive) => {
-        // dispatch(updateUserStatus({ userId, isActive }));
+    const handleDelete = (package_id) => {
+        dispatch(deletePackage({ package_id: package_id }))
+            .then((result) => {
+                if (result?.payload?.statusCode === 1) {
+                    toast.success("Packages deleted successfully!");
+                    dispatch(fetchPackages({ limit: 10, pageNo: 1 }));
+                    setPage(1);
+                    setAllUsers([]);
+                }
+            });
     };
 
     const handleEdit = (user) => {
         // handle edit logic
+        window.location.href = `/edit-package/${ user._id }`;
     };
 
     return (
@@ -134,6 +145,13 @@ export default function PackageTable() {
                                                     title="Edit"
                                                 >
                                                     <i className="fas fa-edit"></i>
+                                                </button>
+                                                <button
+                                                    className="btn btn-danger btn-sm"
+                                                    onClick={ () => handleDelete(cand._id) }
+                                                    title="Delete"
+                                                >
+                                                    <i className="fas fa-trash"></i>
                                                 </button>
                                             </td>
                                         </tr>

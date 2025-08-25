@@ -22,3 +22,7 @@ export const addUpdateCustomCity = (reqPayload) => commonClient.post(apiPath.add
 export const getContent = (reqPayload) => commonClientGuest.get(apiPath.getContent, { params: reqPayload });
 export const getUserSubscriptions = (reqPayload) => commonClient.get(apiPath.getUserSubscriptions, { params: reqPayload });
 export const getPackages = (reqPayload) => commonClient.get(apiPath.getPackages, { params: reqPayload });
+export const createPackage = (reqPayload) => commonClient.post(apiPath.createPackage, reqPayload);
+export const getPackageInfo = (reqPayload) => commonClient.get(apiPath.getPackageInfo, { params: reqPayload });
+export const updatePackageInfo = (reqPayload) => commonClient.post(apiPath.updatePackageInfo, reqPayload);
+export const deletePackageInfo = (reqPayload) => commonClient.post(apiPath.deletePackageInfo, reqPayload);

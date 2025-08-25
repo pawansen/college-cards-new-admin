@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
     login, getUsers, getDashboard, getCoupons, getCities, createCoupon, getPromoCode, getCouponInfo, deleteCoupons, updateUserStatusinfo, getUserInfo,
-    getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity, getContent, getUserSubscriptions, getPackages
+    getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity, getContent, getUserSubscriptions, getPackages, createPackage, getPackageInfo, updatePackageInfo, deletePackageInfo
 } from "../services/main";
 
 export const fetchLogin = createAsyncThunk(
@@ -271,6 +271,62 @@ export const fetchPackages = createAsyncThunk(
     }
 );
 
+export const addPackage = createAsyncThunk(
+    "user/addPackage",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await createPackage(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const fetchPackageInfo = createAsyncThunk(
+    "user/fetchPackageInfo",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await getPackageInfo(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const updatePackage = createAsyncThunk(
+    "user/updatePackage",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await updatePackageInfo(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const deletePackage = createAsyncThunk(
+    "user/deletePackage",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await deletePackageInfo(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
 const userSlice = createSlice({
     name: "user",
     initialState: {
@@ -296,6 +352,7 @@ const userSlice = createSlice({
         statesList: [],
         citiesList: [],
         contentInfo: null,
+        packageInfo: null,
         dashboardInfo: {
             "totalUsers": 0,
             "totalCoupons": 0,
@@ -503,6 +560,44 @@ const userSlice = createSlice({
             })
             .addCase(fetchPackages.rejected, (state) => {
                 state.packagesList = [];
+                state.status = 'failed';
+            })
+            .addCase(addPackage.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(addPackage.fulfilled, (state, action) => {
+                state.status = "succeeded";
+            })
+            .addCase(addPackage.rejected, (state) => {
+                state.status = 'failed';
+            })
+            .addCase(fetchPackageInfo.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchPackageInfo.fulfilled, (state, action) => {
+                state.packageInfo = action.payload?.data || null;
+                state.status = "succeeded";
+            })
+            .addCase(fetchPackageInfo.rejected, (state) => {
+                state.packageInfo = null;
+                state.status = 'failed';
+            })
+            .addCase(updatePackage.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(updatePackage.fulfilled, (state, action) => {
+                state.status = "succeeded";
+            })
+            .addCase(updatePackage.rejected, (state) => {
+                state.status = 'failed';
+            })
+            .addCase(deletePackage.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(deletePackage.fulfilled, (state, action) => {
+                state.status = "succeeded";
+            })
+            .addCase(deletePackage.rejected, (state) => {
                 state.status = 'failed';
             });
 

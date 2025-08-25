@@ -22,7 +22,11 @@ export const apiPath = {
     addUpdateCustomCity: "/add-update-city",
     getContent: "/get-content",
     getUserSubscriptions: "/get-all-subscriptions",
-    getPackages: "/get-packages"
+    getPackages: "/get-packages",
+    createPackage: "/add-package",
+    getPackageInfo: "/get-package-info",
+    updatePackageInfo: "/update-package",
+    deletePackageInfo: "/delete-package"
 };
 
 //export const APP_URL = "http://13.235.91.193:3009/v1/admin";
