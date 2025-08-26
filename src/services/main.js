@@ -26,3 +26,7 @@ export const createPackage = (reqPayload) => commonClient.post(apiPath.createPac
 export const getPackageInfo = (reqPayload) => commonClient.get(apiPath.getPackageInfo, { params: reqPayload });
 export const updatePackageInfo = (reqPayload) => commonClient.post(apiPath.updatePackageInfo, reqPayload);
 export const deletePackageInfo = (reqPayload) => commonClient.post(apiPath.deletePackageInfo, reqPayload);
+export const addPromoCode = (reqPayload) => commonClient.post(apiPath.addPromoCode, reqPayload);
+export const getPromoCodeInfo = (reqPayload) => commonClient.get(apiPath.getPromoCodeInfo, { params: reqPayload });
+export const updatePromoCode = (reqPayload) => commonClient.post(apiPath.updatePromoCode, reqPayload);
+export const deletePromoCode = (reqPayload) => commonClient.post(apiPath.deletePromoCode, reqPayload);

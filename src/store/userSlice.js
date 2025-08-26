@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
     login, getUsers, getDashboard, getCoupons, getCities, createCoupon, getPromoCode, getCouponInfo, deleteCoupons, updateUserStatusinfo, getUserInfo,
-    getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity, getContent, getUserSubscriptions, getPackages, createPackage, getPackageInfo, updatePackageInfo, deletePackageInfo
+    getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity, getContent, getUserSubscriptions, getPackages, createPackage, getPackageInfo, updatePackageInfo, deletePackageInfo, addPromoCode, getPromoCodeInfo, updatePromoCode, deletePromoCode
 } from "../services/main";
 
 export const fetchLogin = createAsyncThunk(
@@ -327,6 +327,62 @@ export const deletePackage = createAsyncThunk(
     }
 );
 
+export const createPromoCode = createAsyncThunk(
+    "user/createPromoCode",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await addPromoCode(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const fetchPromoCodeInfo = createAsyncThunk(
+    "user/fetchPromoCodeInfo",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await getPromoCodeInfo(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const updatePromoCodeInfo = createAsyncThunk(
+    "user/updatePromoCodeInfo",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await updatePromoCode(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const deletePromoCodeInfo = createAsyncThunk(
+    "user/deletePromoCodeInfo",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await deletePromoCode(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
 const userSlice = createSlice({
     name: "user",
     initialState: {
@@ -353,6 +409,7 @@ const userSlice = createSlice({
         citiesList: [],
         contentInfo: null,
         packageInfo: null,
+        promoCodeInfo: null,
         dashboardInfo: {
             "totalUsers": 0,
             "totalCoupons": 0,
@@ -599,7 +656,45 @@ const userSlice = createSlice({
             })
             .addCase(deletePackage.rejected, (state) => {
                 state.status = 'failed';
-            });
+            })
+            .addCase(createPromoCode.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(createPromoCode.fulfilled, (state, action) => {
+                state.status = "succeeded";
+            })
+            .addCase(createPromoCode.rejected, (state) => {
+                state.status = 'failed';
+            })
+            .addCase(fetchPromoCodeInfo.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchPromoCodeInfo.fulfilled, (state, action) => {
+                state.promoCodeInfo = action.payload?.data || null;
+                state.status = "succeeded";
+            })
+            .addCase(fetchPromoCodeInfo.rejected, (state) => {
+                state.promoCodeInfo = null;
+                state.status = 'failed';
+            })
+            .addCase(updatePromoCodeInfo.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(updatePromoCodeInfo.fulfilled, (state, action) => {
+                state.status = "succeeded";
+            })
+            .addCase(updatePromoCodeInfo.rejected, (state) => {
+                state.status = 'failed';
+            })
+            .addCase(deletePromoCodeInfo.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(deletePromoCodeInfo.fulfilled, (state, action) => {
+                state.status = "succeeded";
+            })
+            .addCase(deletePromoCodeInfo.rejected, (state) => {
+                state.status = 'failed';
+            })
 
     },
 });

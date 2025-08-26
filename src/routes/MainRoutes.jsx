@@ -20,6 +20,8 @@ const UserSubscriptions = lazy(() => import('../views/user-subscriptions/UserSub
 const Feedback = lazy(() => import('../views/feedback/FeedbackTable'));
 const Referrals = lazy(() => import('../views/referrals/ReferralsTable'));
 const Promocode = lazy(() => import('../views/promocode/PromoTable'));
+const AddPromoCode = lazy(() => import('../views/promocode/AddPromoCode'));
+const EditPromoCode = lazy(() => import('../views/promocode/EditPromoCode'));
 const Notification = lazy(() => import('../views/notification/NotificationTable'));
 const UserInfo = lazy(() => import('../views/users/UserInfo'));
 const AddCity = lazy(() => import('../views/cities/AddCity'));
@@ -107,6 +109,15 @@ const MainRoutes = {
             {
               path: '/promocode',
               element: <Promocode />
+            },
+            {
+              path: '/add-promocode',
+              element: <AddPromoCode />
+            },
+            {
+              // Pass package_id as a URL param
+              path: '/edit-promocode/:id',
+              element: <EditPromoCode />
             },
             {
               path: '/notification',

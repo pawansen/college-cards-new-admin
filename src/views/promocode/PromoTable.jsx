@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Card, Table } from 'react-bootstrap';
-import { fetchPromoCode } from "../../store/userSlice";
+import { fetchPromoCode, deletePromoCodeInfo } from "../../store/userSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function PromoTable() {
     const dispatch = useDispatch();
     const { promoCodeList, status } = useSelector((state) => state.user);
@@ -58,12 +60,21 @@ export default function PromoTable() {
         }
     };
 
-    const handleStatusChange = (userId, isActive) => {
-        // dispatch(updateUserStatus({ userId, isActive }));
+    const handleDelete = (promo_id) => {
+        dispatch(deletePromoCodeInfo({ promo_id: promo_id }))
+            .then((result) => {
+                if (result?.payload?.statusCode === 1) {
+                    toast.success("Promo Code deleted successfully!");
+                    dispatch(fetchPromoCode({ limit: 10, pageNo: page }));
+                    setPage(1);
+                    setAllUsers([]);
+                }
+            });
     };
 
     const handleEdit = (user) => {
         // handle edit logic
+        window.location.href = `/edit-promocode/${ user.promo_id }`;
     };
 
     return (
@@ -85,7 +96,7 @@ export default function PromoTable() {
                             <button
                                 className="btn"
                                 style={ { backgroundColor: "#31434F", color: "#fff" } }
-                            // onClick={ () => window.location.href = "/add-coupon" }
+                                onClick={ () => window.location.href = "/add-promocode" }
                             >
                                 <i className="fas fa-plus me-2"></i>
                                 Create Promo Code
@@ -116,26 +127,16 @@ export default function PromoTable() {
                                             <td>{ 0 + "/" + cand.totalUsageLimit }</td>
                                             <td>{ new Date(cand.validFrom).toLocaleDateString() } to { new Date(cand.validTo).toLocaleDateString() }</td>
                                             <td>
-                                                <select
-                                                    value={ cand.status }
-                                                    onChange={ (e) => handleStatusChange(cand.promo_id, e.target.value === "true") }
-                                                    className="status-dropdown"
+                                                <span
+                                                    style={ {
+                                                        color: cand.status === "active" ? "green" : "red",
+                                                        fontWeight: "bold"
+                                                    } }
                                                 >
-                                                    { statusOptions.map((status) => (
-                                                        <option key={ status.value } value={ status.value }>
-                                                            { status.label }
-                                                        </option>
-                                                    )) }
-                                                </select>
+                                                    { cand.status === "active" ? "Active" : "Inactive" }
+                                                </span>
                                             </td>
                                             <td>
-                                                <button
-                                                    className="btn btn-info btn-sm me-1"
-                                                    onClick={ () => {/* handle view logic */ } }
-                                                    title="View"
-                                                >
-                                                    <i className="fas fa-eye"></i>
-                                                </button>
                                                 <button
                                                     className="btn btn-warning btn-sm me-1"
                                                     onClick={ () => handleEdit(cand) }
@@ -145,7 +146,7 @@ export default function PromoTable() {
                                                 </button>
                                                 <button
                                                     className="btn btn-danger btn-sm"
-                                                    onClick={ () => setConfirmDeleteId(cand.promo_id) }
+                                                    onClick={ () => handleDelete(cand.promo_id) }
                                                     title="Delete"
                                                 >
                                                     <i className="fas fa-trash"></i>

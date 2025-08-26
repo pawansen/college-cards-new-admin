@@ -26,7 +26,11 @@ export const apiPath = {
     createPackage: "/add-package",
     getPackageInfo: "/get-package-info",
     updatePackageInfo: "/update-package",
-    deletePackageInfo: "/delete-package"
+    deletePackageInfo: "/delete-package",
+    addPromoCode: "/add-promo-code",
+    getPromoCodeInfo: "/get-promo-code-info",
+    updatePromoCode: "/update-promo-code",
+    deletePromoCode: "/delete-promo-code"
 };
 
 //export const APP_URL = "http://13.235.91.193:3009/v1/admin";

@@ -75,7 +75,7 @@ export default function EditPackage() {
             <Col sm={ 12 }>
                 <Card>
                     <Card.Header>
-                        <Card.Title as="h5">Create Subscription</Card.Title>
+                        <Card.Title as="h5">Edit Subscription</Card.Title>
                     </Card.Header>
                     <Card.Body>
                         <Container fluid className="p-4" style={ { background: "#f9f9f9", minHeight: "100vh" } }>

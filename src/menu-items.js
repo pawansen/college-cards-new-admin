@@ -56,22 +56,22 @@ const menuItems = {
           iconname: 'location_city',
           url: '/cities'
         },
-        // {
-        //   id: 'user-subscriptions',
-        //   title: 'User Subscriptions',
-        //   type: 'item',
-        //   icon: 'material-icons-two-tone',
-        //   iconname: 'subscriptions',
-        //   url: '/user-subscriptions'
-        // },
-        // {
-        //   id: 'packages',
-        //   title: 'Subscription Plan',
-        //   type: 'item',
-        //   icon: 'material-icons-two-tone',
-        //   iconname: 'subscriptions',
-        //   url: '/packages'
-        // },
+        {
+          id: 'user-subscriptions',
+          title: 'User Subscriptions',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'subscriptions',
+          url: '/user-subscriptions'
+        },
+        {
+          id: 'packages',
+          title: 'Subscription Plan',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'subscriptions',
+          url: '/packages'
+        },
         // {
         //   id: 'feedback',
         //   title: 'Feedback',
@@ -80,6 +80,14 @@ const menuItems = {
         //   iconname: 'feedback',
         //   url: '/feedback'
         // },
+        {
+          id: 'promocode',
+          title: 'Promo Code',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'confirmation_number',
+          url: '/promocode'
+        },
         // {
         //   id: 'referrals',
         //   title: 'Referrals',
@@ -88,14 +96,7 @@ const menuItems = {
         //   iconname: 'group_add',
         //   url: '/referrals'
         // },
-        // {
-        //   id: 'promocode',
-        //   title: 'Promo Code',
-        //   type: 'item',
-        //   icon: 'material-icons-two-tone',
-        //   iconname: 'confirmation_number',
-        //   url: '/promocode'
-        // },
+
         // {
         //   id: 'notification',
         //   title: 'Notification',
