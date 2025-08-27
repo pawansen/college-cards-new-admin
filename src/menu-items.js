@@ -97,14 +97,14 @@ const menuItems = {
         //   url: '/referrals'
         // },
 
-        // {
-        //   id: 'notification',
-        //   title: 'Notification',
-        //   type: 'item',
-        //   icon: 'material-icons-two-tone',
-        //   iconname: 'notifications',
-        //   url: '/notification'
-        // },
+        {
+          id: 'notification',
+          title: 'Notification',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'notifications',
+          url: '/notification'
+        },
         // {
         //   id: 'settings',
         //   title: 'Settings',

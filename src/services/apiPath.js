@@ -30,7 +30,9 @@ export const apiPath = {
     addPromoCode: "/add-promo-code",
     getPromoCodeInfo: "/get-promo-code-info",
     updatePromoCode: "/update-promo-code",
-    deletePromoCode: "/delete-promo-code"
+    deletePromoCode: "/delete-promo-code",
+    getNotifications: "/get-notifications",
+    deleteNotifications: "/delete-notifications"
 };
 
 //export const APP_URL = "http://13.235.91.193:3009/v1/admin";

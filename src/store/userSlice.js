@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
     login, getUsers, getDashboard, getCoupons, getCities, createCoupon, getPromoCode, getCouponInfo, deleteCoupons, updateUserStatusinfo, getUserInfo,
-    getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity, getContent, getUserSubscriptions, getPackages, createPackage, getPackageInfo, updatePackageInfo, deletePackageInfo, addPromoCode, getPromoCodeInfo, updatePromoCode, deletePromoCode
+    getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity, getContent, getUserSubscriptions, getPackages, createPackage, getPackageInfo, updatePackageInfo, deletePackageInfo, addPromoCode, getPromoCodeInfo, updatePromoCode, deletePromoCode, getNotifications, deleteNotifications
 } from "../services/main";
 
 export const fetchLogin = createAsyncThunk(
@@ -383,6 +383,34 @@ export const deletePromoCodeInfo = createAsyncThunk(
     }
 );
 
+export const fetchNotifications = createAsyncThunk(
+    "user/fetchNotifications",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await getNotifications(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const deleteNotification = createAsyncThunk(
+    "user/deleteNotification",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await deleteNotifications(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
 const userSlice = createSlice({
     name: "user",
     initialState: {
@@ -394,6 +422,7 @@ const userSlice = createSlice({
         promoCodeList: [],
         allSubscribeList: [],
         packagesList: [],
+        notificationsList: [],
         status: "start",
         error: null,
         currentPage: 1,
@@ -695,6 +724,17 @@ const userSlice = createSlice({
             .addCase(deletePromoCodeInfo.rejected, (state) => {
                 state.status = 'failed';
             })
+            .addCase(fetchNotifications.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchNotifications.fulfilled, (state, action) => {
+                state.notificationsList = action.payload?.data || [];
+                state.status = "succeeded";
+            })
+            .addCase(fetchNotifications.rejected, (state) => {
+                state.notificationsList = [];
+                state.status = 'failed';
+            });
 
     },
 });

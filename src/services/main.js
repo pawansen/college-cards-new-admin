@@ -30,3 +30,5 @@ export const addPromoCode = (reqPayload) => commonClient.post(apiPath.addPromoCo
 export const getPromoCodeInfo = (reqPayload) => commonClient.get(apiPath.getPromoCodeInfo, { params: reqPayload });
 export const updatePromoCode = (reqPayload) => commonClient.post(apiPath.updatePromoCode, reqPayload);
 export const deletePromoCode = (reqPayload) => commonClient.post(apiPath.deletePromoCode, reqPayload);
+export const getNotifications = (reqPayload) => commonClient.get(apiPath.getNotifications, { params: reqPayload });
+export const deleteNotifications = (reqPayload) => commonClient.post(apiPath.deleteNotifications, reqPayload);
