@@ -32,7 +32,11 @@ export const apiPath = {
     updatePromoCode: "/update-promo-code",
     deletePromoCode: "/delete-promo-code",
     getNotifications: "/get-notifications",
-    deleteNotifications: "/delete-notifications"
+    deleteNotifications: "/delete-notifications",
+    getFeedback: "/get-all-feedback",
+    deleteFeedbacks: "/delete-feedback",
+    getReplayFeedbackInfo: '/get-feedback-info',
+    addReplayOnFeedback: '/add-feedback-replay'
 };
 
 //export const APP_URL = "http://13.235.91.193:3009/v1/admin";

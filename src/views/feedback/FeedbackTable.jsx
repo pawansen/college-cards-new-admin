@@ -1,17 +1,19 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, Card, Table } from 'react-bootstrap';
-import { fetchUsers } from "../../store/userSlice";
+import { Row, Col, Card, Table, Form, InputGroup, FormControl, Button } from 'react-bootstrap';
+import { fetchFeedback, updateUserStatus, deleteFeedback, fetchReplayFeedbackInfo, sentReplayOnFeedback } from "../../store/userSlice";
+import { Search, Trash, Bell } from "react-bootstrap-icons";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function FeedbackTable() {
     const dispatch = useDispatch();
-    const { usersList, status } = useSelector((state) => state.user);
+    const { feedbackList, feedbackInfo } = useSelector((state) => state.user);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
-    const [dropdownIndex, setDropdownIndex] = useState(null);
-    const [confirmDeleteId, setConfirmDeleteId] = useState(null);
-    const [allUsers, setAllUsers] = useState([]);
+    const [allFeedback, setAllFeedback] = useState([]);
     const dropdownRefs = useRef([]);
+    const [checkedIds, setCheckedIds] = useState([]);
     const statusOptions = [
         { value: true, label: "Active" },
         { value: false, label: "Inactive" }
@@ -20,29 +22,29 @@ export default function FeedbackTable() {
     const fetchTimeout = React.useRef(null);
 
     useEffect(() => {
-        dispatch(fetchUsers({ limit: 10, pageNo: page }));
+        dispatch(fetchFeedback({ limit: 10, pageNo: page }));
     }, [dispatch, page]);
 
-    // Merge new users into allUsers when usersList changes
+    // Merge new feedback into allFeedback when feedbackList changes
     useEffect(() => {
-        if (usersList && usersList.length > 0) {
-            setAllUsers(prev => {
+        if (feedbackList && feedbackList.length > 0) {
+            setAllFeedback(prev => {
                 // Avoid duplicates by _id
                 const existingIds = new Set(prev.map(u => u._id));
-                const newUsers = usersList.filter(u => !existingIds.has(u._id));
+                const newUsers = feedbackList.filter(u => !existingIds.has(u._id));
                 return [...prev, ...newUsers];
             });
         }
-    }, [usersList]);
+    }, [feedbackList]);
 
     useEffect(() => {
         // If the last fetch returned less than 10, no more data
-        if (usersList.length < 10) {
+        if (feedbackList.length < 10) {
             setHasMore(false);
-        } else if (usersList.length === 10) {
+        } else if (feedbackList.length === 10) {
             setHasMore(true);
         }
-    }, [usersList]);
+    }, [feedbackList]);
 
     const handleScroll = (e) => {
         const { scrollTop, scrollHeight, clientHeight } = e.target;
@@ -58,98 +60,291 @@ export default function FeedbackTable() {
         }
     };
 
-    const handleStatusChange = (userId, isActive) => {
-        // dispatch(updateUserStatus({ userId, isActive }));
+    // Handler for checkbox change
+    const handleCheckboxChange = (couponId) => {
+        setCheckedIds(prev =>
+            prev.includes(couponId)
+                ? prev.filter(id => id !== couponId)
+                : [...prev, couponId]
+        );
     };
 
-    const handleEdit = (user) => {
-        // handle edit logic
+    // Debounced search handler
+    const searchTimeout = useRef(null);
+
+    const handleSearch = (e) => {
+        const query = e.target.value.toLowerCase();
+        if (searchTimeout.current) {
+            clearTimeout(searchTimeout.current);
+        }
+        searchTimeout.current = setTimeout(() => {
+            dispatch(fetchFeedback({ limit: 10, pageNo: 1, keyword: query }));
+            setPage(1);
+            setAllFeedback([]); // Reset feedback for new search
+        }, 1000);
+    };
+
+
+    const handleDelete = () => {
+        if (!checkedIds || checkedIds.length === 0) {
+            toast.error("Please select at least one feedback to delete.");
+            return;
+        }
+        dispatch(deleteFeedback({ feedback_id: checkedIds.join(",") }))
+            .then((result) => {
+                if (result?.payload?.statusCode === 1) {
+                    toast.success("Feedback deleted successfully!");
+                    setCheckedIds([]);
+                    dispatch(fetchFeedback({ limit: 10, pageNo: 1 }));
+                    setPage(1);
+                    setAllFeedback([]);
+                }
+            });
+    };
+
+    const handleStatusChange = (user_id, status) => {
+        toast.info(
+            <div style={ { textAlign: "left" } }>
+                <div>Are you sure you want to change the user status?</div>
+                <div style={ { marginTop: 12 } }>
+                    <button
+                        onClick={ () => {
+                            toast.dismiss();
+                            dispatch(updateUserStatus({ user_id, status: status ? 'yes' : 'no' }))
+                                .then((result) => {
+                                    if (result?.payload?.statusCode === 1) {
+                                        toast.success("User status updated successfully!");
+                                        setPage(1);
+                                        setAllUsers([]);
+                                        dispatch(fetchFeedback({ limit: 10, pageNo: 1 }));
+                                    }
+                                });
+                        } }
+                        style={ { marginRight: 8 } }
+                    >
+                        Yes
+                    </button>
+                    <button onClick={ () => toast.dismiss() }>No</button>
+                </div>
+            </div>,
+            { autoClose: false }
+        );
+    };
+
+    const handleStatusDeleteChange = (user_id) => {
+        toast.info(
+            <div style={ { textAlign: "left" } }>
+                <div>Are you sure you want to delete the user?</div>
+                <div style={ { marginTop: 12 } }>
+                    <button
+                        onClick={ () => {
+                            toast.dismiss();
+                            dispatch(updateUserStatus({ user_id, delete: 'yes' }))
+                                .then((result) => {
+                                    if (result?.payload?.statusCode === 1) {
+                                        toast.success("User status updated successfully!");
+                                        setPage(1);
+                                        setAllUsers([]);
+                                        dispatch(fetchUsers({ limit: 10, pageNo: 1 }));
+                                    }
+                                });
+                        } }
+                        style={ { marginRight: 8 } }
+                    >
+                        Yes
+                    </button>
+                    <button onClick={ () => toast.dismiss() }>No</button>
+                </div>
+            </div>,
+            { autoClose: false }
+        );
+    };
+
+    const handleView = (user_id) => {
+        window.location.href = `/user-info/${ user_id }`;
+    };
+
+    // State for modal
+    const [showModal, setShowModal] = useState(false);
+    const [replyFeedback, setReplyFeedback] = useState(null);
+    const [replyMessage, setReplyMessage] = useState("");
+
+    const handleOpenModal = (feedback) => {
+        // Fetch feedback info if needed
+        dispatch(fetchReplayFeedbackInfo({ feedback_id: feedback._id }));
+        setReplyFeedback(feedback);
+        setReplyMessage("");
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setReplyFeedback(null);
+        setReplyMessage("");
+    };
+
+    const handleSendReply = () => {
+        dispatch(sentReplayOnFeedback({ feedback_id: feedbackInfo._id, description: replyMessage }))
+        // TODO: Dispatch reply action here
+        toast.success("Reply sent!");
+        dispatch(fetchReplayFeedbackInfo({ feedback_id: feedbackInfo._id }));
     };
 
     return (
-        <Row>
-            <Col sm={ 12 }>
-                <Card>
-                    <Card.Header>
-                        <Card.Title as="h5">Users</Card.Title>
-                    </Card.Header>
-                    <Card.Body>
-                        <div
-                            style={ { maxHeight: 400, overflowY: "auto" } }
-                            onScroll={ handleScroll }
-                        >
-                            <Table striped bordered hover className="mb-0 ">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Mobile</th>
-                                        <th>Subscribe</th>
-                                        <th>Referral Code</th>
-                                        <th>Date</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    { allUsers.map((cand, idx) => (
-                                        <tr key={ cand._id }>
-                                            <td>{ cand.firstName + " " + cand.lastName }</td>
-                                            <td>{ cand.email }</td>
-                                            <td>{ cand.mobile }</td>
-                                            <td>
-                                                {/* Replace "No" with icon */ }
-                                                <span title="Not Subscribed" style={ { color: "#dc3545" } }>
-                                                    <i className="bi bi-x-circle-fill"></i>
-                                                </span>
-                                            </td>
-                                            <td>{ cand.referralCode }</td>
-                                            <td>{ new Date(cand.createDate).toLocaleDateString() }</td>
-                                            <td>
-                                                <select
-                                                    value={ cand.isActive }
-                                                    onChange={ (e) => handleStatusChange(cand._id, e.target.value === "true") }
-                                                    className="status-dropdown"
-                                                >
-                                                    { statusOptions.map((status) => (
-                                                        <option key={ status.value } value={ status.value }>
-                                                            { status.label }
-                                                        </option>
-                                                    )) }
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <button
-                                                    className="btn btn-info btn-sm me-1"
-                                                    onClick={ () => {/* handle view logic */ } }
-                                                    title="View"
-                                                >
-                                                    <i className="fas fa-eye"></i>
-                                                </button>
-                                                <button
-                                                    className="btn btn-warning btn-sm me-1"
-                                                    onClick={ () => handleEdit(cand) }
-                                                    title="Edit"
-                                                >
-                                                    <i className="fas fa-edit"></i>
-                                                </button>
-                                                <button
-                                                    className="btn btn-danger btn-sm"
-                                                    onClick={ () => setConfirmDeleteId(cand._id) }
-                                                    title="Delete"
-                                                >
-                                                    <i className="fas fa-trash"></i>
-                                                </button>
-                                            </td>
+        <>
+            <Row>
+                <Col sm={ 12 }>
+                    <Card>
+                        <Card.Header>
+                            <Row className="align-items-center mb-3">
+                                <Col>
+                                    <h5 className="fw-bold d-inline-block me-3 mb-0">Notification List</h5>
+                                    {/* <Form.Check inline type="checkbox" className="d-inline-block me-2" /> */ }
+                                    <span style={ { color: 'red', cursor: 'pointer' } } onClick={ handleDelete }><Trash /></span>
+                                </Col>
+                                <Col className="text-end mb-2">
+                                    <InputGroup>
+                                        <FormControl
+                                            placeholder="Search here..."
+                                            size="sm"
+                                            onChange={ handleSearch }
+                                        />
+                                        <Button variant="outline-secondary" size="sm"><Search /></Button>
+                                    </InputGroup>
+                                </Col>
+                                <Col className="text-end mb-2">
+                                    <InputGroup>
+                                        <FormControl
+                                            type="date"
+                                            size="sm"
+                                            onChange={ e => {
+                                                const selectedDate = e.target.value;
+                                                dispatch(fetchFeedback({ limit: 10, pageNo: 1, date: selectedDate }));
+                                                setPage(1);
+                                                setAllFeedback([]);
+                                            } }
+                                        />
+                                        <Button variant="outline-secondary" size="sm">
+                                            <i className="fas fa-calendar-alt"></i>
+                                        </Button>
+                                    </InputGroup>
+                                </Col>
+                            </Row>
+                        </Card.Header>
+                        <Card.Body>
+                            <div
+                                style={ { maxHeight: 400, overflowY: "auto" } }
+                                onScroll={ handleScroll }
+                            >
+                                <Table striped bordered hover className="mb-0 ">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={ allFeedback.length > 0 && checkedIds.length === allFeedback.length }
+                                                    onChange={ e => {
+                                                        if (e.target.checked) {
+                                                            setCheckedIds(allFeedback.map(cand => cand._id));
+                                                        } else {
+                                                            setCheckedIds([]);
+                                                        }
+                                                    } }
+                                                />
+                                            </th>
+                                            <th>Name</th>
+                                            <th>City</th>
+                                            <th>Email</th>
+                                            <th>Feedback</th>
+                                            <th>Date</th>
+                                            <th>Action</th>
                                         </tr>
-                                    )) }
-                                </tbody>
-                            </Table>
-                            { loading && <div>Loading...</div> }
+                                    </thead>
+                                    <tbody>
+                                        { allFeedback.map((cand, idx) => (
+                                            <tr key={ cand._id }>
+                                                <td>
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={ checkedIds.includes(cand._id) }
+                                                        onChange={ () => handleCheckboxChange(cand._id) }
+                                                    />
+                                                </td>
+                                                <td>{ cand?.user_id.firstName + " " + cand?.user_id.lastName }</td>
+                                                <td>{ cand?.city?.name }</td>
+                                                <td>{ cand?.user_id.email }</td>
+                                                <td>{ cand.description }</td>
+                                                <td>{ new Date(cand.create_at).toLocaleDateString() }</td>
+                                                <td>
+                                                    <button
+                                                        className="btn btn-secondary btn-sm"
+                                                        title="Replay"
+                                                        style={ { marginLeft: 4 } }
+                                                        onClick={ () => handleOpenModal(cand) }
+                                                    >
+                                                        <i className="fas fa-reply"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        )) }
+                                    </tbody>
+                                </Table>
+                                { loading && <div>Loading...</div> }
+                            </div>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+            {/* Modal for reply */ }
+            { showModal && (
+                <div className="modal show" style={ { display: "block", background: "rgba(0,0,0,0.5)" } }>
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Reply to Feedback</h5>
+                                <button type="button" className="btn-close" onClick={ handleCloseModal }></button>
+                            </div>
+                            <div className="modal-body">
+                                <p><strong>User:</strong> { feedbackInfo?.user_id?.firstName } { feedbackInfo?.user_id?.lastName }</p>
+                                <p><strong>Feedback:</strong> { feedbackInfo?.description }</p>
+                                { feedbackInfo?.replies && feedbackInfo.replies.length > 0 && (
+                                    <div className="mb-3">
+                                        <h6>Replies</h6>
+                                        <ul className="list-group">
+                                            { feedbackInfo.replies.map(reply => (
+                                                <li key={ reply._id } className="list-group-item">
+                                                    <div>
+                                                        <strong>
+                                                            { reply.user_id?.firstName } { reply.user_id?.lastName }
+                                                        </strong>{ " " }
+                                                        <span className="text-muted" style={ { fontSize: "0.9em" } }>
+                                                            ({ new Date(reply.create_at).toLocaleString() })
+                                                        </span>
+                                                    </div>
+                                                    <div>{ reply.description }</div>
+                                                </li>
+                                            )) }
+                                        </ul>
+                                    </div>
+                                ) }
+                                <Form.Group>
+                                    <Form.Label>Reply Message</Form.Label>
+                                    <Form.Control
+                                        as="textarea"
+                                        rows={ 3 }
+                                        value={ replyMessage }
+                                        onChange={ e => setReplyMessage(e.target.value) }
+                                    />
+                                </Form.Group>
+                            </div>
+                            <div className="modal-footer">
+                                <Button variant="secondary" onClick={ handleCloseModal }>Close</Button>
+                                <Button variant="primary" onClick={ handleSendReply } disabled={ !replyMessage.trim() }>Send Reply</Button>
+                            </div>
                         </div>
-                    </Card.Body>
-                </Card>
-            </Col>
-        </Row>
+                    </div>
+                </div>
+            ) }
+        </>
     );
 }

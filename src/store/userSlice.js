@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
     login, getUsers, getDashboard, getCoupons, getCities, createCoupon, getPromoCode, getCouponInfo, deleteCoupons, updateUserStatusinfo, getUserInfo,
-    getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity, getContent, getUserSubscriptions, getPackages, createPackage, getPackageInfo, updatePackageInfo, deletePackageInfo, addPromoCode, getPromoCodeInfo, updatePromoCode, deletePromoCode, getNotifications, deleteNotifications
+    getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity, getContent, getUserSubscriptions, getPackages, createPackage, getPackageInfo, updatePackageInfo, deletePackageInfo, addPromoCode, getPromoCodeInfo, updatePromoCode, deletePromoCode, getNotifications, deleteNotifications, getFeedback, deleteFeedbacks, getReplayFeedbackInfo, addReplayOnFeedback
 } from "../services/main";
 
 export const fetchLogin = createAsyncThunk(
@@ -411,6 +411,63 @@ export const deleteNotification = createAsyncThunk(
     }
 );
 
+export const fetchFeedback = createAsyncThunk(
+    "user/fetchFeedback",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await getFeedback(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const deleteFeedback = createAsyncThunk(
+    "user/deleteFeedback",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await deleteFeedbacks(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const fetchReplayFeedbackInfo = createAsyncThunk(
+    "user/fetchReplayFeedbackInfo",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await getReplayFeedbackInfo(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const sentReplayOnFeedback = createAsyncThunk(
+    "user/sentReplayOnFeedback",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await addReplayOnFeedback(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+
 const userSlice = createSlice({
     name: "user",
     initialState: {
@@ -423,6 +480,7 @@ const userSlice = createSlice({
         allSubscribeList: [],
         packagesList: [],
         notificationsList: [],
+        feedbackList: [],
         status: "start",
         error: null,
         currentPage: 1,
@@ -439,6 +497,7 @@ const userSlice = createSlice({
         contentInfo: null,
         packageInfo: null,
         promoCodeInfo: null,
+        feedbackInfo: null,
         dashboardInfo: {
             "totalUsers": 0,
             "totalCoupons": 0,
@@ -734,8 +793,38 @@ const userSlice = createSlice({
             .addCase(fetchNotifications.rejected, (state) => {
                 state.notificationsList = [];
                 state.status = 'failed';
+            })
+            .addCase(fetchFeedback.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchFeedback.fulfilled, (state, action) => {
+                state.feedbackList = action.payload?.data || [];
+                state.status = "succeeded";
+            })
+            .addCase(fetchFeedback.rejected, (state) => {
+                state.feedbackList = [];
+                state.status = 'failed';
+            })
+            .addCase(fetchReplayFeedbackInfo.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchReplayFeedbackInfo.fulfilled, (state, action) => {
+                state.feedbackInfo = action.payload?.data || [];
+                state.status = "succeeded";
+            })
+            .addCase(fetchReplayFeedbackInfo.rejected, (state) => {
+                state.feedbackInfo = null;
+                state.status = 'failed';
+            })
+            .addCase(sentReplayOnFeedback.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(sentReplayOnFeedback.fulfilled, (state, action) => {
+                state.status = "succeeded";
+            })
+            .addCase(sentReplayOnFeedback.rejected, (state) => {
+                state.status = 'failed';
             });
-
     },
 });
 

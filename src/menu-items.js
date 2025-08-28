@@ -72,14 +72,14 @@ const menuItems = {
           iconname: 'subscriptions',
           url: '/packages'
         },
-        // {
-        //   id: 'feedback',
-        //   title: 'Feedback',
-        //   type: 'item',
-        //   icon: 'material-icons-two-tone',
-        //   iconname: 'feedback',
-        //   url: '/feedback'
-        // },
+        {
+          id: 'feedback',
+          title: 'Feedback',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'feedback',
+          url: '/feedback'
+        },
         {
           id: 'promocode',
           title: 'Promo Code',

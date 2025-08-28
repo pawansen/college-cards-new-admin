@@ -32,3 +32,7 @@ export const updatePromoCode = (reqPayload) => commonClient.post(apiPath.updateP
 export const deletePromoCode = (reqPayload) => commonClient.post(apiPath.deletePromoCode, reqPayload);
 export const getNotifications = (reqPayload) => commonClient.get(apiPath.getNotifications, { params: reqPayload });
 export const deleteNotifications = (reqPayload) => commonClient.post(apiPath.deleteNotifications, reqPayload);
+export const getFeedback = (reqPayload) => commonClient.get(apiPath.getFeedback, { params: reqPayload });
+export const deleteFeedbacks = (reqPayload) => commonClient.post(apiPath.deleteFeedbacks, reqPayload);
+export const getReplayFeedbackInfo = (reqPayload) => commonClient.get(apiPath.getReplayFeedbackInfo, { params: reqPayload });
+export const addReplayOnFeedback = (reqPayload) => commonClient.post(apiPath.addReplayOnFeedback, reqPayload);
