@@ -36,9 +36,13 @@ export const apiPath = {
     getFeedback: "/get-all-feedback",
     deleteFeedbacks: "/delete-feedback",
     getReplayFeedbackInfo: '/get-feedback-info',
-    addReplayOnFeedback: '/add-feedback-replay'
+    addReplayOnFeedback: '/add-feedback-replay',
+    createContent: '/add-content',
+    getVersion: '/get-version',
+    updateVersionAll: '/update-version'
 };
 
 //export const APP_URL = "http://13.235.91.193:3009/v1/admin";
-//export const APP_URL = "http://localhost:3009/v1/admin";
-export const APP_URL = "https://api.mycollegecards.com/v1/admin";
+export const APP_URL = "http://localhost:3009/v1/admin";
+export const UPLOAD_FILE_URL = "https://api.mycollegecards.com";
+//export const APP_URL = "https://api.mycollegecards.com/v1/admin";

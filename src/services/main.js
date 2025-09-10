@@ -36,3 +36,6 @@ export const getFeedback = (reqPayload) => commonClient.get(apiPath.getFeedback,
 export const deleteFeedbacks = (reqPayload) => commonClient.post(apiPath.deleteFeedbacks, reqPayload);
 export const getReplayFeedbackInfo = (reqPayload) => commonClient.get(apiPath.getReplayFeedbackInfo, { params: reqPayload });
 export const addReplayOnFeedback = (reqPayload) => commonClient.post(apiPath.addReplayOnFeedback, reqPayload);
+export const createContent = (reqPayload) => commonClient.post(apiPath.createContent, reqPayload);
+export const getVersion = (reqPayload) => commonClient.get(apiPath.getVersion, { params: reqPayload });
+export const updateVersionAll = (reqPayload) => commonClient.post(apiPath.updateVersionAll, reqPayload);

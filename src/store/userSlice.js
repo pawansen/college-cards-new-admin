@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
     login, getUsers, getDashboard, getCoupons, getCities, createCoupon, getPromoCode, getCouponInfo, deleteCoupons, updateUserStatusinfo, getUserInfo,
-    getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity, getContent, getUserSubscriptions, getPackages, createPackage, getPackageInfo, updatePackageInfo, deletePackageInfo, addPromoCode, getPromoCodeInfo, updatePromoCode, deletePromoCode, getNotifications, deleteNotifications, getFeedback, deleteFeedbacks, getReplayFeedbackInfo, addReplayOnFeedback
+    getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity, getContent, getUserSubscriptions, getPackages, createPackage, getPackageInfo, updatePackageInfo, deletePackageInfo, addPromoCode, getPromoCodeInfo, updatePromoCode, deletePromoCode, getNotifications, deleteNotifications, getFeedback, deleteFeedbacks, getReplayFeedbackInfo, addReplayOnFeedback, createContent, getVersion, updateVersionAll
 } from "../services/main";
 
 export const fetchLogin = createAsyncThunk(
@@ -243,6 +243,21 @@ export const fetchContent = createAsyncThunk(
     }
 );
 
+
+export const addContent = createAsyncThunk(
+    "user/addContent",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await createContent(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
 export const fetchUserSubscriptions = createAsyncThunk(
     "user/fetchUserSubscriptions",
     async (reqPayload, { rejectWithValue }) => {
@@ -467,6 +482,32 @@ export const sentReplayOnFeedback = createAsyncThunk(
     }
 );
 
+export const fetchVersion = createAsyncThunk(
+    "user/fetchVersion",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await getVersion(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+export const updateVersion = createAsyncThunk(
+    "user/updateVersion",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await updateVersionAll(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
 
 const userSlice = createSlice({
     name: "user",
@@ -498,6 +539,7 @@ const userSlice = createSlice({
         packageInfo: null,
         promoCodeInfo: null,
         feedbackInfo: null,
+        versionInfo: null,
         dashboardInfo: {
             "totalUsers": 0,
             "totalCoupons": 0,
@@ -823,6 +865,43 @@ const userSlice = createSlice({
                 state.status = "succeeded";
             })
             .addCase(sentReplayOnFeedback.rejected, (state) => {
+                state.status = 'failed';
+            })
+            .addCase(deleteNotification.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(deleteNotification.fulfilled, (state, action) => {
+                state.status = "succeeded";
+            })
+            .addCase(deleteNotification.rejected, (state) => {
+                state.status = 'failed';
+            })
+            .addCase(addContent.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(addContent.fulfilled, (state, action) => {
+                state.status = "succeeded";
+            })
+            .addCase(addContent.rejected, (state) => {
+                state.status = 'failed';
+            })
+            .addCase(fetchVersion.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchVersion.fulfilled, (state, action) => {
+                state.versionInfo = action.payload?.data || null;
+                state.status = "succeeded";
+            })
+            .addCase(fetchVersion.rejected, (state) => {
+                state.status = 'failed';
+            })
+            .addCase(updateVersion.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(updateVersion.fulfilled, (state, action) => {
+                state.status = "succeeded";
+            })
+            .addCase(updateVersion.rejected, (state) => {
                 state.status = 'failed';
             });
     },

@@ -27,11 +27,11 @@ const UserInfo = lazy(() => import('../views/users/UserInfo'));
 const AddCity = lazy(() => import('../views/cities/AddCity'));
 const PrivacyPolicy = lazy(() => import('../views/web/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('../views/web/TermsOfService'));
-
+const Settings = lazy(() => import('../views/settings/Settings'));
 const Packages = lazy(() => import('../views/package/PackageTable'));
 const AddPackage = lazy(() => import('../views/package/AddPackage'));
 const EditPackage = lazy(() => import('../views/package/EditPackage'));
-
+const VersionUpdate = lazy(() => import('../views/version-update/VersionUpdate'));
 // const Home = lazy(() => import('../views/web/Home'));
 import PrivateRoute from './PrivateRoute';
 
@@ -122,6 +122,14 @@ const MainRoutes = {
             {
               path: '/notification',
               element: <Notification />
+            },
+            {
+              path: '/settings',
+              element: <Settings />
+            },
+            {
+              path: '/version-update',
+              element: <VersionUpdate />
             },
             {
               path: '/typography',

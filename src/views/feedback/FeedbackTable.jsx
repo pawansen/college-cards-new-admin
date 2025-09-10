@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, Card, Table, Form, InputGroup, FormControl, Button } from 'react-bootstrap';
+import { Row, Col, Card, Table, Form, InputGroup, FormControl, Button, Image } from 'react-bootstrap';
 import { fetchFeedback, updateUserStatus, deleteFeedback, fetchReplayFeedbackInfo, sentReplayOnFeedback } from "../../store/userSlice";
 import { Search, Trash, Bell } from "react-bootstrap-icons";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { UPLOAD_FILE_URL } from "../../../src/services/apiPath";
 export default function FeedbackTable() {
     const dispatch = useDispatch();
     const { feedbackList, feedbackInfo } = useSelector((state) => state.user);
@@ -188,6 +189,7 @@ export default function FeedbackTable() {
         // TODO: Dispatch reply action here
         toast.success("Reply sent!");
         dispatch(fetchReplayFeedbackInfo({ feedback_id: feedbackInfo._id }));
+        setReplyMessage("");
     };
 
     return (
@@ -198,7 +200,7 @@ export default function FeedbackTable() {
                         <Card.Header>
                             <Row className="align-items-center mb-3">
                                 <Col>
-                                    <h5 className="fw-bold d-inline-block me-3 mb-0">Notification List</h5>
+                                    <h5 className="fw-bold d-inline-block me-3 mb-0">Feedback List</h5>
                                     {/* <Form.Check inline type="checkbox" className="d-inline-block me-2" /> */ }
                                     <span style={ { color: 'red', cursor: 'pointer' } } onClick={ handleDelete }><Trash /></span>
                                 </Col>
@@ -270,11 +272,11 @@ export default function FeedbackTable() {
                                                         onChange={ () => handleCheckboxChange(cand._id) }
                                                     />
                                                 </td>
-                                                <td>{ cand?.user_id.firstName + " " + cand?.user_id.lastName }</td>
+                                                <td>{ cand?.user_id?.firstName + " " + cand?.user_id?.lastName }</td>
                                                 <td>{ cand?.city?.name }</td>
-                                                <td>{ cand?.user_id.email }</td>
-                                                <td>{ cand.description }</td>
-                                                <td>{ new Date(cand.create_at).toLocaleDateString() }</td>
+                                                <td>{ cand?.user_id?.email }</td>
+                                                <td>{ cand?.description }</td>
+                                                <td>{ new Date(cand?.create_at).toLocaleDateString() }</td>
                                                 <td>
                                                     <button
                                                         className="btn btn-secondary btn-sm"
@@ -301,25 +303,52 @@ export default function FeedbackTable() {
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title">Reply to Feedback</h5>
+                                <h5 className="modal-title">Comment</h5>
                                 <button type="button" className="btn-close" onClick={ handleCloseModal }></button>
                             </div>
                             <div className="modal-body">
-                                <p><strong>User:</strong> { feedbackInfo?.user_id?.firstName } { feedbackInfo?.user_id?.lastName }</p>
-                                <p><strong>Feedback:</strong> { feedbackInfo?.description }</p>
+                                {/* User Profile Section */ }
+                                <div className="d-flex align-items-center mb-3">
+                                    <Image
+                                        src={ UPLOAD_FILE_URL + "" + feedbackInfo?.user_id?.profileImage || "/default-avatar.png" }
+                                        roundedCircle
+                                        width={ 50 }
+                                        height={ 50 }
+                                        className="me-3"
+                                    />
+                                    <div>
+                                        <h6 className="mb-0">
+                                            { feedbackInfo?.user_id?.firstName } { feedbackInfo?.user_id?.lastName }
+                                        </h6>
+                                        <small className="text-muted">
+                                            { new Date(feedbackInfo?.create_at).toLocaleDateString() }
+                                        </small>
+                                    </div>
+                                </div>
+                                <p>{ feedbackInfo?.description }</p>
+                                {/* Replies Section */ }
                                 { feedbackInfo?.replies && feedbackInfo.replies.length > 0 && (
                                     <div className="mb-3">
                                         <h6>Replies</h6>
                                         <ul className="list-group">
                                             { feedbackInfo.replies.map(reply => (
                                                 <li key={ reply._id } className="list-group-item">
-                                                    <div>
-                                                        <strong>
-                                                            { reply.user_id?.firstName } { reply.user_id?.lastName }
-                                                        </strong>{ " " }
-                                                        <span className="text-muted" style={ { fontSize: "0.9em" } }>
-                                                            ({ new Date(reply.create_at).toLocaleString() })
-                                                        </span>
+                                                    <div className="d-flex align-items-center mb-1">
+                                                        <Image
+                                                            src={ UPLOAD_FILE_URL + "" + reply.user_id?.profileImage || "/default-avatar.png" }
+                                                            roundedCircle
+                                                            width={ 35 }
+                                                            height={ 35 }
+                                                            className="me-2"
+                                                        />
+                                                        <div>
+                                                            <strong>
+                                                                { reply.user_id?.firstName } { reply.user_id?.lastName }
+                                                            </strong>{ " " }
+                                                            <span className="text-muted" style={ { fontSize: "0.8em" } }>
+                                                                ({ new Date(reply.create_at).toLocaleString() })
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                     <div>{ reply.description }</div>
                                                 </li>
@@ -328,11 +357,11 @@ export default function FeedbackTable() {
                                     </div>
                                 ) }
                                 <Form.Group>
-                                    <Form.Label>Reply Message</Form.Label>
                                     <Form.Control
                                         as="textarea"
                                         rows={ 3 }
                                         value={ replyMessage }
+                                        placeholder="Type your response here..."
                                         onChange={ e => setReplyMessage(e.target.value) }
                                     />
                                 </Form.Group>
