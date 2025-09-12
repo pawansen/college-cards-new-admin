@@ -1,0 +1,34 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.4rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.process-card h3 {
+    color: #17a2b8;
+    font-weight: bold;
+}
+
+.service-card {
+    transition: transform 0.3s;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+}
+
+footer {
+    background: #222;
+}

@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Card, Table } from 'react-bootstrap';
-import { fetchPromoCode, deletePromoCodeInfo } from "../../store/userSlice";
+import { fetchPackages, deletePackage } from "../../store/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-export default function PromoTable() {
+export default function PackageTable() {
     const dispatch = useDispatch();
-    const { promoCodeList, status } = useSelector((state) => state.user);
+    const { packagesList, status } = useSelector((state) => state.user);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
@@ -22,29 +22,29 @@ export default function PromoTable() {
     const fetchTimeout = React.useRef(null);
 
     useEffect(() => {
-        dispatch(fetchPromoCode({ limit: 10, pageNo: page }));
+        dispatch(fetchPackages({ limit: 10, pageNo: page }));
     }, [dispatch, page]);
 
     // Merge new users into allUsers when usersList changes
     useEffect(() => {
-        if (promoCodeList && promoCodeList.length > 0) {
+        if (packagesList && packagesList.length > 0) {
             setAllUsers(prev => {
                 // Avoid duplicates by _id
                 const existingIds = new Set(prev.map(u => u._id));
-                const newUsers = promoCodeList.filter(u => !existingIds.has(u._id));
+                const newUsers = packagesList.filter(u => !existingIds.has(u._id));
                 return [...prev, ...newUsers];
             });
         }
-    }, [promoCodeList]);
+    }, [packagesList]);
 
     useEffect(() => {
         // If the last fetch returned less than 10, no more data
-        if (promoCodeList.length < 10) {
+        if (packagesList.length < 10) {
             setHasMore(false);
-        } else if (promoCodeList.length === 10) {
+        } else if (packagesList.length === 10) {
             setHasMore(true);
         }
-    }, [promoCodeList]);
+    }, [packagesList]);
 
     const handleScroll = (e) => {
         const { scrollTop, scrollHeight, clientHeight } = e.target;
@@ -60,12 +60,12 @@ export default function PromoTable() {
         }
     };
 
-    const handleDelete = (promo_id) => {
-        dispatch(deletePromoCodeInfo({ promo_id: promo_id }))
+    const handleDelete = (package_id) => {
+        dispatch(deletePackage({ package_id: package_id }))
             .then((result) => {
                 if (result?.payload?.statusCode === 1) {
-                    toast.success("Promo Code deleted successfully!");
-                    dispatch(fetchPromoCode({ limit: 10, pageNo: page }));
+                    toast.success("Packages deleted successfully!");
+                    dispatch(fetchPackages({ limit: 10, pageNo: 1 }));
                     setPage(1);
                     setAllUsers([]);
                 }
@@ -74,7 +74,7 @@ export default function PromoTable() {
 
     const handleEdit = (user) => {
         // handle edit logic
-        window.location.href = `/edit-promocode/${ user.promo_id }`;
+        window.location.href = `/edit-package/${ user._id }`;
     };
 
     return (
@@ -82,24 +82,24 @@ export default function PromoTable() {
             <Col sm={ 12 }>
                 <Card>
                     <Card.Header>
-                        <Card.Title as="h5">Promo Code</Card.Title>
+                        <Card.Title as="h5">Subscriptions</Card.Title>
                     </Card.Header>
                     <Card.Body>
                         <div className="d-flex justify-content-between align-items-center mb-3">
                             <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Search Promo Codes..."
+                                placeholder="Search subscriptions..."
                                 style={ { maxWidth: 250 } }
                             // onChange={handleSearch} // implement search logic if needed
                             />
                             <button
                                 className="btn"
                                 style={ { backgroundColor: "#31434F", color: "#fff" } }
-                                onClick={ () => window.location.href = "/add-promocode" }
+                                onClick={ () => window.location.href = "/add-package" }
                             >
                                 <i className="fas fa-plus me-2"></i>
-                                Create Promo Code
+                                Create Subscription
                             </button>
                         </div>
                     </Card.Body>
@@ -111,29 +111,31 @@ export default function PromoTable() {
                             <Table striped bordered hover className="mb-0 ">
                                 <thead>
                                     <tr>
-                                        <th>Coupon Code</th>
-                                        <th>Discount</th>
-                                        <th>Usage</th>
-                                        <th>Valid Period</th>
+                                        <th>Subscription Name</th>
+                                        <th>Subscription Plan</th>
+                                        <th>Plan Value</th>
+                                        <th>Validation Period</th>
+                                        <th>Date</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     { allUsers.map((cand, idx) => (
-                                        <tr key={ cand.promo_id }>
-                                            <td>{ cand.code }</td>
+                                        <tr key={ cand._id }>
+                                            <td>{ cand.title }</td>
+                                            <td>{ cand.packageType }</td>
                                             <td>${ cand.amount }</td>
-                                            <td>{ 0 + "/" + cand.totalUsageLimit }</td>
-                                            <td>{ new Date(cand.validFrom).toLocaleDateString() } to { new Date(cand.validTo).toLocaleDateString() }</td>
+                                            <td>30 Days</td>
+                                            <td>{ new Date(cand.create_at).toLocaleDateString() }</td>
                                             <td>
                                                 <span
                                                     style={ {
-                                                        color: cand.status === "active" ? "green" : "red",
+                                                        color: cand.isActive ? "green" : "red",
                                                         fontWeight: "bold"
                                                     } }
                                                 >
-                                                    { cand.status === "active" ? "Active" : "Inactive" }
+                                                    { cand.isActive ? "Active" : "Inactive" }
                                                 </span>
                                             </td>
                                             <td>
@@ -146,7 +148,7 @@ export default function PromoTable() {
                                                 </button>
                                                 <button
                                                     className="btn btn-danger btn-sm"
-                                                    onClick={ () => handleDelete(cand.promo_id) }
+                                                    onClick={ () => handleDelete(cand._id) }
                                                     title="Delete"
                                                 >
                                                     <i className="fas fa-trash"></i>

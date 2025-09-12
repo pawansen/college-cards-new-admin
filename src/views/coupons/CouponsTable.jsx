@@ -173,7 +173,7 @@ export default function CouponTable() {
                                                     <img
                                                         src={ cand.logo }
                                                         alt="Starbucks Logo"
-                                                        style={ { width: "60px", marginBottom: "10px" } }
+                                                        style={ { width: "105px", marginBottom: "10px" } }
                                                     />
                                                     <Card.Title>
                                                         { cand.title

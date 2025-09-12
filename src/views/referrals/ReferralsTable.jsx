@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, Card, Table } from 'react-bootstrap';
+import { Row, Col, Card, Table, Container, Tabs, Tab } from 'react-bootstrap';
 import { fetchUsers } from "../../store/userSlice";
 export default function ReferralsTable() {
     const dispatch = useDispatch();
@@ -71,82 +71,88 @@ export default function ReferralsTable() {
             <Col sm={ 12 }>
                 <Card>
                     <Card.Header>
-                        <Card.Title as="h5">Users</Card.Title>
+                        <Card.Title as="h5">Referrals</Card.Title>
                     </Card.Header>
                     <Card.Body>
-                        <div
-                            style={ { maxHeight: 400, overflowY: "auto" } }
-                            onScroll={ handleScroll }
-                        >
-                            <Table striped bordered hover className="mb-0 ">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Mobile</th>
-                                        <th>Subscribe</th>
-                                        <th>Referral Code</th>
-                                        <th>Date</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    { allUsers.map((cand, idx) => (
-                                        <tr key={ cand._id }>
-                                            <td>{ cand.firstName + " " + cand.lastName }</td>
-                                            <td>{ cand.email }</td>
-                                            <td>{ cand.mobile }</td>
-                                            <td>
-                                                {/* Replace "No" with icon */ }
-                                                <span title="Not Subscribed" style={ { color: "#dc3545" } }>
-                                                    <i className="bi bi-x-circle-fill"></i>
-                                                </span>
-                                            </td>
-                                            <td>{ cand.referralCode }</td>
-                                            <td>{ new Date(cand.createDate).toLocaleDateString() }</td>
-                                            <td>
-                                                <select
-                                                    value={ cand.isActive }
-                                                    onChange={ (e) => handleStatusChange(cand._id, e.target.value === "true") }
-                                                    className="status-dropdown"
-                                                >
-                                                    { statusOptions.map((status) => (
-                                                        <option key={ status.value } value={ status.value }>
-                                                            { status.label }
-                                                        </option>
-                                                    )) }
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <button
-                                                    className="btn btn-info btn-sm me-1"
-                                                    onClick={ () => {/* handle view logic */ } }
-                                                    title="View"
-                                                >
-                                                    <i className="fas fa-eye"></i>
-                                                </button>
-                                                <button
-                                                    className="btn btn-warning btn-sm me-1"
-                                                    onClick={ () => handleEdit(cand) }
-                                                    title="Edit"
-                                                >
-                                                    <i className="fas fa-edit"></i>
-                                                </button>
-                                                <button
-                                                    className="btn btn-danger btn-sm"
-                                                    onClick={ () => setConfirmDeleteId(cand._id) }
-                                                    title="Delete"
-                                                >
-                                                    <i className="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    )) }
-                                </tbody>
-                            </Table>
-                            { loading && <div>Loading...</div> }
-                        </div>
+                        <Container className="py-4">
+                            {/* Top Summary Cards */ }
+                            <Row className="g-3 mb-4">
+                                <Col md={ 3 } sm={ 6 }>
+                                    <Card className="shadow-sm text-center">
+                                        <Card.Body>
+                                            <h6 className="text-muted">Total Referrals</h6>
+                                            <h3>00</h3>
+                                            <small className="text-success">⬆ 12% From last Year</small>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                                <Col md={ 3 } sm={ 6 }>
+                                    <Card className="shadow-sm text-center">
+                                        <Card.Body>
+                                            <h6 className="text-muted">Successful Referrals</h6>
+                                            <h3>00</h3>
+                                            <small className="text-success">⬆ 12% From last Year</small>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                                <Col md={ 3 } sm={ 6 }>
+                                    <Card className="shadow-sm text-center">
+                                        <Card.Body>
+                                            <h6 className="text-muted">Pending Referrals</h6>
+                                            <h3>00</h3>
+                                            <small className="text-success">⬆ 12% From last Year</small>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                                <Col md={ 3 } sm={ 6 }>
+                                    <Card className="shadow-sm text-center">
+                                        <Card.Body>
+                                            <h6 className="text-muted">Revenue Generated</h6>
+                                            <h3>$00</h3>
+                                            <small className="text-success">⬆ 12% From last Year</small>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                            </Row>
+
+                            {/* Referral Management Section */ }
+                            <Card className="shadow-sm">
+                                <Card.Body>
+                                    <h5 className="fw-bold mb-3">Referral Management</h5>
+
+                                    {/* Tabs */ }
+                                    <Tabs defaultActiveKey="users" className="mb-4">
+                                        <Tab eventKey="users" title="Referred Users List">
+                                            {/* Empty State */ }
+                                            <div className="text-center py-5">
+                                                <img
+                                                    src="/empty-referrals.png" // replace with your image path
+                                                    alt="No Referrals"
+                                                    style={ { maxWidth: "250px" } }
+                                                    className="mb-3"
+                                                />
+                                                <h5 className="fw-bold">No Referrals Yet</h5>
+                                                <p className="text-muted">
+                                                    Users haven’t shared any referral links yet. Once they start
+                                                    referring friends, you’ll be able to track referral activity
+                                                    and rewards here.
+                                                </p>
+                                            </div>
+                                        </Tab>
+                                        <Tab eventKey="stats" title="Referrals Stats">
+                                            <p className="text-muted text-center my-5">
+                                                Stats will appear here.
+                                            </p>
+                                        </Tab>
+                                        <Tab eventKey="rewards" title="Reward Earn">
+                                            <p className="text-muted text-center my-5">
+                                                Reward details will appear here.
+                                            </p>
+                                        </Tab>
+                                    </Tabs>
+                                </Card.Body>
+                            </Card>
+                        </Container>
                     </Card.Body>
                 </Card>
             </Col>
