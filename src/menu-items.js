@@ -56,46 +56,46 @@ const menuItems = {
           iconname: 'location_city',
           url: '/cities'
         },
-        {
-          id: 'user-subscriptions',
-          title: 'User Subscriptions',
-          type: 'item',
-          icon: 'material-icons-two-tone',
-          iconname: 'subscriptions',
-          url: '/user-subscriptions'
-        },
-        {
-          id: 'packages',
-          title: 'Subscription Plan',
-          type: 'item',
-          icon: 'material-icons-two-tone',
-          iconname: 'subscriptions',
-          url: '/packages'
-        },
-        {
-          id: 'feedback',
-          title: 'Feedback',
-          type: 'item',
-          icon: 'material-icons-two-tone',
-          iconname: 'feedback',
-          url: '/feedback'
-        },
-        {
-          id: 'promocode',
-          title: 'Promo Code',
-          type: 'item',
-          icon: 'material-icons-two-tone',
-          iconname: 'confirmation_number',
-          url: '/promocode'
-        },
-        {
-          id: 'referrals',
-          title: 'Referrals',
-          type: 'item',
-          icon: 'material-icons-two-tone',
-          iconname: 'group_add',
-          url: '/referrals'
-        },
+        // {
+        //   id: 'user-subscriptions',
+        //   title: 'User Subscriptions',
+        //   type: 'item',
+        //   icon: 'material-icons-two-tone',
+        //   iconname: 'subscriptions',
+        //   url: '/user-subscriptions'
+        // },
+        // {
+        //   id: 'packages',
+        //   title: 'Subscription Plan',
+        //   type: 'item',
+        //   icon: 'material-icons-two-tone',
+        //   iconname: 'subscriptions',
+        //   url: '/packages'
+        // },
+        // {
+        //   id: 'feedback',
+        //   title: 'Feedback',
+        //   type: 'item',
+        //   icon: 'material-icons-two-tone',
+        //   iconname: 'feedback',
+        //   url: '/feedback'
+        // },
+        // {
+        //   id: 'promocode',
+        //   title: 'Promo Code',
+        //   type: 'item',
+        //   icon: 'material-icons-two-tone',
+        //   iconname: 'confirmation_number',
+        //   url: '/promocode'
+        // },
+        // {
+        //   id: 'referrals',
+        //   title: 'Referrals',
+        //   type: 'item',
+        //   icon: 'material-icons-two-tone',
+        //   iconname: 'group_add',
+        //   url: '/referrals'
+        // },
 
         {
           id: 'notification',
@@ -105,22 +105,22 @@ const menuItems = {
           iconname: 'notifications',
           url: '/notification'
         },
-        {
-          id: 'version-update',
-          title: 'Version Update',
-          type: 'item',
-          icon: 'material-icons-two-tone',
-          iconname: 'update',
-          url: '/version-update'
-        },
-        {
-          id: 'settings',
-          title: 'Content Settings',
-          type: 'item',
-          icon: 'material-icons-two-tone',
-          iconname: 'settings',
-          url: '/settings'
-        },
+        // {
+        //   id: 'version-update',
+        //   title: 'Version Update',
+        //   type: 'item',
+        //   icon: 'material-icons-two-tone',
+        //   iconname: 'update',
+        //   url: '/version-update'
+        // },
+        // {
+        //   id: 'settings',
+        //   title: 'Content Settings',
+        //   type: 'item',
+        //   icon: 'material-icons-two-tone',
+        //   iconname: 'settings',
+        //   url: '/settings'
+        // },
         // {
         //   id: 'typography',
         //   title: 'Typography',
