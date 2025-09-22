@@ -148,15 +148,37 @@ export default function UserTable() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    { allUsers.map((cand, idx) => (
-                                        <tr key={ cand._id }>
+                                    { allUsers.map((cand, idx) => {
+                                        let statusColor = "";
+                                        switch (cand.subscriptions) {
+                                            case "active":
+                                                statusColor = "green";
+                                                break;
+                                            case "inactive":
+                                                statusColor = "gray";
+                                                break;
+                                            case "cancelled":
+                                                statusColor = "red";
+                                                break;
+                                            case "Inactive":
+                                                statusColor = "red";
+                                                break;
+                                            case "expired":
+                                                statusColor = "orange";
+                                                break;
+                                            case "cancelledUsedFullMonth":
+                                                statusColor = "purple";
+                                                break;
+                                            default:
+                                                statusColor = "black";
+                                        }
+                                        return (<tr key={ cand._id }>
                                             <td>{ cand.firstName + " " + cand.lastName }</td>
                                             <td>{ cand.email }</td>
                                             <td>{ cand.mobile }</td>
                                             <td>
-                                                {/* Replace "No" with icon */ }
-                                                <span title="Not Subscribed" style={ { color: "#dc3545" } }>
-                                                    <i className="bi bi-x-circle-fill"></i>
+                                                <span style={ { color: statusColor } }>
+                                                    { cand.subscriptions }
                                                 </span>
                                             </td>
                                             <td>{ cand.referralCode }</td>
@@ -182,13 +204,6 @@ export default function UserTable() {
                                                 >
                                                     <i className="fas fa-eye"></i>
                                                 </button>
-                                                {/* <button
-                                                    className="btn btn-warning btn-sm me-1"
-                                                    onClick={ () => handleEdit(cand) }
-                                                    title="Edit"
-                                                >
-                                                    <i className="fas fa-edit"></i>
-                                                </button> */}
                                                 <button
                                                     className="btn btn-danger btn-sm"
                                                     onClick={ () => handleStatusDeleteChange(cand._id) }
@@ -197,8 +212,8 @@ export default function UserTable() {
                                                     <i className="fas fa-trash"></i>
                                                 </button>
                                             </td>
-                                        </tr>
-                                    )) }
+                                        </tr>)
+                                    }) }
                                 </tbody>
                             </Table>
                             { loading && <div>Loading...</div> }

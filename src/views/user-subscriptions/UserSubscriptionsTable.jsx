@@ -113,9 +113,9 @@ export default function UserSubscriptionsTable() {
                                         }
                                         return (
                                             <tr key={ cand._id }>
-                                                <td>{ cand.user_id?.firstName } { cand.user_id?.lastName }</td>
+                                                <td>{ cand.user?.firstName } { cand.user?.lastName }</td>
                                                 <td>{ cand?.cityList[0].name }</td>
-                                                <td>{ cand.user_id?.email }</td>
+                                                <td>{ cand.user?.email }</td>
                                                 <td>${ cand.amount }</td>
                                                 <td>{ new Date(cand.startDate).toLocaleDateString() }</td>
                                                 <td>

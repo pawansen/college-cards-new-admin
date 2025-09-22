@@ -56,14 +56,14 @@ const menuItems = {
           iconname: 'location_city',
           url: '/cities'
         },
-        // {
-        //   id: 'user-subscriptions',
-        //   title: 'User Subscriptions',
-        //   type: 'item',
-        //   icon: 'material-icons-two-tone',
-        //   iconname: 'subscriptions',
-        //   url: '/user-subscriptions'
-        // },
+        {
+          id: 'user-subscriptions',
+          title: 'User Subscriptions',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'subscriptions',
+          url: '/user-subscriptions'
+        },
         {
           id: 'packages',
           title: 'Subscription Plan',
@@ -72,30 +72,30 @@ const menuItems = {
           iconname: 'subscriptions',
           url: '/packages'
         },
-        // {
-        //   id: 'feedback',
-        //   title: 'Feedback',
-        //   type: 'item',
-        //   icon: 'material-icons-two-tone',
-        //   iconname: 'feedback',
-        //   url: '/feedback'
-        // },
-        // {
-        //   id: 'promocode',
-        //   title: 'Promo Code',
-        //   type: 'item',
-        //   icon: 'material-icons-two-tone',
-        //   iconname: 'confirmation_number',
-        //   url: '/promocode'
-        // },
-        // {
-        //   id: 'referrals',
-        //   title: 'Referrals',
-        //   type: 'item',
-        //   icon: 'material-icons-two-tone',
-        //   iconname: 'group_add',
-        //   url: '/referrals'
-        // },
+        {
+          id: 'feedback',
+          title: 'Feedback',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'feedback',
+          url: '/feedback'
+        },
+        {
+          id: 'promocode',
+          title: 'Promo Code',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'confirmation_number',
+          url: '/promocode'
+        },
+        {
+          id: 'referrals',
+          title: 'Referrals',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'group_add',
+          url: '/referrals'
+        },
 
         {
           id: 'notification',
@@ -105,14 +105,14 @@ const menuItems = {
           iconname: 'notifications',
           url: '/notification'
         },
-        // {
-        //   id: 'version-update',
-        //   title: 'Version Update',
-        //   type: 'item',
-        //   icon: 'material-icons-two-tone',
-        //   iconname: 'update',
-        //   url: '/version-update'
-        // },
+        {
+          id: 'version-update',
+          title: 'Version Update',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'update',
+          url: '/version-update'
+        },
         {
           id: 'settings',
           title: 'Content Settings',
@@ -121,6 +121,49 @@ const menuItems = {
           iconname: 'settings',
           url: '/settings'
         },
+        // {
+        //   id: 'typography',
+        //   title: 'Typography',
+        //   type: 'item',
+        //   icon: 'material-icons-two-tone',
+        //   iconname: 'text_fields',
+        //   url: '/typography'
+        // },
+        // {
+        //   id: 'color',
+        //   title: 'Color',
+        //   type: 'item',
+        //   icon: 'material-icons-two-tone',
+        //   iconname: 'color_lens',
+        //   url: '/color'
+        // },
+        // {
+        //   id: 'icons',
+        //   title: 'Icons',
+        //   type: 'collapse',
+        //   icon: 'material-icons-two-tone',
+        //   iconname: 'history_edu',
+        //   children: [
+        //     {
+        //       id: 'feather',
+        //       title: 'Feather',
+        //       type: 'item',
+        //       url: '/icons/Feather'
+        //     },
+        //     {
+        //       id: 'font-awesome-5',
+        //       title: 'Font Awesome',
+        //       type: 'item',
+        //       url: '/icons/font-awesome-5'
+        //     },
+        //     {
+        //       id: 'material',
+        //       title: 'Material',
+        //       type: 'item',
+        //       url: '/icons/material'
+        //     }
+        //   ]
+        // }
       ]
     },
     // {

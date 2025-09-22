@@ -42,8 +42,10 @@ export const apiPath = {
     updateVersionAll: '/update-version'
 };
 
-//export const APP_URL = "http://13.235.91.193:3009/v1/admin";
-//export const APP_URL = "http://localhost:3009/v1/admin";
+export const APP_URL = "http://13.235.91.193:3009/v1/admin";
+export const APP_URL = "http://localhost:3009/v1/admin";
 //export const UPLOAD_FILE_URL = "http://13.235.91.193:3009";
-export const UPLOAD_FILE_URL = "https://api.mycollegecards.com";
-export const APP_URL = "https://api.mycollegecards.com/v1/admin";
+// export const UPLOAD_FILE_URL = "https://api.mycollegecards.com";
+// export const APP_URL = "https://api.mycollegecards.com/v1/admin";
+// export const UPLOAD_FILE_URL = "http://localhost:3009";
+// export const APP_URL = "http://localhost:3009/v1/admin";

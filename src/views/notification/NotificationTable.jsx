@@ -137,6 +137,14 @@ export default function NotificationTable() {
                                         />
                                     </Col>
                                     <Col>
+                                        <div className="d-flex align-items-center mb-1">
+                                            <span className="fw-semibold">
+                                                { n.user?.firstName } { n.user?.lastName }
+                                            </span>
+                                            <span className="text-muted small ms-2">
+                                                (     { n.user?.email })
+                                            </span>
+                                        </div>
                                         <div className="fw-bold">{ n.title }</div>
                                         <div className="text-muted small">{ n.message }</div>
                                     </Col>

@@ -48,7 +48,9 @@ export default function DashSales() {
   const productCards = [
     { title: 'Total Revenue', primaryText: '$' + (dashboardInfo?.totalAmount ? Number(dashboardInfo.totalAmount).toFixed(2) : '0.00') },
     { title: 'Total Users', primaryText: dashboardInfo?.totalUsers },
-    { title: 'Active Subscriptions', primaryText: dashboardInfo?.totalSubscriptions },
+    { title: 'Total Subscriptions', primaryText: dashboardInfo?.totalSubscriptions },
+    { title: 'Active Subscriptions', primaryText: dashboardInfo?.totalActiveSubscriptions },
+    { title: 'Inactive Subscriptions', primaryText: dashboardInfo?.totalInactiveSubscriptions },
     { title: 'Total Coupons', primaryText: dashboardInfo?.totalCoupons },
     { title: 'Total Feedbacks', primaryText: dashboardInfo?.totalFeedbacks }
   ];
