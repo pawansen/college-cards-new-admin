@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Card, Table } from 'react-bootstrap';
-import { fetchUsers, updateUserStatus } from "../../store/userSlice";
+import { fetchUsers, updateUserStatus, deletedUsers } from "../../store/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 export default function UserTable() {
@@ -89,6 +89,35 @@ export default function UserTable() {
         );
     };
 
+    const handleDeleteUser = (user_id) => {
+        toast.info(
+            <div style={ { textAlign: "left" } }>
+                <div>Are you sure you want to hard delete the user? This action cannot be undone.</div>
+                <div style={ { marginTop: 12 } }>
+                    <button
+                        onClick={ () => {
+                            toast.dismiss();
+                            dispatch(deletedUsers({ user_id }))
+                                .then((result) => {
+                                    if (result?.payload?.statusCode === 1) {
+                                        toast.success("User status updated successfully!");
+                                        setPage(1);
+                                        setAllUsers([]);
+                                        dispatch(fetchUsers({ limit: 10, pageNo: 1 }));
+                                    }
+                                });
+                        } }
+                        style={ { marginRight: 8 } }
+                    >
+                        Yes
+                    </button>
+                    <button onClick={ () => toast.dismiss() }>No</button>
+                </div>
+            </div>,
+            { autoClose: false }
+        );
+    };
+
     const handleStatusDeleteChange = (user_id) => {
         toast.info(
             <div style={ { textAlign: "left" } }>
@@ -100,7 +129,7 @@ export default function UserTable() {
                             dispatch(updateUserStatus({ user_id, delete: 'yes' }))
                                 .then((result) => {
                                     if (result?.payload?.statusCode === 1) {
-                                        toast.success("User status updated successfully!");
+                                        toast.success("User deleted successfully!");
                                         setPage(1);
                                         setAllUsers([]);
                                         dispatch(fetchUsers({ limit: 10, pageNo: 1 }));
@@ -143,6 +172,7 @@ export default function UserTable() {
                                         <th>Subscribe</th>
                                         <th>Referral Code</th>
                                         <th>Date</th>
+                                        <th>User Status</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -172,6 +202,24 @@ export default function UserTable() {
                                             default:
                                                 statusColor = "black";
                                         }
+                                        let statusColorText = "";
+                                        switch (cand.status_text) {
+                                            case "Subscribed":
+                                                statusColorText = "green";
+                                                break;
+                                            case "Signup Completed":
+                                                statusColorText = "purple";
+                                                break;
+                                            case "Deleted":
+                                                statusColorText = "red";
+                                                break;
+                                            case "Subscription Expired":
+                                                statusColorText = "orange";
+                                                break;
+
+                                            default:
+                                                statusColorText = "black";
+                                        }
                                         return (<tr key={ cand._id }>
                                             <td>{ cand.firstName + " " + cand.lastName }</td>
                                             <td>{ cand.email }</td>
@@ -183,6 +231,11 @@ export default function UserTable() {
                                             </td>
                                             <td>{ cand.referralCode }</td>
                                             <td>{ new Date(cand.createDate).toLocaleDateString() }</td>
+                                            <td>
+                                                <span style={ { color: statusColorText } }>
+                                                    { cand.status_text }
+                                                </span>
+                                            </td>
                                             <td>
                                                 <select
                                                     value={ cand.isActive }
@@ -205,11 +258,19 @@ export default function UserTable() {
                                                     <i className="fas fa-eye"></i>
                                                 </button>
                                                 <button
-                                                    className="btn btn-danger btn-sm"
+                                                    className="btn btn-warning btn-sm"
                                                     onClick={ () => handleStatusDeleteChange(cand._id) }
                                                     title="Delete"
                                                 >
                                                     <i className="fas fa-trash"></i>
+                                                </button>
+
+                                                <button
+                                                    className="btn btn-danger btn-sm"
+                                                    onClick={ () => handleDeleteUser(cand._id) }
+                                                    title="Delete"
+                                                >
+                                                    <i className="fas fa-trash"></i> Hard Delete
                                                 </button>
                                             </td>
                                         </tr>)

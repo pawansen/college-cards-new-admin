@@ -58,12 +58,53 @@ export default function UserSubscriptionsTable() {
         }
     };
 
+    // Debounced search handler
+    const searchTimeout = useRef(null);
+    const handleSearch = (e) => {
+        const query = e.target.value.toLowerCase();
+        if (searchTimeout.current) {
+            clearTimeout(searchTimeout.current);
+        }
+        searchTimeout.current = setTimeout(() => {
+            dispatch(fetchUserSubscriptions({ limit: 10, pageNo: 1, keyward: query }));
+            setPage(1);
+            setAllUsers([]); // Reset users for new search
+        }, 1000);
+    };
+
     const handleStatusChange = (userId, isActive) => {
         // dispatch(updateUserStatus({ userId, isActive }));
     };
 
     const handleEdit = (user) => {
         // handle edit logic
+    };
+
+    // Date filter state
+    const [fromDate, setFromDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+
+    // Handle date filter change
+    const handleDateChange = (type, value) => {
+        if (type === "from") setFromDate(value);
+        if (type === "end") setEndDate(value);
+
+        // Debounce API call
+        if (searchTimeout.current) {
+            clearTimeout(searchTimeout.current);
+        }
+        searchTimeout.current = setTimeout(() => {
+            dispatch(
+                fetchUserSubscriptions({
+                    limit: 10,
+                    pageNo: 1,
+                    fromDate: type === "from" ? value : fromDate,
+                    endDate: type === "end" ? value : endDate,
+                })
+            );
+            setPage(1);
+            setAllUsers([]);
+        }, 500);
     };
 
     return (
@@ -74,6 +115,33 @@ export default function UserSubscriptionsTable() {
                         <Card.Title as="h5">User Subscriptions</Card.Title>
                     </Card.Header>
                     <Card.Body>
+                        <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+                            <div className="d-flex align-items-center" style={ { gap: 12 } }>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Search users..."
+                                    style={ { maxWidth: 250 } }
+                                    onChange={ handleSearch }
+                                />
+                                <input
+                                    type="date"
+                                    className="form-control"
+                                    style={ { maxWidth: 160 } }
+                                    value={ fromDate }
+                                    onChange={ e => handleDateChange("from", e.target.value) }
+                                    placeholder="From date"
+                                />
+                                <input
+                                    type="date"
+                                    className="form-control"
+                                    style={ { maxWidth: 160 } }
+                                    value={ endDate }
+                                    onChange={ e => handleDateChange("end", e.target.value) }
+                                    placeholder="End date"
+                                />
+                            </div>
+                        </div>
                         <div
                             style={ { maxHeight: 400, overflowY: "auto" } }
                             onScroll={ handleScroll }

@@ -48,11 +48,23 @@ export default function DashSales() {
   const productCards = [
     { title: 'Total Revenue', primaryText: '$' + (dashboardInfo?.totalAmount ? Number(dashboardInfo.totalAmount).toFixed(2) : '0.00') },
     { title: 'Total Users', primaryText: dashboardInfo?.totalUsers },
-    { title: 'Total Subscriptions', primaryText: dashboardInfo?.totalSubscriptions },
-    { title: 'Active Subscriptions', primaryText: dashboardInfo?.totalActiveSubscriptions },
-    { title: 'Inactive Subscriptions', primaryText: dashboardInfo?.totalInactiveSubscriptions },
+    { title: 'Total Deleted Users', primaryText: dashboardInfo?.totalDeletedUsers },
+    { title: 'Total Active Users', primaryText: dashboardInfo?.totalActiveUsers },
+    { title: 'Total Inactive Users', primaryText: dashboardInfo?.totalInactiveUsers },
+    { title: 'Signup Users Count', primaryText: dashboardInfo?.signupUsersCount },
     { title: 'Total Coupons', primaryText: dashboardInfo?.totalCoupons },
-    { title: 'Total Feedbacks', primaryText: dashboardInfo?.totalFeedbacks }
+    { title: 'Total Packages', primaryText: dashboardInfo?.totalPackages },
+    { title: 'Total Promo Codes', primaryText: dashboardInfo?.totalPromoCodes },
+    { title: 'Total Cities', primaryText: dashboardInfo?.totalCities },
+    { title: 'Total Feedbacks', primaryText: dashboardInfo?.totalFeedbacks },
+    { title: 'Total Replay Remaining Feedbacks', primaryText: dashboardInfo?.totalReplayRemainingFeedbacks },
+    { title: 'Total Subscriptions', primaryText: dashboardInfo?.totalSubscriptions },
+    { title: 'Total Active Subscriptions', primaryText: dashboardInfo?.totalActiveSubscriptions },
+    { title: 'Total Inactive Subscriptions', primaryText: dashboardInfo?.totalInactiveSubscriptions },
+    { title: 'All Subscribed Users Count', primaryText: dashboardInfo?.allSubscribedUsersCount },
+    { title: 'Total Expired Subscriptions', primaryText: dashboardInfo?.totalExpiredSubscriptions },
+    { title: 'Total Cancelled Subscriptions', primaryText: dashboardInfo?.totalCancelledSubscriptions },
+    { title: 'Total Self Cancelled Subscriptions', primaryText: dashboardInfo?.totalSelfCancelledSubscriptionsCount }
   ];
 
   // Define colors for each card

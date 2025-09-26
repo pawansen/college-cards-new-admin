@@ -87,6 +87,8 @@ export default function AddPackage() {
                                                     <Form.Label>Subscription Plan</Form.Label>
                                                     <Form.Select { ...register("packageType") }>
                                                         <option value="">Select plan</option>
+                                                        <option value="day">1 Day</option>
+                                                        <option value="week">1 Week</option>
                                                         <option value="monthly">Monthly</option>
                                                         <option value="yearly">Yearly</option>
                                                     </Form.Select>

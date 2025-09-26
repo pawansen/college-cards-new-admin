@@ -39,3 +39,4 @@ export const addReplayOnFeedback = (reqPayload) => commonClient.post(apiPath.add
 export const createContent = (reqPayload) => commonClient.post(apiPath.createContent, reqPayload);
 export const getVersion = (reqPayload) => commonClient.get(apiPath.getVersion, { params: reqPayload });
 export const updateVersionAll = (reqPayload) => commonClient.post(apiPath.updateVersionAll, reqPayload);
+export const deletedUsersInfo = (reqPayload) => commonClient.post(apiPath.deleteUser, reqPayload);

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
     login, getUsers, getDashboard, getCoupons, getCities, createCoupon, getPromoCode, getCouponInfo, deleteCoupons, updateUserStatusinfo, getUserInfo,
-    getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity, getContent, getUserSubscriptions, getPackages, createPackage, getPackageInfo, updatePackageInfo, deletePackageInfo, addPromoCode, getPromoCodeInfo, updatePromoCode, deletePromoCode, getNotifications, deleteNotifications, getFeedback, deleteFeedbacks, getReplayFeedbackInfo, addReplayOnFeedback, createContent, getVersion, updateVersionAll
+    getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity, getContent, getUserSubscriptions, getPackages, createPackage, getPackageInfo, updatePackageInfo, deletePackageInfo, addPromoCode, getPromoCodeInfo, updatePromoCode, deletePromoCode, getNotifications, deleteNotifications, getFeedback, deleteFeedbacks, getReplayFeedbackInfo, addReplayOnFeedback, createContent, getVersion, updateVersionAll, deletedUsersInfo
 } from "../services/main";
 
 export const fetchLogin = createAsyncThunk(
@@ -136,6 +136,20 @@ export const updateUserStatus = createAsyncThunk(
     async (reqPayload, { rejectWithValue }) => {
         try {
             const response = await updateUserStatusinfo(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const deletedUsers = createAsyncThunk(
+    "user/deletedUsers",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await deletedUsersInfo(reqPayload);
             return response?.data;
         } catch (error) {
             return rejectWithValue({

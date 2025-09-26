@@ -39,7 +39,8 @@ export const apiPath = {
     addReplayOnFeedback: '/add-feedback-replay',
     createContent: '/add-content',
     getVersion: '/get-version',
-    updateVersionAll: '/update-version'
+    updateVersionAll: '/update-version',
+    deleteUser: '/delete-user'
 };
 
 export const APP_URL = "http://13.235.91.193:3009/v1/admin";
