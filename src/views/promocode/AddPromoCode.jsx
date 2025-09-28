@@ -26,7 +26,8 @@ export default function AddPromocode() {
     const dispatch = useDispatch();
     const { allowCitiesList } = useSelector((state) => state.user);
     const [addresses, setAddresses] = useState([]);
-    const [date] = useState(new Date().toLocaleDateString("en-GB"));
+    // Today's date in yyyy-mm-dd format for min attribute
+    const todayStr = new Date().toISOString().split('T')[0];
     const [initState, setInitState] = useState(false);
 
     const {
@@ -50,6 +51,10 @@ export default function AddPromocode() {
     });
     const onSubmit = async (data) => {
         try {
+            if (new Date(data.validTo) < new Date(data.validFrom)) {
+                toast.error("Valid To date cannot be before Valid From date.");
+                return;
+            }
             dispatch(createPromoCode(data))
                 .then((result) => {
                     if (result?.payload?.statusCode === 1) {
@@ -161,6 +166,7 @@ export default function AddPromocode() {
                                                     <Form.Label>Valid From</Form.Label>
                                                     <Form.Control
                                                         type="date"
+                                                        min={ todayStr }
                                                         { ...register("validFrom") }
                                                     />
                                                     { errors.validFrom && (
@@ -173,6 +179,7 @@ export default function AddPromocode() {
                                                     <Form.Label>Valid To</Form.Label>
                                                     <Form.Control
                                                         type="date"
+                                                        min={ todayStr }
                                                         { ...register("validTo") }
                                                     />
                                                     { errors.validTo && (
