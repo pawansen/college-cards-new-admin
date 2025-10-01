@@ -181,7 +181,7 @@ export default function CouponTable() {
                                                             : "" }
                                                     </Card.Title>
                                                     <Card.Subtitle className="mb-2" style={ { fontSize: "1.2rem", fontWeight: "bold", color: "#31434f" } }>
-                                                        { cand.amount }% Off
+                                                        { cand.amount }
                                                     </Card.Subtitle>
                                                     { Array.isArray(cand.address) && cand.address.length > 0 ? (
                                                         <p className="text-muted mb-1" style={ { fontSize: "0.85rem", fontWeight: "bold" } }>

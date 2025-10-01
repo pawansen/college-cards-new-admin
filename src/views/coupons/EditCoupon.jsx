@@ -225,6 +225,26 @@ export default function EditCoupon() {
                                                 <div className="text-danger mb-2" style={ { textAlign: 'left', fontSize: '0.9em' } }>{ errors.discount.message }</div>
                                             ) }
                                         </Form.Group>
+                                        { addresses.length > 0 && (
+                                            <div className="mb-3">
+                                                <ul className="list-group">
+                                                    { addresses.map((addr, idx) => (
+                                                        <li key={ idx } className="list-group-item d-flex justify-content-between align-items-center">
+                                                            <span>{ addr }</span>
+                                                            <Button
+                                                                variant="outline-danger"
+                                                                size="sm"
+                                                                onClick={ () => {
+                                                                    setAddresses(addresses.filter((_, i) => i !== idx));
+                                                                } }
+                                                            >
+                                                                Remove
+                                                            </Button>
+                                                        </li>
+                                                    )) }
+                                                </ul>
+                                            </div>
+                                        ) }
 
                                         <InputGroup className="mb-3">
                                             <Form.Control

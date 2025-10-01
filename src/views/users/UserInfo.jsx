@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import profileImage from '../../assets/images/profile.png';
-import { fetchUserInfo, updateUserStatus } from "../../store/userSlice";
+import { fetchUserInfo, updateUserStatus, deletedUsers } from "../../store/userSlice";
 
 export default function UserInfo() {
     const dispatch = useDispatch();
@@ -23,6 +23,33 @@ export default function UserInfo() {
             setInitState(true);
         }
     }, [dispatch, initState, user_id]);
+
+    const handleDeleteUser = () => {
+        toast.info(
+            <div style={ { textAlign: "left" } }>
+                <div>Are you sure you want to hard delete the user? This action cannot be undone.</div>
+                <div style={ { marginTop: 12 } }>
+                    <button
+                        onClick={ () => {
+                            toast.dismiss();
+                            dispatch(deletedUsers({ user_id: userDetailInfo?._id }))
+                                .then((result) => {
+                                    if (result?.payload?.statusCode === 1) {
+                                        toast.success("User deleted successfully!");
+                                        window.history.back();
+                                    }
+                                });
+                        } }
+                        style={ { marginRight: 8 } }
+                    >
+                        Yes
+                    </button>
+                    <button onClick={ () => toast.dismiss() }>No</button>
+                </div>
+            </div>,
+            { autoClose: false }
+        );
+    };
 
     const handleStatusDeleteChange = () => {
         toast.info(
@@ -87,6 +114,11 @@ export default function UserInfo() {
                                     Delete User
                                 </Button>
                             </Col>
+                            <Col md="auto">
+                                <Button variant="outline-danger" size="sm" onClick={ handleDeleteUser }>
+                                    Hard Delete User
+                                </Button>
+                            </Col>
                         </Row>
 
                         {/* Tabs Section */ }
@@ -95,15 +127,15 @@ export default function UserInfo() {
                                 <Nav.Item>
                                     <Nav.Link eventKey="details">User Details</Nav.Link>
                                 </Nav.Item>
-                                {/* <Nav.Item>
+                                <Nav.Item>
                                     <Nav.Link eventKey="subscription">Subscription</Nav.Link>
                                 </Nav.Item>
                                 <Nav.Item>
                                     <Nav.Link eventKey="feedback">Feedback</Nav.Link>
-                                </Nav.Item> */}
-                                {/* <Nav.Item>
+                                </Nav.Item>
+                                <Nav.Item>
                                     <Nav.Link eventKey="reward">Reward Earn</Nav.Link>
-                                </Nav.Item> */}
+                                </Nav.Item>
                             </Nav>
 
                             <Tab.Content className="mt-3">

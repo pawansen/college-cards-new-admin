@@ -111,7 +111,8 @@ export default function PromoTable() {
                             <Table striped bordered hover className="mb-0 ">
                                 <thead>
                                     <tr>
-                                        <th>Coupon Code</th>
+                                        <th>Promo Code</th>
+                                        <th>Promo Code Name</th>
                                         <th>Discount</th>
                                         <th>Usage</th>
                                         <th>Valid Period</th>
@@ -123,6 +124,7 @@ export default function PromoTable() {
                                     { allUsers.map((cand, idx) => (
                                         <tr key={ cand.promo_id }>
                                             <td>{ cand.code }</td>
+                                            <td>{ cand.title }</td>
                                             <td>${ cand.amount }</td>
                                             <td>{ 0 + "/" + cand.totalUsageLimit }</td>
                                             <td>{ new Date(cand.validFrom).toLocaleDateString() } to { new Date(cand.validTo).toLocaleDateString() }</td>
