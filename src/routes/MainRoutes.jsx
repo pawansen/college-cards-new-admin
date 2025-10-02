@@ -32,6 +32,9 @@ const Packages = lazy(() => import('../views/package/PackageTable'));
 const AddPackage = lazy(() => import('../views/package/AddPackage'));
 const EditPackage = lazy(() => import('../views/package/EditPackage'));
 const VersionUpdate = lazy(() => import('../views/version-update/VersionUpdate'));
+const RestaurantsTable = lazy(() => import('../views/restaurants/RestaurantsTable'));
+const AddRestaurants = lazy(() => import('../views/restaurants/AddRestaurants'));
+const EditRestaurants = lazy(() => import('../views/restaurants/EditRestaurants'));
 // const Home = lazy(() => import('../views/web/Home'));
 import PrivateRoute from './PrivateRoute';
 
@@ -119,6 +122,23 @@ const MainRoutes = {
               path: '/edit-promocode/:id',
               element: <EditPromoCode />
             },
+
+
+            {
+              path: '/restaurants-logo',
+              element: <RestaurantsTable />
+            },
+            {
+              path: '/add-restaurant-logo',
+              element: <AddRestaurants />
+            },
+            {
+              // Pass package_id as a URL param
+              path: '/edit-restaurant-logo/:id',
+              element: <EditRestaurants />
+            },
+
+
             {
               path: '/notification',
               element: <Notification />

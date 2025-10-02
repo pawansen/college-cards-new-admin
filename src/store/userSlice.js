@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
     login, getUsers, getDashboard, getCoupons, getCities, createCoupon, getPromoCode, getCouponInfo, deleteCoupons, updateUserStatusinfo, getUserInfo,
-    getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity, getContent, getUserSubscriptions, getPackages, createPackage, getPackageInfo, updatePackageInfo, deletePackageInfo, addPromoCode, getPromoCodeInfo, updatePromoCode, deletePromoCode, getNotifications, deleteNotifications, getFeedback, deleteFeedbacks, getReplayFeedbackInfo, addReplayOnFeedback, createContent, getVersion, updateVersionAll, deletedUsersInfo
+    getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity, getContent, getUserSubscriptions, getPackages, createPackage, getPackageInfo, updatePackageInfo, deletePackageInfo, addPromoCode, getPromoCodeInfo, updatePromoCode, deletePromoCode, getNotifications, deleteNotifications, getFeedback, deleteFeedbacks, getReplayFeedbackInfo, addReplayOnFeedback, createContent, getVersion, updateVersionAll, deletedUsersInfo, getRestaurentsLogo,
+    deleteRestaurantLogoSingle, createRestaurentsLogo
 } from "../services/main";
 
 export const fetchLogin = createAsyncThunk(
@@ -108,6 +109,20 @@ export const fetchPromoCode = createAsyncThunk(
     async (reqPayload, { rejectWithValue }) => {
         try {
             const response = await getPromoCode(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const fetchRestaurentsLogo = createAsyncThunk(
+    "user/fetchRestaurentsLogo",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await getRestaurentsLogo(reqPayload);
             return response?.data;
         } catch (error) {
             return rejectWithValue({
@@ -523,6 +538,34 @@ export const updateVersion = createAsyncThunk(
     }
 );
 
+export const deleteRestaurantLogo = createAsyncThunk(
+    "user/deleteRestaurantLogo",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await deleteRestaurantLogoSingle(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
+export const addRestaurentsLogo = createAsyncThunk(
+    "user/addRestaurentsLogo",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await createRestaurentsLogo(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
 const userSlice = createSlice({
     name: "user",
     initialState: {
@@ -532,6 +575,7 @@ const userSlice = createSlice({
         couponsList: [],
         allowCitiesList: [],
         promoCodeList: [],
+        restaurentsLogoList: [],
         allSubscribeList: [],
         packagesList: [],
         notificationsList: [],
@@ -916,6 +960,16 @@ const userSlice = createSlice({
                 state.status = "succeeded";
             })
             .addCase(updateVersion.rejected, (state) => {
+                state.status = 'failed';
+            })
+            .addCase(fetchRestaurentsLogo.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchRestaurentsLogo.fulfilled, (state, action) => {
+                state.restaurentsLogoList = action.payload?.data || [];
+                state.status = "succeeded";
+            })
+            .addCase(fetchRestaurentsLogo.rejected, (state) => {
                 state.status = 'failed';
             });
     },

@@ -40,3 +40,6 @@ export const createContent = (reqPayload) => commonClient.post(apiPath.createCon
 export const getVersion = (reqPayload) => commonClient.get(apiPath.getVersion, { params: reqPayload });
 export const updateVersionAll = (reqPayload) => commonClient.post(apiPath.updateVersionAll, reqPayload);
 export const deletedUsersInfo = (reqPayload) => commonClient.post(apiPath.deleteUser, reqPayload);
+export const getRestaurentsLogo = (reqPayload) => commonClient.get(apiPath.getRestaurentsLogo, { params: reqPayload });
+export const deleteRestaurantLogoSingle = (reqPayload) => commonClient.post(apiPath.deleteRestaurantLogo, reqPayload);
+export const createRestaurentsLogo = (reqPayload) => commonClientUploadFile.post(apiPath.createRestaurentsLogo, reqPayload);

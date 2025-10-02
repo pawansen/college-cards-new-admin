@@ -14,12 +14,14 @@ export default function VersionUpdate() {
         current: "0",
         newVersion: "0",
         forceUpdate: false,
+        forcePopup: false,
     });
 
     const [ios, setIos] = useState({
         current: "0",
         newVersion: "0",
         forceUpdate: false,
+        forcePopup: false,
     });
 
     const [showModal, setShowModal] = useState(false);
@@ -43,6 +45,8 @@ export default function VersionUpdate() {
                 iosVersion: ios.newVersion,
                 isCompulsoryUpdateIos: ios.forceUpdate ? "yes" : "no",
                 iosVersionPrev: ios.current,
+                forcePopupIos: formData.forcePopup ? "yes" : "no",
+                forcePopupAndroid: formData.forcePopup ? "yes" : "no",
             })).then((action) => {
                 if (action.payload) {
                     toast.success("Android version updated successfully");
@@ -58,6 +62,8 @@ export default function VersionUpdate() {
                 iosVersion: formData.newVersion,
                 isCompulsoryUpdateIos: formData.forceUpdate ? "yes" : "no",
                 iosVersionPrev: formData.current,
+                forcePopupIos: formData.forcePopup ? "yes" : "no",
+                forcePopupAndroid: formData.forcePopup ? "yes" : "no",
             })).then((action) => {
                 if (action.payload) {
                     toast.success("Android version updated successfully");
@@ -77,11 +83,13 @@ export default function VersionUpdate() {
                     current: action.payload?.data?.androidVersionPrev || "0",
                     newVersion: action.payload?.data?.androidVersion || "0",
                     forceUpdate: action.payload?.data?.isCompulsoryUpdateAndroid === "yes",
+                    forcePopup: action.payload?.data?.forcePopupAndroid === "yes",
                 });
                 setIos({
                     current: action.payload?.data?.iosVersionPrev || "0",
                     newVersion: action.payload?.data?.iosVersion || "0",
                     forceUpdate: action.payload?.data?.isCompulsoryUpdateIos === "yes",
+                    forcePopup: action.payload?.data?.forcePopupIos === "yes",
                 });
                 setLastUpdateDate(action.payload?.data?.createDate);
             }
@@ -145,6 +153,16 @@ export default function VersionUpdate() {
                                                     disabled
                                                 />
                                             </div>
+                                            <div className="mb-2">
+                                                <strong>Is Popup Show</strong>
+                                                <Form.Check
+                                                    type="switch"
+                                                    id="android-force-popup"
+                                                    label="Show update popup to users"
+                                                    checked={ android.forcePopup }
+                                                    disabled
+                                                />
+                                            </div>
                                             <p>
                                                 <strong>Status:</strong>{ " " }
                                                 { android.forceUpdate ? (
@@ -188,6 +206,16 @@ export default function VersionUpdate() {
                                                     id="ios-force-update"
                                                     label="Require users to update to continue using the app"
                                                     checked={ ios.forceUpdate }
+                                                    disabled
+                                                />
+                                            </div>
+                                            <div className="mb-2">
+                                                <strong>Is Popup Show</strong>
+                                                <Form.Check
+                                                    type="switch"
+                                                    id="ios-force-popup"
+                                                    label="Show update popup to users"
+                                                    checked={ ios.forcePopup }
                                                     disabled
                                                 />
                                             </div>
@@ -256,6 +284,17 @@ export default function VersionUpdate() {
                                                 checked={ formData.forceUpdate || false }
                                                 onChange={ (e) =>
                                                     setFormData({ ...formData, forceUpdate: e.target.checked })
+                                                }
+                                            />
+                                        </Form.Group>
+                                        <Form.Group>
+                                            <Form.Check
+                                                type="switch"
+                                                id="force-popup"
+                                                label="Is Popup Show"
+                                                checked={ formData.forcePopup || false }
+                                                onChange={ (e) =>
+                                                    setFormData({ ...formData, forcePopup: e.target.checked })
                                                 }
                                             />
                                         </Form.Group>

@@ -89,6 +89,14 @@ const menuItems = {
           url: '/promocode'
         },
         {
+          id: 'restaurants-logo',
+          title: 'Restaurants Logo',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'restaurants_logo',
+          url: '/restaurants-logo'
+        },
+        {
           id: 'referrals',
           title: 'Referrals',
           type: 'item',
