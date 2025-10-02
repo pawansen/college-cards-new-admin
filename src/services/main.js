@@ -43,3 +43,4 @@ export const deletedUsersInfo = (reqPayload) => commonClient.post(apiPath.delete
 export const getRestaurentsLogo = (reqPayload) => commonClient.get(apiPath.getRestaurentsLogo, { params: reqPayload });
 export const deleteRestaurantLogoSingle = (reqPayload) => commonClient.post(apiPath.deleteRestaurantLogo, reqPayload);
 export const createRestaurentsLogo = (reqPayload) => commonClientUploadFile.post(apiPath.createRestaurentsLogo, reqPayload);
+export const findRestaurentsLogoInfo = (reqPayload) => commonClient.get(apiPath.findRestaurentsLogo, { params: reqPayload });

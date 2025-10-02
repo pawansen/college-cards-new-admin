@@ -43,7 +43,8 @@ export const apiPath = {
     deleteUser: '/delete-user',
     getRestaurentsLogo: '/get-logo-restaurents',
     deleteRestaurantLogo: '/delete-logo-restaurents',
-    createRestaurentsLogo: '/add-logo-restaurents'
+    createRestaurentsLogo: '/add-logo-restaurents',
+    findRestaurentsLogo: '/get-logo-restaurents-info'
 };
 
 export const APP_URL = "http://13.233.193.115:3009/v1/admin";
