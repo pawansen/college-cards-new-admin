@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Card, Form, Button, Container } from 'react-bootstrap';
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { addRestaurentsLogo } from "../../store/userSlice";
+import { addRestaurentsLogo, fetchCities, getRestaurentsLogoInfo } from "../../store/userSlice";
 // import your createRestaurant action
 
 const schema = Yup.object().shape({
@@ -21,7 +21,9 @@ const schema = Yup.object().shape({
 export default function EditRestaurants() {
     const dispatch = useDispatch();
     const [logoFile, setLogoFile] = useState(null);
-
+    const { allowCitiesList, getRestaurentsLogoInfoResponse } = useSelector((state) => state.user);
+    const [initState, setInitState] = useState(false);
+    const [initStateSetForm, setInitStateSetForm] = useState(false);
     const {
         register,
         handleSubmit,
@@ -38,6 +40,43 @@ export default function EditRestaurants() {
             status: false,
         },
     });
+    const logo_id = window.location.pathname.split('/').pop();
+    useEffect(() => {
+        if (!initState) {
+            //dispatch(fetchCities());
+            dispatch(getRestaurentsLogoInfo({ logo_id }));
+            setInitState(true);
+        }
+    }, [dispatch, initState]);
+
+
+    useEffect(() => {
+        if (!initStateSetForm && getRestaurentsLogoInfoResponse) {
+            setValue("title", getRestaurentsLogoInfoResponse.title);
+            setValue("description", getRestaurentsLogoInfoResponse.description);
+            // setValue("city_id", getRestaurentsLogoInfoResponse.city_id);
+            setValue("is_display_nine", getRestaurentsLogoInfoResponse.is_display_nine);
+            setValue("is_featured", getRestaurentsLogoInfoResponse.is_featured);
+            setValue("status", getRestaurentsLogoInfoResponse.status);
+
+            dispatch(fetchCities())
+                .then((result) => {
+                    if (result?.payload?.data) {
+                        setValue("city_id", getRestaurentsLogoInfoResponse.city_id);
+                        // if (Array.isArray(result.payload.data) && getRestaurentsLogoInfoResponse && getRestaurentsLogoInfoResponse.city_id) {
+                        //     selectedCity = result.payload.data.find(c => c.id === getRestaurentsLogoInfoResponse.city_id);
+                        //     //setValue("city_id", selectedCity ? selectedCity.id : '');
+                        // }
+                    }
+
+                })
+
+
+            setInitStateSetForm(true);
+        }
+    }, [dispatch, getRestaurentsLogoInfoResponse, initState]);
+
+
 
     const handleLogoChange = (e) => {
         setLogoFile(e.target.files[0]);
@@ -45,26 +84,31 @@ export default function EditRestaurants() {
 
     const onSubmit = async (data) => {
         let logoUrl = "";
+        // Upload logoFile to your server and get the URL
+        // Example using FormData:
+        const formData = new FormData();
         if (logoFile) {
-            // Upload logoFile to your server and get the URL
-            // Example using FormData:
-            const formData = new FormData();
             formData.append("restaurentLogo", logoFile);
-            formData.append('title', data.title);
-            formData.append('city_id', data.city_id);
-            formData.append('description', data.description);
-            formData.append('is_display_nine', data.is_display_nine);
-            formData.append('is_featured', data.is_featured);
-            formData.append('status', data.status);
-            // Replace with your actual upload endpoint
-            const res = await dispatch(addRestaurentsLogo(formData));
-            const result = await res.json();
-            logoUrl = result.url; // adjust according to your API response
         }
-        const payload = { ...data, logo: logoUrl };
-        dispatch(/* your createRestaurant action */(payload))
-            .then(() => toast.success("Restaurant created!"))
-            .catch(() => toast.error("Failed to create restaurant."));
+        formData.append('title', data.title);
+        formData.append('city_id', data.city_id);
+        formData.append('description', data.description);
+        formData.append('is_display_nine', data.is_display_nine);
+        formData.append('is_featured', data.is_featured);
+        formData.append('status', data.status);
+        formData.append('logo_id', logo_id);
+        // Replace with your actual upload endpoint
+        dispatch(addRestaurentsLogo(formData)).then((result) => {
+            console.log("result?.payload", result?.payload);
+            if (result?.payload?.statusCode === 1) {
+                toast.success("Restaurant updated successfully!");
+                window.location.href = "/restaurants-logo";
+            }
+        })
+            .catch(() => {
+                toast.error("Failed to update restaurant. Please try again.");
+            });
+
     };
 
     return (
@@ -107,15 +151,19 @@ export default function EditRestaurants() {
                                                 </Form.Group>
                                             </Col>
                                             <Col md={ 6 }></Col>
-                                            <Form.Group>
-                                                <Form.Label>City ID</Form.Label>
-                                                <Form.Control
-                                                    type="number"
-                                                    placeholder="Enter city id"
+                                            <Form.Group className="mb-3">
+                                                <Form.Select
                                                     { ...register("city_id") }
-                                                />
+                                                >
+                                                    <option value="">Select City</option>
+                                                    { allowCitiesList && allowCitiesList.map((c) => (
+                                                        <option key={ c.id } value={ c.id }>
+                                                            { c.name } ( { c.state_name } - { c.country_name } )
+                                                        </option>
+                                                    )) }
+                                                </Form.Select>
                                                 { errors.city_id && (
-                                                    <div className="text-danger mb-2">{ errors.city_id.message }</div>
+                                                    <div className="text-danger mb-2" style={ { textAlign: 'left', fontSize: '0.9em' } }>{ errors.city_id.message }</div>
                                                 ) }
                                             </Form.Group>
 

@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
     login, getUsers, getDashboard, getCoupons, getCities, createCoupon, getPromoCode, getCouponInfo, deleteCoupons, updateUserStatusinfo, getUserInfo,
     getUpdatedCities, getCountries, getStates, getCitiesCustom, addUpdateCustomCity, getContent, getUserSubscriptions, getPackages, createPackage, getPackageInfo, updatePackageInfo, deletePackageInfo, addPromoCode, getPromoCodeInfo, updatePromoCode, deletePromoCode, getNotifications, deleteNotifications, getFeedback, deleteFeedbacks, getReplayFeedbackInfo, addReplayOnFeedback, createContent, getVersion, updateVersionAll, deletedUsersInfo, getRestaurentsLogo,
-    deleteRestaurantLogoSingle, createRestaurentsLogo
+    deleteRestaurantLogoSingle, createRestaurentsLogo, findRestaurentsLogoInfo
 } from "../services/main";
 
 export const fetchLogin = createAsyncThunk(
@@ -566,6 +566,20 @@ export const addRestaurentsLogo = createAsyncThunk(
     }
 );
 
+export const getRestaurentsLogoInfo = createAsyncThunk(
+    "user/getRestaurentsLogoInfo",
+    async (reqPayload, { rejectWithValue }) => {
+        try {
+            const response = await findRestaurentsLogoInfo(reqPayload);
+            return response?.data;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.response?.data?.message || "An error occurred",
+            });
+        }
+    }
+);
+
 const userSlice = createSlice({
     name: "user",
     initialState: {
@@ -598,6 +612,7 @@ const userSlice = createSlice({
         promoCodeInfo: null,
         feedbackInfo: null,
         versionInfo: null,
+        getRestaurentsLogoInfoResponse: null,
         dashboardInfo: {
             "totalUsers": 0,
             "totalCoupons": 0,
@@ -970,6 +985,16 @@ const userSlice = createSlice({
                 state.status = "succeeded";
             })
             .addCase(fetchRestaurentsLogo.rejected, (state) => {
+                state.status = 'failed';
+            })
+            .addCase(getRestaurentsLogoInfo.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(getRestaurentsLogoInfo.fulfilled, (state, action) => {
+                state.status = "succeeded";
+                state.getRestaurentsLogoInfoResponse = action.payload?.data || null;
+            })
+            .addCase(getRestaurentsLogoInfo.rejected, (state) => {
                 state.status = 'failed';
             });
     },
