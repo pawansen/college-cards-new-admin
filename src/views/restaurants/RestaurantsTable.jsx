@@ -41,14 +41,19 @@ export default function RestaurantsTable() {
     // Merge new users into allUsers when usersList changes
     useEffect(() => {
         if (restaurentsLogoList && restaurentsLogoList.length > 0) {
-            setAllUsers(prev => {
-                // Avoid duplicates by _id
-                const existingIds = new Set(prev.map(u => u._id));
-                const newUsers = restaurentsLogoList.filter(u => !existingIds.has(u._id));
-                return [...prev, ...newUsers];
-            });
+            if (page === 1) {
+                // Replace allUsers on first page or search
+                setAllUsers(restaurentsLogoList);
+            } else {
+                // Append new users for subsequent pages
+                setAllUsers(prev => {
+                    const existingIds = new Set(prev.map(u => u.logo_id));
+                    const newUsers = restaurentsLogoList.filter(u => !existingIds.has(u.logo_id));
+                    return [...prev, ...newUsers];
+                });
+            }
         }
-    }, [restaurentsLogoList]);
+    }, [restaurentsLogoList, page]);
 
     useEffect(() => {
         // If the last fetch returned less than 10, no more data
