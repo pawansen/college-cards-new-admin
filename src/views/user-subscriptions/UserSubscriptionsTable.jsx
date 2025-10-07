@@ -176,6 +176,9 @@ export default function UserSubscriptionsTable() {
                                             case "cancelledUsedFullMonth":
                                                 statusColor = "purple";
                                                 break;
+                                            case "free":
+                                                statusColor = "green";
+                                                break;
                                             default:
                                                 statusColor = "black";
                                         }

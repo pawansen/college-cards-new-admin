@@ -42,10 +42,10 @@ export default function VersionUpdate() {
                 androidVersion: formData.newVersion,
                 isCompulsoryUpdateAndroid: formData.forceUpdate ? "yes" : "no",
                 androidVersionPrev: formData.current,
-                iosVersion: ios.newVersion,
-                isCompulsoryUpdateIos: ios.forceUpdate ? "yes" : "no",
-                iosVersionPrev: ios.current,
-                forcePopupIos: formData.forcePopup ? "yes" : "no",
+                // iosVersion: ios.newVersion,
+                // isCompulsoryUpdateIos: ios.forceUpdate ? "yes" : "no",
+                //  iosVersionPrev: ios.current,
+                // forcePopupIos: formData.forcePopup ? "yes" : "no",
                 forcePopupAndroid: formData.forcePopup ? "yes" : "no",
             })).then((action) => {
                 if (action.payload) {
@@ -56,14 +56,14 @@ export default function VersionUpdate() {
             setIos(formData);
             // Call API to update iOS version
             dispatch(updateVersion({
-                androidVersion: android.newVersion,
-                isCompulsoryUpdateAndroid: android.forceUpdate ? "yes" : "no",
-                androidVersionPrev: android.current,
+                // androidVersion: android.newVersion,
+                // isCompulsoryUpdateAndroid: android.forceUpdate ? "yes" : "no",
+                //androidVersionPrev: android.current,
                 iosVersion: formData.newVersion,
                 isCompulsoryUpdateIos: formData.forceUpdate ? "yes" : "no",
                 iosVersionPrev: formData.current,
                 forcePopupIos: formData.forcePopup ? "yes" : "no",
-                forcePopupAndroid: formData.forcePopup ? "yes" : "no",
+                // forcePopupAndroid: formData.forcePopup ? "yes" : "no",
             })).then((action) => {
                 if (action.payload) {
                     toast.success("Android version updated successfully");
