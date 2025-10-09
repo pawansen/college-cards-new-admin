@@ -121,41 +121,60 @@ export default function PackageTable() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    { allUsers.map((cand, idx) => (
-                                        <tr key={ cand._id }>
-                                            <td>{ cand.title }</td>
-                                            <td>{ cand.packageType }</td>
-                                            <td>${ cand.amount }</td>
-                                            <td>30 Days</td>
-                                            <td>{ new Date(cand.create_at).toLocaleDateString() }</td>
-                                            <td>
-                                                <span
-                                                    style={ {
-                                                        color: cand.isActive ? "green" : "red",
-                                                        fontWeight: "bold"
-                                                    } }
-                                                >
-                                                    { cand.isActive ? "Active" : "Inactive" }
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <button
-                                                    className="btn btn-warning btn-sm me-1"
-                                                    onClick={ () => handleEdit(cand) }
-                                                    title="Edit"
-                                                >
-                                                    <i className="fas fa-edit"></i>
-                                                </button>
-                                                <button
-                                                    className="btn btn-danger btn-sm"
-                                                    onClick={ () => handleDelete(cand._id) }
-                                                    title="Delete"
-                                                >
-                                                    <i className="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    )) }
+                                    { allUsers.map((cand, idx) => {
+                                        let validationPeriod = "";
+                                        switch (cand.packageType) {
+                                            case "monthly":
+                                                validationPeriod = "30 Days";
+                                                break;
+                                            case "yearly":
+                                                validationPeriod = "365 Days";
+                                                break;
+                                            case "week":
+                                                validationPeriod = "7 Days";
+                                                break;
+                                            case "day":
+                                                validationPeriod = "1 Day";
+                                                break;
+                                            default:
+                                                validationPeriod = "-";
+                                        }
+                                        return (
+                                            <tr key={ cand._id }>
+                                                <td>{ cand.title }</td>
+                                                <td>{ cand.packageType }</td>
+                                                <td>${ cand.amount }</td>
+                                                <td>{ validationPeriod }</td>
+                                                <td>{ new Date(cand.create_at).toLocaleDateString() }</td>
+                                                <td>
+                                                    <span
+                                                        style={ {
+                                                            color: cand.isActive ? "green" : "red",
+                                                            fontWeight: "bold"
+                                                        } }
+                                                    >
+                                                        { cand.isActive ? "Active" : "Inactive" }
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <button
+                                                        className="btn btn-warning btn-sm me-1"
+                                                        onClick={ () => handleEdit(cand) }
+                                                        title="Edit"
+                                                    >
+                                                        <i className="fas fa-edit"></i>
+                                                    </button>
+                                                    <button
+                                                        className="btn btn-danger btn-sm"
+                                                        onClick={ () => handleDelete(cand._id) }
+                                                        title="Delete"
+                                                    >
+                                                        <i className="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        );
+                                    }) }
                                 </tbody>
                             </Table>
                             { loading && <div>Loading...</div> }

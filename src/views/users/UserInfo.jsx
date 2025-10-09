@@ -99,10 +99,10 @@ export default function UserInfo() {
                                 <h5 className="mb-0">{ userDetailInfo?.firstName } { userDetailInfo?.lastName }</h5>
                                 <small className="text-muted">{ userDetailInfo?.email }</small>
                             </Col>
-                            <Col md="auto" className="text-success fw-bold">
+                            {/* <Col md="auto" className="text-success fw-bold">
                                 $0 <br />
                                 <small>Total Reward Earn</small>
-                            </Col>
+                            </Col> */}
                             <Col md="auto">
                                 <span className="badge bg-success">{ userDetailInfo?.isActive ? 'Active' : 'Inactive' }</span>
                             </Col>
@@ -130,12 +130,12 @@ export default function UserInfo() {
                                 <Nav.Item>
                                     <Nav.Link eventKey="subscription">Subscription</Nav.Link>
                                 </Nav.Item>
-                                <Nav.Item>
+                                {/* <Nav.Item>
                                     <Nav.Link eventKey="feedback">Feedback</Nav.Link>
-                                </Nav.Item>
-                                <Nav.Item>
+                                </Nav.Item> */}
+                                {/* <Nav.Item>
                                     <Nav.Link eventKey="reward">Reward Earn</Nav.Link>
-                                </Nav.Item>
+                                </Nav.Item> */}
                             </Nav>
 
                             <Tab.Content className="mt-3">
