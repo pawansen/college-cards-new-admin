@@ -77,6 +77,21 @@ export default function PromoTable() {
         window.location.href = `/edit-promocode/${ user.promo_id }`;
     };
 
+    // Debounced search handler
+    const searchTimeout = useRef(null);
+
+    const handleSearch = (e) => {
+        const query = e.target.value.toLowerCase();
+        if (searchTimeout.current) {
+            clearTimeout(searchTimeout.current);
+        }
+        searchTimeout.current = setTimeout(() => {
+            dispatch(fetchPromoCode({ limit: 10, pageNo: 1, keyword: query }));
+            setPage(1);
+            setAllUsers([]); // Reset users for new search
+        }, 1000);
+    };
+
     return (
         <Row>
             <Col sm={ 12 }>
@@ -91,7 +106,7 @@ export default function PromoTable() {
                                 className="form-control"
                                 placeholder="Search Promo Codes..."
                                 style={ { maxWidth: 250 } }
-                            // onChange={handleSearch} // implement search logic if needed
+                                onChange={ handleSearch } // implement search logic if needed
                             />
                             <button
                                 className="btn"

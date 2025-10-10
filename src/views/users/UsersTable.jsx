@@ -151,6 +151,21 @@ export default function UserTable() {
         window.location.href = `/user-info/${ user_id }`;
     };
 
+    // Debounced search handler
+    const searchTimeout = useRef(null);
+
+    const handleSearch = (e) => {
+        const query = e.target.value.toLowerCase();
+        if (searchTimeout.current) {
+            clearTimeout(searchTimeout.current);
+        }
+        searchTimeout.current = setTimeout(() => {
+            dispatch(fetchUsers({ limit: 10, pageNo: 1, keyword: query }));
+            setPage(1);
+            setAllUsers([]); // Reset users for new search
+        }, 1000);
+    };
+
     return (
         <Row>
             <Col sm={ 12 }>
@@ -158,6 +173,17 @@ export default function UserTable() {
                     <Card.Header>
                         <Card.Title as="h5">Users</Card.Title>
                     </Card.Header>
+                    <Card.Body>
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Search..."
+                                style={ { maxWidth: 250 } }
+                                onChange={ handleSearch } // implement search logic if needed
+                            />
+                        </div>
+                    </Card.Body>
                     <Card.Body>
                         <div
                             style={ { maxHeight: 400, overflowY: "auto" } }
