@@ -28,17 +28,17 @@ export default function NavRight() {
     <ListGroup as="ul" bsPrefix=" " className="list-unstyled">
       <ListGroup.Item as="li" bsPrefix=" " className="pc-h-item">
         <Dropdown>
-          <Dropdown.Toggle as="a" variant="link" className="pc-head-link arrow-none me-0">
+          {/* <Dropdown.Toggle as="a" variant="link" className="pc-head-link arrow-none me-0">
             <i className="material-icons-two-tone">search</i>
-          </Dropdown.Toggle>
-          <Dropdown.Menu className="dropdown-menu-end pc-h-dropdown drp-search">
+          </Dropdown.Toggle> */}
+          {/* <Dropdown.Menu className="dropdown-menu-end pc-h-dropdown drp-search">
             <Form className="px-3">
               <div className="form-group mb-0 d-flex align-items-center">
                 <FeatherIcon icon="search" />
                 <Form.Control type="search" className="border-0 shadow-none" placeholder="Search here. . ." />
               </div>
             </Form>
-          </Dropdown.Menu>
+          </Dropdown.Menu> */}
         </Dropdown>
       </ListGroup.Item>
       <ListGroup.Item as="li" bsPrefix=" " className="pc-h-item">
@@ -56,9 +56,9 @@ export default function NavRight() {
                 <span className="badge bg-light-success">Pro</span>
               </h5> */}
             </Dropdown.Header>
-            <Link to="/users/user-profile" className="dropdown-item">
+            {/* <Link to="/users/user-profile" className="dropdown-item">
               <i className="feather icon-user" /> Profile
-            </Link>
+            </Link> */}
             {/* <Link to="/auth/signin-2" className="dropdown-item">
               <i className="feather icon-lock" /> Lock Screen
             </Link> */}

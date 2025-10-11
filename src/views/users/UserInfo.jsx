@@ -127,9 +127,9 @@ export default function UserInfo() {
                                 <Nav.Item>
                                     <Nav.Link eventKey="details">User Details</Nav.Link>
                                 </Nav.Item>
-                                <Nav.Item>
+                                {/* <Nav.Item>
                                     <Nav.Link eventKey="subscription">Subscription</Nav.Link>
-                                </Nav.Item>
+                                </Nav.Item> */}
                                 {/* <Nav.Item>
                                     <Nav.Link eventKey="feedback">Feedback</Nav.Link>
                                 </Nav.Item> */}
